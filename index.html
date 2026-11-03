@@ -154,34 +154,43 @@ table.price{width:100%;border-collapse:collapse;font-size:14.5px}table.price th,
 .gp-hansa.is-opening .gp-hansa-slide.is-next{left:120%;opacity:0}
 .gp-hansa.is-opening .gp-hansa-slide.is-far{opacity:0}
 .gp-hansa.is-opening .gp-hansa-slide.is-center{transform:translate(-50%,-50%) translateY(-26px) scale(1.18);box-shadow:0 34px 60px -16px rgba(15,15,25,.42)}
-.gp-hansa.is-opening .gp-hansa-caption{opacity:0}
-.gp-hansa.is-opening .gp-hansa-arrow{opacity:0;pointer-events:none}
+.gp-hansa.is-opening .gp-hansa-caption{opacity:0;transition-duration:.12s}
+.gp-hansa.is-opening .gp-hansa-arrow{opacity:0;pointer-events:none;transition-duration:.12s}
+.gp-hansa.is-opening .gp-hansa-hint{opacity:0}
 .gp-hansa-arrow[disabled]{opacity:.32;pointer-events:none}
 .gp-hansa-caption .no{font-weight:900;color:var(--ink);margin-right:8px}
 .gp-hansa-caption .tt{font-weight:900;color:var(--ink);font-size:15px;margin-right:8px}
 .gp-hansa-arrow{position:absolute;top:42%;transform:translateY(-50%);z-index:6;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);color:var(--ink);font-size:19px;display:grid;place-items:center;box-shadow:var(--shadow);padding:0;transition:opacity .3s ease}
 .gp-hansa-arrow.prev{left:12px}.gp-hansa-arrow.next{right:12px}
-.gp-hansa-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid var(--line);background:var(--surface)}
+.gp-hansa-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid var(--line);background:var(--surface);min-height:57px}
 .gp-hansa-count{font-size:20px;font-weight:900;letter-spacing:.04em;white-space:nowrap;font-variant-numeric:tabular-nums}
 .gp-hansa-count span{color:var(--ink3);font-size:14px;font-weight:800}
 .gp-hansa-line{flex:1;height:1px;background:var(--line2);min-width:16px}
-.gp-hansa-hint{font-size:12px;color:var(--ink2);font-weight:700;text-align:right;line-height:1.4}
+.gp-hansa-hint{font-size:12px;color:var(--ink2);font-weight:700;text-align:right;line-height:1.4;transition:opacity .12s ease}
 .gp-hansa-detailMeta{font-size:13px;font-weight:800;color:var(--ink);text-align:right;line-height:1.4}
 .gp-hansa-top{position:absolute;top:10px;right:10px;z-index:7;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .gp-hansa-top button{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 13px;font-weight:800;font-size:13px;box-shadow:var(--shadow)}
-.gp-hansa-detailViewport{position:relative;min-height:408px;overflow:hidden;display:grid;place-items:center;padding:56px 64px 20px}
-.gp-hansa-detailViewport figure{margin:0;width:min(540px,100%);border-radius:12px;overflow:hidden;background:var(--surface2);box-shadow:var(--shadow);animation:gpDetailRise .55s cubic-bezier(.22,1.12,.36,1)}
+.gp-hansa-detailViewport{position:relative;height:368px;overflow:hidden;display:grid;place-items:center;padding:10px 64px 28px}
+.gp-hansa-detailViewport figure{margin:0;width:min(440px,100%);border-radius:12px;overflow:hidden;background:var(--surface2);box-shadow:var(--shadow);animation:gpDetailRise .55s cubic-bezier(.22,1.12,.36,1)}
+/* Detail chrome (top buttons, bottom bar) arrives as the FLIP image
+   settles — faded in with a short delay instead of popping in at the
+   swap frame or lingering from the film view. */
+.gp-hansa.is-detail .gp-hansa-top{animation:gpChromeIn .45s ease .16s both}
+.gp-hansa.is-detail .gp-hansa-bar{animation:gpChromeIn .45s ease .16s both}
+@keyframes gpChromeIn{from{opacity:0}to{opacity:1}}
 @keyframes gpDetailRise{from{opacity:0;transform:translateY(26px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
-/* Arriving from a film/coverflow opening sequence: the detail image takes
-   over from the enlarged, raised centre work instead of restarting faded
-   and small, so the selection motion runs through into the detail view. */
-.gp-hansa.gp-continue .gp-hansa-detailViewport figure{animation:gpDetailContinue .55s cubic-bezier(.22,1.1,.36,1)}
-@keyframes gpDetailContinue{from{transform:translateY(-18px) scale(1.08)}to{transform:translateY(0) scale(1)}}
-.gp-hansa-detailViewport img{width:100%;height:100%;max-height:330px;object-fit:cover;display:block;aspect-ratio:4/3}
+/* Arriving from a film/coverflow opening sequence: the detail figure is
+   FLIP-animated from the enlarged centre work's exact on-screen rect
+   (JS sets the inline transform), so the selection motion runs through
+   into the detail view with no restart and no jump. The detail
+   viewport's fixed height matches the film viewport's (368px / 322px
+   mobile) so the swap never changes the stage height — the bottom
+   bar stays put and the image's resting place is set from frame one. */
+.gp-hansa-detailViewport img{width:100%;height:auto;object-fit:cover;display:block;aspect-ratio:4/3}
 .gp-hansa.is-detail .gp-hansa-arrow{top:50%}
 .gp-hansa.is-closed{display:grid;place-items:center;min-height:180px;padding:24px}
 .gp-hansa-reopen{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:999px;padding:11px 20px;font-weight:800;font-size:14px}
-@media(prefers-reduced-motion:reduce){.gp-hansa-slide{transition:none!important}.gp-hansa-detailViewport figure{animation:none}.gp-hansa.gp-continue .gp-hansa-detailViewport figure{animation:none}}
+@media(prefers-reduced-motion:reduce){.gp-hansa-slide{transition:none!important}.gp-hansa-detailViewport figure{animation:none}.gp-hansa.is-detail .gp-hansa-top,.gp-hansa.is-detail .gp-hansa-bar{animation:none}}
 .gp-flow{display:flex;flex-direction:column;gap:12px}
 .gp-flow .gp-card{display:grid;grid-template-columns:1.3fr 1fr}
 .gp-flow figure{aspect-ratio:16/10;height:100%}
@@ -215,7 +224,8 @@ table.price{width:100%;border-collapse:collapse;font-size:14.5px}table.price th,
 .gp-cover{position:relative;height:250px;perspective:1100px}
 .gp-cov{position:absolute;left:50%;top:6px;width:min(270px,60%);aspect-ratio:4/3;margin-left:calc(min(270px,60%)/-2);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;background:var(--surface2);transition:transform .7s cubic-bezier(.22,1.14,.36,1),opacity .55s ease}
 .gp-cov img{width:100%;height:100%;object-fit:cover;display:block}
-.gp-navrow{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:10px}
+.gp-navrow{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:10px;transition:opacity .15s ease}
+.gp-cover.is-opening + .gp-navrow{opacity:0}
 .gp-navrow .cnt{font-size:12.5px;font-weight:900;color:var(--ink2);letter-spacing:.08em}
 .gp-nav{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);font-size:15px;display:grid;place-items:center}
 .gp-nav:disabled{opacity:.3}
@@ -244,7 +254,7 @@ table.price{width:100%;border-collapse:collapse;font-size:14.5px}table.price th,
 .gp-hansa-bar{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
 .gp-hansa-hint{text-align:left}
 .gp-hansa-detailMeta{text-align:left}
-.gp-hansa-detailViewport{min-height:352px;padding:58px 50px 16px}
+.gp-hansa-detailViewport{height:322px;padding:8px 44px 26px}
 .gp-hansa-arrow{width:38px;height:38px;font-size:17px}
 .gp-hansa-arrow.prev{left:8px}.gp-hansa-arrow.next{right:8px}
 .gp-flow .gp-card,.gp-flow .gp-card:nth-child(even){grid-template-columns:1fr}
@@ -729,7 +739,7 @@ var GP_LAYOUTS=[
 {id:"index",name:"인덱스"},{id:"coverflow",name:"커버플로우"},{id:"stack",name:"카드 스택"},
 {id:"museum",name:"뮤지엄 월"},{id:"film",name:"가로 필름"}
 ];
-var gpLayout="auto", gpActive=0, gpCover=0, gpDeck=[0,1,2,3,4,5], gpHansaMode="film", gpHansaSuppressClick=false, gpDetailIdx=null, gpDetailContinue=false;
+var gpLayout="auto", gpActive=0, gpCover=0, gpDeck=[0,1,2,3,4,5], gpHansaMode="film", gpHansaSuppressClick=false, gpDetailIdx=null, gpFlipRect=null;
 function gpName(){var l=GP_LAYOUTS.filter(function(x){return x.id===gpLayout})[0];return l?l.name:""}
 function gpCard(w,i){
  return '<article class="gp-card" data-gp-open="'+i+'" role="button" tabindex="0" aria-label="'+esc(w.title)+' 상세 보기"><figure><img src="'+w.img+'" alt="'+esc(w.alt)+'" loading="lazy"></figure><div class="b"><div class="t">'+esc(w.title)+'</div><div class="m"><span class="y">'+w.year+'</span> · '+esc(w.cat)+'</div></div></article>';
@@ -747,19 +757,61 @@ function gpSharedDetailHTML(){
   +'</div>';
 }
 function gpOpenDetail(i){gpDetailIdx=i;gpActive=i;gpCover=i;renderGPStage()}
+/* Single-motion FLIP into the detail view. gpFlipRect holds the centre
+   work's exact on-screen rect AT THE CLICK (its normal film/coverflow
+   resting place — there is no separate opening enlargement any more).
+   The detail DOM renders in the same frame as the click, so the caption
+   and the bottom bar leave WITH the click instead of vanishing late at
+   a swap, and the detail figure — same 4:3 box as the slide, so one
+   uniform scale, no stretch — starts transformed onto the clicked rect
+   and springs to its resting place in ONE continuous growth. The old
+   two-step sequence (enlarge up top, swap DOM, then sink ~60px down to
+   the detail centre) is what read as "커졌다가 밑으로 떨어진다". */
+function gpApplyFlip(st){
+ if(!gpFlipRect)return;
+ var r=gpFlipRect; gpFlipRect=null;
+ if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+ var fig=st.querySelector(".gp-hansa-detailViewport figure");
+ if(!fig||!r.width||!r.height)return;
+ /* Measure the figure's NATURAL rect: the stylesheet rise animation
+    starts at translateY(26px) scale(.93), and measuring through its
+    first frame skews the FLIP start. Disable it BEFORE measuring —
+    and leave it disabled afterwards: clearing the inline animation
+    in cleanup re-applied the keyframes, restarting the rise on the
+    already-settled image so it dropped back down half a second
+    after the detail view appeared. */
+ fig.style.animation="none";
+ fig.getBoundingClientRect();
+ var last=fig.getBoundingClientRect();
+ if(!last.width||!last.height)return;
+ var dx=(r.left+r.width/2)-(last.left+last.width/2);
+ var dy=(r.top+r.height/2)-(last.top+last.height/2);
+ var s=r.width/last.width;
+ fig.style.transformOrigin="center center";
+ fig.style.transform="translate("+dx+"px,"+dy+"px) scale("+s+","+s+")";
+ fig.getBoundingClientRect();
+ fig.style.transition="transform .58s cubic-bezier(.22,1.08,.36,1)";
+ fig.style.transform="translate(0px,0px) scale(1,1)";
+ /* Cleanup clears ONLY the transition, never the transform: the
+    transform already rests at identity, and touching it (the old
+    timeout cleared both, half a second after settling) is what
+    re-dropped the image. */
+ var cleaned=false;
+ function clean(){if(cleaned)return;cleaned=true;fig.style.transition=""}
+ fig.addEventListener("transitionend",function h(e){if(e.propertyName==="transform"){fig.removeEventListener("transitionend",h);clean()}});
+ setTimeout(clean,720);
+}
 function gpCoverOpenDetail(){
  var st=$("gpStage"), cover=st.querySelector(".gp-cover");
  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
  if(!cover||reduce){gpOpenDetail(gpCover);return}
- if(cover.classList.contains("is-opening"))return;
- cover.classList.add("is-opening");
- st.querySelectorAll("[data-gpc]").forEach(function(el){
-  var idx=Number(el.getAttribute("data-gpc")), off=idx-gpCover;
-  if(off===0){el.style.transform="translateX(0) translateZ(0) rotateY(0deg) translateY(-22px) scale(1.18)";el.style.zIndex=30}
-  else if(off<0){el.style.transform="translateX(-190%) translateZ(-120px) rotateY(18deg)";el.style.opacity="0"}
-  else{el.style.transform="translateX(190%) translateZ(-120px) rotateY(-18deg)";el.style.opacity="0"}
- });
- setTimeout(function(){gpDetailContinue=true;gpOpenDetail(gpCover)},500);
+ /* No opening sequence: capture the centre card's rect as it rests at
+    the click and go straight to the detail view — gpApplyFlip grows
+    that rect into the detail figure in a single motion, and the
+    nav row / neighbouring cards leave in the same frame. */
+ var centerEl=st.querySelector('[data-gpc="'+gpCover+'"]');
+ if(centerEl){var r=centerEl.getBoundingClientRect();gpFlipRect={left:r.left,top:r.top,width:r.width,height:r.height}}
+ gpOpenDetail(gpCover);
 }
 function renderGPChips(){
  $("gpChips").innerHTML=GP_LAYOUTS.map(function(l,i){
@@ -821,16 +873,21 @@ function gpHansaSync(){
  if(pv)pv.disabled=gpActive<=0;
  if(nx)nx.disabled=gpActive>=GP_WORKS.length-1;
 }
-/* Centre work selected: neighbours slide out to the left/right edges while
-   the centre springs up larger, then the detail view takes over. */
+/* Centre work selected: straight to the detail view in the click frame.
+   The caption and bottom bar are part of the film DOM, so they leave
+   WITH the click — not late, at a swap — while gpApplyFlip grows the
+   centre slide's resting rect into the detail figure in one motion.
+   (The previous design first enlarged the centre up top via
+   .is-opening, waited out the spring, then swapped DOM: the detail
+   figure landed ~60px lower, so the image visibly sank after growing,
+   and the bottom bar only disappeared at that late swap.) */
 function gpHansaOpenDetail(){
  var st=$("gpStage"), box=st.querySelector(".gp-hansa");
  var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
- if(!box||reduce||box.classList.contains("is-opening")){if(!box||reduce){gpHansaMode="detail";renderGPStage()}return}
- box.classList.add("is-opening");
- /* Hold the swap until the .62s spring has fully played out (neighbours
-    out, centre risen); swapping earlier visibly cuts the motion. */
- setTimeout(function(){gpDetailContinue=true;gpHansaMode="detail";renderGPStage()},660);
+ if(!box||reduce){gpHansaMode="detail";renderGPStage();return}
+ var center=box.querySelector(".gp-hansa-slide.is-center");
+ if(center){var r=center.getBoundingClientRect();gpFlipRect={left:r.left,top:r.top,width:r.width,height:r.height}}
+ gpHansaMode="detail"; renderGPStage();
 }
 function gpCovTransform(off){
  return "translateX("+(off*58)+"%) translateZ("+(-Math.abs(off)*120)+"px) rotateY("+(-off*34)+"deg)"+(off===0?" translateY(-10px) scale(1.06)":"");
@@ -858,7 +915,7 @@ function renderGPStage(){
  var st=$("gpStage");
  if(gpDetailIdx!==null){
   st.innerHTML=gpSharedDetailHTML();
-  if(gpDetailContinue){var dRoot=st.querySelector(".gp-hansa.is-detail");if(dRoot)dRoot.classList.add("gp-continue");gpDetailContinue=false}
+  gpApplyFlip(st);
   var dBack=st.querySelector("[data-gp-detail-back]"), dClose=st.querySelector("[data-gp-detail-close]"), dPrev=st.querySelector("[data-gp-detail-prev]"), dNext=st.querySelector("[data-gp-detail-next]");
   function dBackFn(){gpDetailIdx=null;renderGPStage()}
   if(dBack)dBack.addEventListener("click",dBackFn);
@@ -890,7 +947,7 @@ function renderGPStage(){
  }
  else if(eff==="museum"){h='<div class="gp-museum">'+GP_WORKS.map(gpCard).join("")+"</div>"}
  st.innerHTML=h;
- if(gpDetailContinue){var hRoot=st.querySelector(".gp-hansa.is-detail");if(hRoot)hRoot.classList.add("gp-continue");gpDetailContinue=false}
+ gpApplyFlip(st);
  /* Hansa film/detail bindings — film-mode moves animate in place (slides
     glide, centre springs up); picking the centre work plays the opening
     sequence into the detail view, whose arrows swap the single work. */
