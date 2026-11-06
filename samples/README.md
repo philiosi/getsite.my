@@ -12,7 +12,7 @@ getsite.my에서 만든 샘플 사이트들을 모아둔 폴더입니다. 모든
 | `portfolio-react/` | 브랜드 디자이너 김지우 포트폴리오 — React 본문 (Vite 빌드, `assets/` 포함) | `react-portfolio` | https://getsite-react-portfolio.web.app | 합계 약 1,440,911 바이트 |
 | `artist-yoon-seohyun/` | 화가 윤서현 예술가 포트폴리오 (가상 화가) | `space-3` | https://getsite-artist.web.app | index.html 10,305,464 바이트 |
 | `art-haru/` | 그림공방 하루 — 아트하다 익명 샘플 | `space-4` | https://getsite-haru.web.app | index.html 4,664,488 바이트 |
-| `soap-motion/` | 친환경 비누 '거품숲' 모션그래픽 | `space-5` | https://getsite-soap.web.app | index.html 62,980,675 바이트 |
+| `soap-motion/` | 친환경 비누 '거품숲' 모션그래픽 — ⚠️ **미업로드**: 62,980,675바이트라 GitHub Contents API가 422로 거부함 (아래 참고) | `space-5` | https://getsite-soap.web.app | (미업로드) |
 | `cup-cinematic/` | 도자기 컵 시네마틱 | `space-6` | https://getsite-cup.web.app | index.html 2,047,823 바이트 |
 | `cup-3d/` | Blender 컵 3D | `blender-3d` | https://getsite-cup3d.web.app | index.html 10,381,043 바이트 |
 | `gallery-layouts/` | Work Gallery Layouts — 갤러리 레이아웃 15종 | `work-gallery-layouts` | — (아티팩트만 존재) | index.html 6,270,360 바이트 |
@@ -20,6 +20,7 @@ getsite.my에서 만든 샘플 사이트들을 모아둔 폴더입니다. 모든
 
 ## 제외한 것
 
+- `soap-motion/` 미업로드 사유: GitHub Contents API는 이 크기의 파일을 처리하지 못해 422 `Sorry, the file is too large to be processed`를 반환했습니다. Contents API로 나누지 않고 올리는 방법은 없습니다. 올리려면 로컬 클론에서 `git add/commit/push`로 직접 푸시하거나 Git LFS를 쓰는 방법이 있습니다. Firebase(`getsite-soap.web.app`)에서는 계속 볼 수 있습니다.
 - `web-order-studio`(getsite.my 본체): 이미 저장소 루트에 있음.
 - `space`(폴리마켓 모의거래 대시보드): 내부용이라 제외.
 - `kimi-grido1-racing-systems`: 취소된 KIMI 단독 빌드라 제외.
