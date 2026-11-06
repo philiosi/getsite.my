@@ -17,6 +17,7 @@ getsite.my에서 만든 샘플 사이트들을 모아둔 폴더입니다. 모든
 | `cup-3d/` | Blender 컵 3D | `blender-3d` | https://getsite-cup3d.web.app | index.html 10,381,043 바이트 |
 | `gallery-layouts/` | Work Gallery Layouts — 갤러리 레이아웃 15종 | `work-gallery-layouts` | — (아티팩트만 존재) | index.html 6,270,360 바이트 |
 | `hero-stack-fan/` | Hero Stack Fan Motion — 샘플 히어로를 쌓아 펼치는 모션 페이지 | `hero-stack-fan-motion` | — (아티팩트만 존재) | index.html 502,911 바이트 |
+| `nooreemadang/` | 누리마당 전시 사이트 — 김누리 개인전 〈내 친구 누렁이를 소개합니다〉 (한국어·영문, `assets/`·`en/` 포함) | `2026-nureongi` | https://nooreemadang.web.app/madang/2026-nureongi/ | 합계 약 6,895,164 바이트 |
 
 ## 제외한 것
 

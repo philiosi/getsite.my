@@ -1,0 +1,43 @@
+/* Hallmark · theme: studied-DNA adapted to the user's exhibition poster */
+@font-face { font-family: 'Gaegu'; src: url('./assets/fonts/Gaegu-Bold.woff2') format('woff2'); font-style: normal; font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Gaegu'; src: url('./assets/fonts/Gaegu-Regular.woff2') format('woff2'); font-style: normal; font-weight: 400; font-display: swap; }
+:root {
+  --color-paper: #f8f5ed;
+  --color-paper-deep: #eee9dd;
+  --color-ink: #30352c;
+  --color-muted: #686b60;
+  --color-accent: #b64b20;
+  --color-orange: #f58d36;
+  --color-terracotta: #cd6e38;   /* 브랜드 가이드 색. 인트로 로고·제목에 쓴다 */
+  --color-peach: #f4dfc8;
+  --color-blue: #d8e5e6;
+  --color-blue-ink: #345c66;
+  --color-yellow: #f1da86;
+  --color-green: #e0e5cb;
+  --color-rule: #c9c9b9;
+  --color-light: #fffaf0;
+  --color-overlay: #252a25ed;
+  --color-transparent: transparent;
+  --font-display: 'Gaegu', 'Apple SD Gothic Neo', sans-serif;
+  --font-body: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --page-gutter: clamp(20px, 5vw, 80px);
+  --page-width: 1360px;
+  --header-height: 88px;
+  --radius-image: 8px;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --dur-reveal: 900ms;
+  --dur-hover: 180ms;
+}

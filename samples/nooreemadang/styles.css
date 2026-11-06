@@ -1,0 +1,608 @@
+/* Hallmark · macrostructure: Narrative Workflow · genre: playful · theme: studied-DNA (Pinterest 651966483607283594, adapted to user's poster) · tone: warm and personal · anchor: poster orange · nav: N1 · footer: Ft5 */
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5 */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: clip; scroll-padding-top: calc(var(--header-height) + 24px); }
+body { margin: 0; background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); line-height: 1.8; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--color-yellow); color: var(--color-ink); }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { color: inherit; font: inherit; cursor: pointer; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+button:active, .round-link:active, .text-link:active { opacity: .7; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--color-blue-ink); outline-offset: 6px; }
+[hidden] { display: none !important; }
+h1, h2, h3, p, figure { margin: 0; }
+h1, h2, h3 { min-width: 0; overflow-wrap: anywhere; font-style: normal; word-break: keep-all; }
+h1, h2 { font-family: var(--font-display); font-weight: 700; letter-spacing: -.045em; line-height: 1.04; }
+p { word-break: keep-all; overflow-wrap: anywhere; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+.handwritten { font-family: var(--font-display); font-weight: 400; line-height: 1.1; }
+.skip-link { position: fixed; top: -100px; left: var(--space-6); background: var(--color-paper); padding: var(--space-3); z-index: 100; }
+.skip-link:focus { top: var(--space-4); }
+.site-header { height: var(--header-height); padding: 0 var(--page-gutter); display: flex; align-items: center; justify-content: space-between; gap: var(--space-8); background: var(--color-paper); border-bottom: 1px solid var(--color-rule); position: sticky; top: 0; z-index: 30; }
+.wordmark { font-family: var(--font-display); font-weight: 700; font-size: 32px; letter-spacing: -.08em; white-space: nowrap; display: inline-flex; align-items: center; gap: var(--space-2); }
+.brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-orange); margin-top: var(--space-2); }
+.site-header nav { display: flex; align-items: center; gap: clamp(20px, 2.6vw, 44px); }
+.site-header nav a { font-size: 13px; padding: var(--space-3) 0; white-space: nowrap; position: relative; }
+.site-header nav a span { font-size: 10px; margin-right: var(--space-1); color: var(--color-muted); }
+.site-header nav a::after { content: ''; position: absolute; left: 0; bottom: 5px; width: 100%; height: 2px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--dur-hover) var(--ease-out); }
+.site-header nav a[aria-current]::after, .site-header nav a:hover::after { transform: scaleX(1); }
+.header-actions { display: flex; align-items: center; gap: var(--space-3); }
+.language-switch { display: flex; align-items: center; gap: var(--space-1); color: var(--color-muted); font-size: 11px; white-space: nowrap; }
+.language-switch a { padding: var(--space-2) var(--space-1); }
+.language-switch a[aria-current] { color: var(--color-ink); font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-orange); text-underline-offset: 4px; }
+.language-switch a:not([aria-current]):hover { color: var(--color-accent); }
+.nav-note { padding: var(--space-2) 0 var(--space-2) var(--space-4); color: var(--color-blue-ink); font-size: 12px; white-space: nowrap; }
+.nav-note:hover { color: var(--color-accent); }
+.ig-link { display: grid; place-items: center; width: 32px; height: 32px; padding-left: var(--space-3); border-left: 1px solid var(--color-rule); color: var(--color-ink); box-sizing: content-box; }
+.ig-link:hover { color: var(--color-accent); }
+.intro-replay { background: none; border: 1px solid var(--color-rule); border-radius: 30px; font-size: 11px;
+  padding: var(--space-2) var(--space-3); white-space: nowrap; display: flex; align-items: center;
+  gap: var(--space-2); color: var(--color-muted); transition: background var(--dur-hover), color var(--dur-hover); }
+.intro-replay:hover { background: var(--color-paper-deep); color: var(--color-ink); }
+.intro-replay > span:first-child { font-size: 9px; }
+.section-inner, .hero { max-width: var(--page-width); margin: 0 auto; }
+.hero { padding: 0 var(--page-gutter); }
+.hero-topline { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: flex-end;
+  gap: var(--space-2) var(--space-5); color: var(--color-muted); font-size: 12px; padding-top: var(--space-6); }
+/* 전시 제목. 작가명 라벨과 같은 줄, 같은 베이스라인에 놓는다. */
+.exhibition-title { font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(21px, 2.4vw, 30px); line-height: 1.25; letter-spacing: -.01em;
+  color: var(--color-orange); }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); align-items: center; gap: var(--space-8); padding: var(--space-8) 0 var(--space-16); }
+.hero-greeting { font-size: 28px; color: var(--color-accent); margin-bottom: var(--space-5); transform: rotate(-4deg); transform-origin: left; }
+.hero h1 { font-size: clamp(70px, 7.9vw, 112px); }
+.hero h1 span { color: var(--color-accent); }
+.hero-description { font-size: 15px; line-height: 1.95; margin-top: var(--space-8); color: var(--color-muted); }
+.round-link { display: inline-flex; align-items: center; gap: var(--space-4); margin-top: var(--space-8); font-size: 13px; font-weight: 600; white-space: nowrap; }
+.round-arrow { border: 1px solid var(--color-ink); border-radius: 50%; height: 45px; width: 45px; display: grid; place-items: center; font-size: 23px; transition: background var(--dur-hover); }
+.round-link:hover .round-arrow { background: var(--color-yellow); }
+.hero-art { position: relative; display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 2.3fr) minmax(0, .65fr); align-items: center; gap: var(--space-3); height: 510px; }
+.art-ribbon { border-radius: 90px 90px var(--radius-image) var(--radius-image); overflow: clip; height: 80%; background: var(--color-blue); }
+.art-ribbon img, .art-ribbon video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ribbon-left { position: relative; margin-top: var(--space-16); height: 68%; translate: 0 var(--scroll-shift, 0px); }
+.ribbon-left img { object-position: 35% center; }
+.ribbon-left .image-expand, .ribbon-right .image-expand { width: 26px; height: 26px; right: 7px; bottom: 7px; font-size: 15px; }
+.ribbon-main { height: 94%; position: relative; border-radius: 140px 140px var(--radius-image) var(--radius-image); }
+.ribbon-main img, .ribbon-main video { object-position: 52% center; }
+.motion-still { position: absolute; inset: 0; transition: opacity 700ms var(--ease-out); }
+.motion-playing .motion-still { opacity: 0; }
+.ribbon-right { position: relative; margin-top: calc(-1 * var(--space-16)); height: 66%; translate: 0 calc(-1 * var(--scroll-shift, 0px)); }
+.ribbon-right img { object-position: 58% center; }
+.hero-art-wrap { display: grid; gap: var(--space-8); }
+.motion-credit { max-width: 46ch; font-size: 11px; line-height: 1.55; color: var(--color-muted); }
+.art-note { position: absolute; right: -8px; bottom: -12px; z-index: 2; color: var(--color-blue-ink); font-size: 27px; border: 1px solid var(--color-blue-ink); border-radius: 50%; text-align: center; padding: var(--space-4) var(--space-6); background: var(--color-paper); transform: rotate(-10deg); pointer-events: none; }
+/* figcaption을 스테이지 위에 띄워야 해서 높이를 변수로 뽑는다. figcaption은
+   HTML 규칙상 figure의 직계 자식이어야 하므로 스테이지 안에 넣을 수 없다. */
+.favorite-motion { grid-column: 7/13; grid-row: 2; margin-top: 0; min-width: 0; position: relative; --stage-h: clamp(430px, 42vw, 570px); }
+.favorite-motion-stage { position: relative; height: var(--stage-h); overflow: hidden; isolation: isolate; border-radius: var(--radius-image); background: var(--color-paper); }
+.favorite-motion-stage::before { content: ''; position: absolute; inset: 5%; z-index: -1; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--color-yellow) 42%, transparent) 0 34%, transparent 68%); }
+.favorite-bubble { --bubble-delay: 0ms; --from-x: 0px; --from-y: -120px; position: absolute; display: block; aspect-ratio: 1; overflow: hidden; border: 1px solid color-mix(in srgb, var(--color-blue-ink) 18%, transparent); border-radius: 50%; background: #fff; box-shadow: 0 14px 30px rgba(52, 92, 102, .13); transform-origin: center; }
+.favorite-bubble img { width: 100%; height: 100%; object-fit: cover; }
+.favorite-bubble-dog { left: 36%; top: 23%; width: 39%; z-index: 5; --from-x: 36px; --from-y: -180px; --bubble-delay: 0ms; }
+.favorite-bubble-cat { left: 15%; top: 19%; width: 24%; z-index: 4; --from-x: -52px; --from-y: -150px; --bubble-delay: 55ms; }
+.favorite-bubble-rabbit { left: 9%; top: 43%; width: 21%; z-index: 3; --from-x: -76px; --from-y: -92px; --bubble-delay: 110ms; }
+.favorite-bubble-tiger { left: 30%; top: 55%; width: 18%; z-index: 6; --from-x: 0px; --from-y: -110px; --bubble-delay: 165ms; }
+.favorite-bubble-lion { left: 64%; top: 12%; width: 17%; z-index: 2; --from-x: 84px; --from-y: -145px; --bubble-delay: 220ms; }
+.favorite-motion-scene, .favorite-guest-layer { position: absolute; inset: 0; }
+/* 관람객이 더한 사진. 브라우저 안에서만 살고, 어디로도 업로드되지 않는다. */
+.favorite-bubble-guest { padding: 0; cursor: pointer; }
+.favorite-bubble-guest img { pointer-events: none; }
+/* 관람객 사진은 작가 작품 뒤에 줄 세우지 않고 사이에 끼워 넣는다. 뒤에
+   이어 붙이면 행렬이 두 배로 길어져 마지막 사진이 한 박자 늦게 도착한다. */
+.favorite-bubble-guest-1 { left: 66%; top: 44%; width: 25%; z-index: 8; --from-x: 92px; --from-y: -128px; --bubble-delay: 130ms; }
+/* 관람객 사진이 들어앉은 동물 자리. 원래 그림은 자리만 비워 둔다. */
+.favorite-motion-scene .favorite-bubble.is-replaced { visibility: hidden; }
+/* 버블보다 위에 둔다. 안내가 사진에 가려지면 안 되고, ＋도 늘 누를 수 있어야 한다. */
+.favorite-add-control { position: absolute; left: 48%; top: 64%; width: 18%; z-index: 20; }
+.favorite-bubble-plus { display: grid; place-items: center; width: 100%; aspect-ratio: 1; border: none; border-radius: 50%; color: #fff; background: color-mix(in srgb, var(--color-blue-ink) 72%, var(--color-paper)); box-shadow: 0 12px 22px rgba(52, 92, 102, .16); font: 300 clamp(32px, 4vw, 58px)/1 var(--font-body); transition: background var(--dur-hover), scale var(--dur-hover); }
+.favorite-bubble-plus:hover { background: var(--color-blue-ink); scale: 1.06; }
+/* 안내는 스테이지 아래, ＋ 버튼(left:48% + width:18%의 중심 = 57%) 바로 밑에 중앙정렬로 쌓는다. */
+.favorite-add-copy { display: flex; flex-direction: column; align-items: center; gap: var(--space-1); margin-left: 57%; margin-top: calc(var(--stage-h) * -.08); translate: -50% 0; }
+/* 스테이지 아래쪽은 버블이 내려오지 않는 빈 띠라, 그만큼 끌어올려 ＋와 저장하기 사이를 좁힌다. */
+.favorite-add-hint { white-space: nowrap; font-size: 13px; font-weight: 600; line-height: 1.45; color: var(--color-accent); }
+.favorite-add-note { white-space: nowrap; font-size: 11px; line-height: 1.5; color: var(--color-muted); }
+/* 저장하기 줄은 사진이 없을 때도 자리를 지킨다. 첫 사진을 넣는 순간
+   안내 문구와 아래 내용이 한 칸씩 밀려 내려가지 않게 하려는 것이다. */
+.favorite-save { display: flex; justify-content: center; min-height: 34px; }
+.favorite-save[data-empty] { visibility: hidden; }
+.favorite-save-button, .favorite-save-confirm button { border: 1px solid var(--color-blue-ink); border-radius: 30px; background: var(--color-paper); color: var(--color-blue-ink); font: 600 13px/1 var(--font-body); padding: var(--space-2) var(--space-4); transition: background var(--dur-hover); }
+.favorite-save-button:hover, .favorite-save-confirm button:hover { background: var(--color-yellow); }
+.favorite-save-button:disabled { opacity: .5; }
+.favorite-save-confirm { display: flex; white-space: nowrap; align-items: center; justify-content: center; gap: var(--space-2); font-size: 13px; font-weight: 600; color: var(--color-ink); }
+.favorite-save-confirm[hidden] { display: none; }
+.favorite-save-confirm button { padding: var(--space-1) var(--space-3); }
+.favorite-save-note { font-weight: 400; color: var(--color-muted); }
+/* 좁은 폭에서는 한 줄이 넘치므로 안내 괄호를 버튼 아래 줄로 내린다. */
+@media (max-width: 1100px) {
+  .favorite-save-confirm:not([hidden]) { display: grid; grid-template-columns: auto auto auto; justify-content: center; row-gap: var(--space-1); }
+  .favorite-save-note { grid-row: 2; grid-column: 1 / -1; text-align: center; font-size: 12px; }
+}
+/* 안내가 떴다 사라질 때 아래 내용이 밀렸다 돌아오지 않도록 한 줄을 늘 비워 둔다. */
+/* 캡션은 favorite-motion 우측 상단에, 흐름과 무관하게 떠 있어서 사진이 드나들어도 밀리지 않는다. */
+.favorite-motion figcaption { position: absolute; z-index: 21; right: 0; top: 0;
+  width: max-content; max-width: 46%; padding: 0; text-align: right; }
+.motion-ready .favorite-bubble { animation: favorite-bubble-cycle 5.04s linear var(--bubble-delay) infinite both; }
+/* 안내 말풍선은 가만히 있기보다 살짝 떠 있어야 ＋ 버튼으로 눈이 간다.
+   중앙 정렬은 translate가 맡고 있으므로 뜨는 움직임은 transform으로 따로 준다. */
+.motion-ready .favorite-motion figcaption { animation: favorite-hint-float 2.6s ease-in-out infinite; }
+@keyframes favorite-hint-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes favorite-bubble-cycle {
+  0% { opacity: 0; transform: translate(var(--from-x), var(--from-y)) scale(.18); }
+  8% { opacity: 0; transform: translate(var(--from-x), var(--from-y)) scale(.18); animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+  18% { opacity: 1; transform: translate(0, 0) scale(1); }
+  63% { opacity: 1; transform: translate(0, 0) scale(1); animation-timing-function: cubic-bezier(.4, 0, .8, .2); }
+  78%, 100% { opacity: 0; transform: translate(var(--from-x), var(--from-y)) scale(.18); }
+}
+.image-expand { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--color-paper); color: var(--color-ink); position: absolute; right: 12px; bottom: 12px; font-family: var(--font-body); font-size: 20px; transition: background var(--dur-hover); }
+a:hover > .image-expand { background: var(--color-yellow); }
+.hero-bottom { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--color-rule); padding: var(--space-6) 0 var(--space-8); gap: var(--space-6); font-size: 13px; color: var(--color-blue-ink); }
+.hero-bottom p:first-child { font-size: 17px; letter-spacing: -.03em; }
+.hero-bottom p:first-child span { padding: 0 var(--space-3); }
+.hero-bottom strong { padding-left: var(--space-2); font-weight: 500; }
+.hero-bottom a { font-size: 16px; white-space: nowrap; border-bottom: 1px solid var(--color-rule); }
+.hero-bottom a:hover { border-color: var(--color-ink); }
+.family { background: var(--color-peach); padding: var(--space-24) var(--page-gutter) var(--space-16); }
+.family-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .76fr); gap: var(--space-20); align-items: start; }
+.chapter-label { font-size: 11px; letter-spacing: .08em; margin-bottom: var(--space-6); }
+h2 { font-size: clamp(54px, 6.2vw, 84px); }
+.family h2 span { color: var(--color-accent); }
+.family-text { padding-top: var(--space-12); max-width: 440px; }
+.lead { font-size: 20px; font-weight: 600; line-height: 1.65; margin-bottom: var(--space-5); }
+.family-text > p:not(.lead):not(.handwritten) { font-size: 14px; color: var(--color-muted); }
+.small-note { font-size: 29px; color: var(--color-accent); margin-top: var(--space-6); }
+.family-album { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .7fr); column-gap: clamp(32px, 7vw, 120px); position: relative; padding: var(--space-16) var(--space-8) 0; }
+.family-photo { min-width: 0; }
+.family-photo a { position: relative; display: block; background: var(--color-paper); padding: var(--space-3); }
+.family-photo-wide { transform: rotate(-3deg); align-self: start; }
+.family-photo-small { position: relative; transform: rotate(4deg); margin-top: var(--space-24); }
+/* 두 사진 모두 원본 비율 그대로 보여준다 — 자리에 맞춰 자르지 않는다.
+   폴라로이드처럼 기운 카드 자체가 장식이라, 사진은 크롭 없이 둔다. */
+.family-photo-wide img, .family-photo-small img { width: 100%; height: auto; display: block; }
+figcaption { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-4) 0; font-size: 12px; }
+.caption-note { color: var(--color-muted); font-size: 11px; }
+.album-note { margin: var(--space-4) 0 0 8%; font-size: 33px; color: var(--color-accent); transform: rotate(-4deg); }
+.album-note-small { position: absolute; top: -14px; right: -10px; z-index: 2; font-size: 20px; color: var(--color-accent);
+  transform: rotate(8deg); background: var(--color-paper); border-radius: 50%; padding: var(--space-2) var(--space-3); }
+.family-outro { display: flex; align-items: center; gap: var(--space-6); margin-top: var(--space-20); padding-top: var(--space-8); border-top: 1px solid var(--color-rule); }
+.family-outro > span { font-size: 42px; color: var(--color-accent); }
+.family-outro p { font-size: 13px; }
+.text-link { font-size: 13px; white-space: nowrap; border-bottom: 1px solid currentColor; padding-bottom: var(--space-1); }
+.text-link:hover { color: var(--color-accent); }
+.family-outro .text-link { margin-left: auto; }
+.favorites { padding: var(--space-24) var(--page-gutter) var(--space-20); }
+.favorites-heading { display: flex; justify-content: space-between; align-items: end; gap: var(--space-12); }
+.favorites-heading h2 span { color: var(--color-blue-ink); }
+.favorites-heading > p { font-size: 14px; color: var(--color-muted); padding-bottom: var(--space-3); }
+.favorites-gallery { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--space-8); padding-top: var(--space-16); align-items: start; }
+.favorite a { display: block; position: relative; overflow: clip; border-radius: var(--radius-image); }
+.favorite img { width: 100%; object-fit: cover; }
+.favorite-music { grid-column: 1/6; grid-row: 1/3; }
+.favorite-music img { aspect-ratio: 4/5; }
+.favorite figcaption { flex-direction: column; gap: var(--space-2); }
+.favorite figcaption .handwritten { font-size: 30px; }
+.favorite figcaption > span:last-child { color: var(--color-muted); font-size: 12px; }
+.taste-question { grid-column: 7/13; grid-row: 1; align-self: start; padding: 0 0 var(--space-4) var(--space-8); color: var(--color-accent); }
+.taste-question > span { font-size: 48px; display: block; transform: rotate(-7deg); }
+.taste-question svg { width: 110px; margin-top: var(--space-6); stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.visit { background: var(--color-blue); padding-top: var(--space-24); }
+.visit > .section-inner { padding: 0 var(--page-gutter); }
+.visit-heading { max-width: 850px; }
+.visit-heading h2 { color: var(--color-blue-ink); }
+.visit-heading > p:last-child { margin-top: var(--space-6); font-size: 15px; }
+.sticker-sheet { margin-top: var(--space-12); background: var(--color-paper); padding: var(--space-8) var(--space-10); border-radius: var(--radius-image); }
+.sticker-sheet-header { display: flex; justify-content: space-between; gap: var(--space-6); align-items: center; border-bottom: 1px dashed var(--color-rule); padding-bottom: var(--space-6); font-size: 12px; }
+.sticker-sheet-header .handwritten { font-size: 26px; }
+.sticker-types { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: var(--space-8) 0; gap: var(--space-4); }
+.sticker-types li { position: relative; padding: var(--space-6) var(--space-2) var(--space-5); text-align: center; border-radius: 48% 48% 12px 12px; }
+.sticker-character { background: var(--color-yellow); }
+.sticker-color { background: var(--color-peach); }
+.sticker-animal { background: var(--color-green); }
+.sticker-hobby { background: var(--color-blue); }
+.sticker-number { position: absolute; top: 14px; left: 18px; font-size: 10px; }
+.sticker-mark { display: block; height: 74px; width: 100px; margin: 0 auto var(--space-4); }
+svg.sticker-mark { stroke: var(--color-ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.character-mark { font-family: var(--font-display); font-size: 64px; line-height: 1; transform: rotate(-8deg); }
+.color-mark { position: relative; width: 96px; }
+.color-mark i { position: absolute; display: block; width: 46px; height: 46px; border-radius: 50%; background: var(--color-accent); top: 12px; left: 0; }
+.color-mark i:nth-child(2) { background: var(--color-yellow); left: 25px; top: 26px; }
+.color-mark i:nth-child(3) { background: var(--color-blue-ink); left: 50px; }
+.sticker-types h3 { font-size: 16px; font-weight: 600; }
+.sticker-types p { font-size: 11px; margin-top: var(--space-1); }
+.experience-steps { display: flex; border-top: 1px dashed var(--color-rule); padding-top: var(--space-6); gap: var(--space-6); counter-reset: experience; }
+.experience-steps li { flex: 1; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2) var(--space-3); counter-increment: experience; }
+.experience-steps li::before { content: counter(experience); font-family: var(--font-display); font-size: 28px; grid-row: 1/3; line-height: 1; }
+.experience-steps b { font-size: 14px; }
+.experience-steps li > span { font-size: 12px; color: var(--color-muted); }
+.sticker-note { color: var(--color-muted); font-size: 11px; padding-top: var(--space-6); }
+.visit-details { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, .8fr); gap: var(--space-12); padding: var(--space-20) 0; }
+.visit-details h3 { font-size: 15px; margin-bottom: var(--space-5); }
+.exhibition-summary p, .viewing-order > p { font-size: 13px; color: var(--color-blue-ink); }
+.exhibition-summary .text-link { display: inline-block; margin-top: var(--space-5); }
+.viewing-order li { border-bottom: 1px solid var(--color-rule); }
+.viewing-order a { display: flex; gap: var(--space-3); padding: var(--space-2) 0; font-size: 12px; white-space: nowrap; }
+.viewing-order a:hover { color: var(--color-accent); }
+.viewing-order a > span:first-child { font-size: 10px; }
+.viewing-order a > span:last-child { margin-left: auto; }
+.viewing-order > p { font-size: 11px; padding-top: var(--space-3); }
+.event-info { margin: 0; }
+.event-info > div + div { margin-top: var(--space-5); }
+.event-info dt { font-size: 11px; margin-bottom: var(--space-2); }
+.event-info dd { font-size: 15px; margin: 0; line-height: 1.6; }
+.artist-note { border-top: 1px solid var(--color-rule); overflow: clip; }
+.artist-note-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); padding: var(--space-6) var(--page-gutter); color: var(--color-blue-ink); cursor: pointer; list-style: none; font-size: 1.2em; font-family: var(--font-display); font-weight: 700; }
+.artist-note-heading::-webkit-details-marker { display: none; }
+.artist-note-heading:hover { background: var(--color-paper-deep); }
+.note-summary-meta { display: flex; align-items: center; gap: var(--space-5); }
+.note-toggle-mark { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--color-blue-ink); border-radius: 50%; font-family: var(--font-body); font-size: 20px; font-weight: 400; transition: transform var(--dur-hover) var(--ease-out); }
+.artist-note-disclosure[open] .note-toggle-mark { transform: rotate(45deg); }
+.note-count { color: var(--color-blue-ink); font-size: 12px; letter-spacing: .08em; }
+.note-deck-wrap { display: grid; place-items: center; min-height: 560px; padding: var(--space-4) 0 var(--space-8); overflow: hidden; perspective: 1200px; width: min(104vw, calc(var(--page-width) + 80px)); max-width: calc(var(--page-width) + 80px); }
+.note-deck { position: relative; width: 100%; height: 520px; isolation: isolate; transform-style: preserve-3d; }
+.note-deck.has-selection { transform-style: flat; }
+/* --note-x/y/r 는 app.js 의 layoutNoteDeck() 및 드래그 핸들러가 동적으로 계산한다.
+   --note-ratio 는 각 <li> 가 실제 이미지 비율로 인라인 지정되어 레터박스를 없앤다. */
+.note-item { --note-x: 0px; --note-y: 0px; --note-r: 0deg; --tilt-x: 0deg; --tilt-y: 0deg; position: absolute; left: 50%; top: 50%; width: clamp(114px, 11.4vw, 154px); aspect-ratio: var(--note-ratio, 1088 / 1445); transform: translate(calc(-50% + var(--note-x)), calc(-50% + var(--note-y))) rotate(var(--note-r)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)); transform-origin: center center; transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity var(--dur-hover) var(--ease-out), box-shadow 300ms ease; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none; }
+.note-card { position: relative; z-index: 0; display: block; width: 100%; height: 100%; padding: 0; border: 1px solid var(--color-rule); border-radius: var(--radius-image); overflow: clip; background: var(--color-paper); box-shadow: 0 4px 16px rgba(45, 34, 25, 0.09); transition: border-color var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out), box-shadow var(--dur-hover) var(--ease-out); transform-style: preserve-3d; }
+.note-card img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.note-card:hover { border-color: var(--color-yellow); outline: 1.5px solid var(--color-yellow); outline-offset: 1px; transform: translateY(-4px) translateZ(16px); box-shadow: 0 0 14px rgba(241, 218, 134, 0.45), 0 14px 28px rgba(45, 34, 25, 0.18); }
+.note-deck.has-selection .note-item:not(.is-selected) { opacity: .55; }
+.note-deck.has-selection .note-item:not(.is-selected):hover { opacity: .95; z-index: 100 !important; }
+.note-item.is-dragging { cursor: grabbing; z-index: 9999 !important; transition: opacity var(--dur-hover) var(--ease-out) !important; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.22)); }
+.note-item.is-dragging .note-card { transform: scale(1.08) rotateX(10deg); box-shadow: 0 24px 44px rgba(45, 34, 25, 0.28); }
+.note-item.is-selected { transform: translate(-50%, -50%) rotate(0deg); z-index: 500 !important; opacity: 1 !important; cursor: default; }
+.note-item.is-selected .note-card { border-color: var(--color-rule); outline: none; box-shadow: 0 28px 60px rgba(45, 34, 25, 0.32); transform: scale(2.59); transition-duration: 420ms; transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1); }
+.note-item.is-selected:hover .note-card { border-color: var(--color-rule); outline: none; transform: scale(2.59); }
+.note-open {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(30, 32, 28, 0.18);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-hover) var(--ease-out), visibility 0s linear var(--dur-hover), background var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+  z-index: 520;
+  cursor: pointer;
+  text-decoration: none;
+}
+/* 이동 중에는 숨긴다. 데스크톱은 hover/focus, 터치는 JS 상태로 노출한다. */
+.note-item.is-selected:not(.is-moving):hover .note-open,
+.note-item.is-selected:not(.is-moving) .note-open:focus-visible,
+.note-item.is-selected.show-open-btn:not(.is-moving) .note-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity var(--dur-hover) var(--ease-out), visibility 0s linear 0s, background var(--dur-hover) var(--ease-out), transform var(--dur-hover) var(--ease-out);
+}
+.note-open:hover {
+  background: rgba(30, 32, 28, 0.34);
+  border-color: rgba(255, 255, 255, 0.75);
+  transform: scale(1.05);
+}
+.goodbye { padding: var(--space-8) var(--page-gutter); border-top: 1px solid var(--color-rule); display: flex; justify-content: space-between; align-items: center; gap: var(--space-5); }
+.goodbye p { font-size: clamp(34px, 5vw, 68px); }
+.goodbye a { width: 48px; height: 48px; border: 1px solid var(--color-blue-ink); border-radius: 50%; display: grid; place-items: center; font-size: 24px; flex-shrink: 0; }
+.goodbye a:hover { background: var(--color-paper); }
+.site-footer { padding: var(--space-8) var(--page-gutter); display: flex; align-items: center; gap: var(--space-8); }
+.site-footer > p { font-size: 12px; color: var(--color-muted); }
+.site-footer > div { margin-left: auto; display: flex; flex-direction: column; text-align: right; font-size: 10px; color: var(--color-muted); }
+.site-footer { flex-wrap: wrap; }
+.footer-ig { flex-basis: 100%; font-size: 13px; color: var(--color-muted); }
+.footer-ig a { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-orange); text-underline-offset: 4px; }
+.footer-ig a:hover { color: var(--color-accent); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.photo-dialog { background: var(--color-paper); color: var(--color-ink); border: none; width: min(920px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: var(--space-5); overflow: auto; }
+.photo-dialog::backdrop { background: var(--color-overlay); }
+.dialog-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); font-size: 12px; }
+.dialog-close { border: 1px solid var(--color-rule); background: var(--color-paper); padding: var(--space-2) var(--space-4); border-radius: 30px; white-space: nowrap; }
+.dialog-close:hover { background: var(--color-paper-deep); }
+.dialog-close span { font-size: 20px; margin-left: var(--space-2); }
+/* 가로 사진은 비율대로 낮아져 캡션이 작품 바로 아래 붙고, 세로 사진은 높이 상한에 걸린다. */
+.dialog-image { display: block; width: 100%; height: auto; max-height: min(70dvh, 850px); object-fit: contain; }
+.dialog-media { position: relative; }
+.dialog-nav { position: absolute; top: 50%; translate: 0 -50%; width: 44px; height: 44px; border: 1px solid var(--color-blue-ink); border-radius: 50%; background: color-mix(in srgb, var(--color-paper) 88%, transparent); font-size: 22px; z-index: 1; }
+.dialog-prev { left: var(--space-3); }
+.dialog-next { right: var(--space-3); }
+.dialog-nav:hover { background: var(--color-yellow); }
+#photo-caption { text-align: center; font-size: 14px; margin-top: var(--space-4); }
+/* 작품 캡션 — 작품 바로 아래, 작품 왼쪽 끝에 맞춰 붙인다. 작품은 contain 으로
+   가운데 놓여 폭이 사진마다 달라지므로, app.js 가 실제로 그려진 폭을
+   --art-width 로 넘겨주고 캡션 틀을 그 폭에 맞춘다. */
+#photo-caption.is-artwork {
+  width: min(100%, var(--art-width, 100%)); margin-inline: auto;
+  text-align: left; font-size: 13px; line-height: 1.7; letter-spacing: -.01em;
+}
+.artwork-label, .artwork-lead, .artwork-credit, .artwork-size { display: block; }
+.artwork-lead { font-weight: 600; }
+.artwork-title { font-style: normal; font-weight: 600; }
+:lang(en) .artwork-title { font-style: italic; font-weight: 400; }
+.artwork-size { color: var(--color-muted); font-variant-numeric: tabular-nums; }
+.venue-link { border-bottom: 1px solid var(--color-rule); }
+.venue-link:hover { border-color: var(--color-ink); color: var(--color-accent); }
+.venue-dialog { background: var(--color-paper); color: var(--color-ink); border: none; width: min(460px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: var(--space-5); overflow: auto; }
+.venue-dialog::backdrop { background: var(--color-overlay); }
+.venue-name { font-family: var(--font-display); font-weight: 700; font-size: 27px; letter-spacing: -.03em; }
+.venue-name strong { padding-left: var(--space-2); font-weight: 500; color: var(--color-accent); }
+.venue-info { margin: var(--space-5) 0 0; display: grid; gap: var(--space-4); }
+.venue-info > div { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: var(--space-4); align-items: baseline; }
+.venue-info dt { font-size: 11px; color: var(--color-muted); }
+.venue-info dd { margin: 0; font-size: 14px; line-height: 1.65; }
+.venue-info a { border-bottom: 1px solid var(--color-rule); }
+.venue-map-open { display: flex; align-items: center; justify-content: center; gap: var(--space-2); margin-top: var(--space-5); padding: var(--space-3) var(--space-4); border: 1px solid var(--color-blue-ink); border-radius: 30px; font-size: 13px; font-weight: 600; transition: background var(--dur-hover); }
+.venue-map-open:hover { background: var(--color-yellow); }
+.card-dialog { background: var(--color-paper); color: var(--color-ink); border: none; width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); padding: var(--space-5); overflow: auto; }
+.card-dialog::backdrop { background: var(--color-overlay); }
+.card-image { display: block; width: auto; max-width: 100%; height: auto; max-height: min(62dvh, 700px); margin: 0 auto; aspect-ratio: 4 / 5; object-fit: contain; }
+.card-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-4); }
+.card-themes { display: flex; gap: var(--space-2); }
+.card-themes button { border: 1px solid var(--color-rule); border-radius: 30px; background: var(--color-paper); padding: var(--space-2) var(--space-4); font-size: 13px; }
+.card-themes button[aria-pressed="true"] { border-color: var(--color-blue-ink); background: var(--color-blue); color: var(--color-blue-ink); font-weight: 600; }
+.card-download { padding: var(--space-2) var(--space-5); border-radius: 30px; background: var(--color-blue-ink); color: var(--color-light); font-size: 13px; font-weight: 600; }
+.card-download:hover { background: var(--color-ink); }
+.card-tip { margin-top: var(--space-3); font-size: 12px; color: var(--color-muted); text-align: center; }
+body:has(.photo-dialog[open]), body:has(.venue-dialog[open]), body:has(.card-dialog[open]) { overflow-y: hidden; }
+@keyframes ribbon-arrive { from { opacity: .3; transform: translateY(34px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ribbon-arrive-up { from { opacity: .3; transform: translateY(-34px); } to { opacity: 1; transform: translateY(0); } }
+.motion-ready .ribbon-left { animation: ribbon-arrive 1600ms var(--ease-out) both; }
+.motion-ready .ribbon-main { animation: ribbon-arrive-up 1800ms var(--ease-out) 80ms both; }
+.motion-ready .ribbon-right { animation: ribbon-arrive 1800ms var(--ease-out) 160ms both; }
+.motion-ready [data-reveal] { transition: opacity var(--dur-reveal) var(--ease-out), translate var(--dur-reveal) var(--ease-out); }
+.motion-ready [data-reveal].awaiting-reveal { opacity: 0; translate: 0 24px; }
+.motion-paused *, .motion-paused *::before, .motion-paused *::after { animation: none !important; transition: none !important; }
+.motion-paused [data-reveal] { opacity: 1 !important; translate: none !important; }
+html:has(.motion-paused) { scroll-behavior: auto; }
+@media (min-width: 1440px) { .hero-grid { padding-top: var(--space-16); padding-bottom: var(--space-24); } .hero-art { height: 570px; } }
+@media (max-width: 1000px) {
+  .site-header { gap: var(--space-5); }
+  .site-header nav { gap: var(--space-5); }
+  .intro-replay { flex-shrink: 0; }
+  .hero-art { height: 440px; }
+  .hero h1 { font-size: 80px; }
+  .hero-grid { gap: var(--space-5); }
+  .family-intro { gap: var(--space-10); }
+  .family-album { padding-left: 0; padding-right: 0; }
+  .album-note { font-size: 29px; }
+  .album-note-small { font-size: 18px; }
+  .favorites-gallery { gap: var(--space-5); }
+  .favorite-motion { --stage-h: 330px; }
+  .favorite figcaption .handwritten { font-size: 25px; }
+  .taste-question > span { font-size: 40px; }
+  .visit-details { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-10); }
+  .event-info { grid-column: 1/-1; display: flex; justify-content: space-between; gap: var(--space-6); border-top: 1px solid var(--color-rule); padding-top: var(--space-8); }
+  .event-info > div + div { margin-top: 0; }
+  .note-deck-wrap { min-height: 520px; padding: var(--space-3) 0 var(--space-6); }
+  .note-deck { height: 480px; }
+  .note-item { width: clamp(117px, 14.4vw, 153px); }
+}
+@media (max-width: 768px) {
+  .intro-replay { width: 38px; height: 38px; justify-content: center; padding: 0; }
+  .intro-replay > span:last-child { display: none; }
+  :root { --header-height: 110px; }
+  .site-header { flex-wrap: wrap; height: var(--header-height); column-gap: var(--space-4); row-gap: 0; padding-top: var(--space-2); padding-bottom: var(--space-2); }
+  .wordmark { font-size: 29px; }
+  .site-header nav { order: 3; flex-basis: 100%; justify-content: space-between; gap: var(--space-3); }
+  .site-header nav a { padding: var(--space-2) 0; font-size: 12px; }
+  .site-header nav a span { font-size: 9px; }
+  .header-actions { margin-left: auto; }
+  .hero h1 { font-size: clamp(64px, 9vw, 76px); }
+  .hero-greeting { font-size: 24px; }
+  .hero-description { font-size: 13px; margin-top: var(--space-6); }
+  .hero-art { height: 390px; gap: var(--space-2); }
+  .art-note { font-size: 22px; padding: var(--space-3) var(--space-4); right: -4px; bottom: -8px; }
+  .hero-bottom { font-size: 11px; gap: var(--space-3); }
+  .hero-bottom p:first-child span { padding: 0 var(--space-2); }
+  .family, .favorites { padding-top: var(--space-16); }
+  .family-intro { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  .family-text { padding-top: 0; max-width: 500px; }
+  .family-text .lead br { display: none; }
+  .family-album { column-gap: var(--space-8); }
+  .caption-note { display: none; }
+  .album-note { font-size: 26px; }
+  .album-note-small { font-size: 16px; top: -12px; right: -6px; }
+  .family-outro { flex-wrap: wrap; margin-top: var(--space-16); }
+  .family-outro .text-link { margin-left: auto; }
+  .favorites-heading { align-items: start; flex-direction: column; gap: var(--space-6); }
+  .favorites-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); }
+  .favorite-music { grid-column: 1; grid-row: 1; }
+  .favorite-motion { grid-column: 1/-1; grid-row: 2; }
+  .favorite-motion { --stage-h: min(76vw, 560px); }
+  .taste-question { grid-column: 2; grid-row: 1; align-self: start; padding: 0 0 var(--space-4); }
+  .taste-question > span { font-size: 48px; }
+  .visit { padding-top: var(--space-16); }
+  .sticker-sheet { padding: var(--space-6); }
+  .sticker-sheet-header { align-items: start; flex-direction: column; gap: var(--space-2); }
+  .sticker-types { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .experience-steps { gap: var(--space-4); }
+  .experience-steps li { display: flex; flex-direction: column; }
+  .experience-steps li > span br { display: none; }
+  .artist-note-heading { padding-top: var(--space-5); padding-bottom: var(--space-5); }
+  .note-deck-wrap { min-height: 500px; }
+  .note-deck { height: 420px; }
+  .note-item { width: clamp(150px, 28vw, 190px); }
+  .site-footer { flex-wrap: wrap; gap: var(--space-4) var(--space-6); }
+  .site-footer > div { width: 100%; text-align: left; margin-left: 0; }
+}
+@media (max-width: 540px) {
+  .hero-topline { font-size: 10px; padding-top: var(--space-5); }
+  .artist-label { flex-shrink: 0; font-size: 13px; }
+  .exhibition-title { font-size: clamp(20px, 6vw, 27px); }
+  .hero-grid { grid-template-columns: minmax(0, 1fr); padding: var(--space-4) 0 var(--space-8); gap: var(--space-10); }
+  .hero h1 { font-size: 37px; }
+  .hero-greeting { margin-bottom: var(--space-3); }
+  .hero-description { margin-top: var(--space-5); }
+  .round-link { margin-top: var(--space-5); }
+  .hero-art { height: 370px; grid-template-columns: minmax(0, .72fr) minmax(0, 2.4fr) minmax(0, .66fr); margin: 0 var(--space-2); }
+  .art-note { bottom: -12px; font-size: 24px; }
+  .hero-bottom { flex-wrap: wrap; padding-top: var(--space-3); padding-bottom: var(--space-4); }
+  .hero-bottom > a { flex-basis: 100%; text-align: right; border-bottom: none; text-decoration: underline; text-decoration-color: var(--color-rule); text-underline-offset: 3px; }
+  .hero-bottom > a:hover { text-decoration-color: var(--color-ink); }
+  h2 { font-size: clamp(50px, 12.4vw, 64px); }
+  .chapter-label { margin-bottom: var(--space-4); }
+  .family-text .lead { font-size: 18px; }
+  .family-album { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-10); }
+  .family-photo-wide { margin: 0 var(--space-2); }
+  .family-photo-small { width: 61%; justify-self: end; margin-top: var(--space-6); margin-right: var(--space-2); }
+  .album-note { font-size: 24px; max-width: 60%; margin-left: 0; }
+  .album-note-small { font-size: 14px; top: -10px; right: -4px; padding: var(--space-1) var(--space-2); }
+  .family-outro { gap: var(--space-3); margin-top: var(--space-8); }
+  .family-outro .text-link { margin-left: var(--space-10); margin-top: var(--space-2); }
+  .family-outro p { font-size: 12px; }
+  .favorites-gallery { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding-top: var(--space-10); }
+  .favorite-music { grid-column: 1; grid-row: 1; }
+  .taste-question { grid-column: 1; grid-row: 2; }
+  .favorite-motion { grid-column: 1; grid-row: 3; }
+  .favorite-motion { --stage-h: min(90vw, 450px); }
+  .favorite-add-hint { font-size: 11px; }
+  .favorite-add-note { font-size: 10px; }
+  .favorite figcaption .handwritten { font-size: 23px; }
+  .favorite figcaption > span:last-child { font-size: 10px; }
+  .taste-question > span { font-size: 40px; }
+  .visit-heading > p:last-child { font-size: 13px; }
+  .sticker-sheet { padding: var(--space-5) var(--space-4); }
+  .sticker-sheet-header .handwritten { font-size: 24px; }
+  .sticker-types { gap: var(--space-3); }
+  .sticker-types h3 { font-size: 14px; }
+  .sticker-types p { font-size: 10px; }
+  .sticker-number { left: 14px; }
+  .experience-steps { flex-direction: column; gap: var(--space-6); }
+  .experience-steps li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: var(--space-1) var(--space-2); }
+  .experience-steps li > span { font-size: 12px; }
+  .visit-details { grid-template-columns: minmax(0, 1fr); padding-top: var(--space-12); padding-bottom: var(--space-12); gap: var(--space-10); }
+  .event-info { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+  .event-info > div { display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: var(--space-4); }
+  .event-info dt { margin: var(--space-1) 0 0; }
+  .event-info dd { font-size: 14px; }
+  .artist-note-heading { padding-left: var(--space-5); padding-right: var(--space-5); }
+  .note-deck-wrap { min-height: 480px; padding: var(--space-2) 0 var(--space-6); }
+  .note-deck { height: 440px; }
+  .note-item { width: 104px; }
+  .note-item.is-selected .note-card,
+  .note-item.is-selected:hover .note-card { transform: scale(2.3); }
+  .goodbye p { font-size: 34px; }
+  .goodbye a { width: 40px; height: 40px; }
+  .site-footer > p { font-size: 11px; }
+}
+@media (max-width: 480px) {
+  .ig-link { width: 28px; padding-left: 0; border-left: 0; }
+  .header-actions { gap: var(--space-2); }
+  .language-switch { font-size: 10px; gap: 0; }
+  .site-header nav { gap: var(--space-2); }
+  .site-header nav a { font-size: 11px; }
+  .nav-note { padding-left: var(--space-3); font-size: 11px; }
+}
+@media (max-width: 360px) {
+  .site-header nav { gap: var(--space-1); }
+  .site-header nav a { font-size: 11px; }
+  .nav-note { padding-left: var(--space-2); }
+  .hero-art { height: 330px; }
+  .goodbye p { font-size: 30px; }
+}
+@media (max-width: 359px) { .ig-link { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .motion-ready [data-reveal] { opacity: 1 !important; translate: none !important; }
+  .favorite-bubble { opacity: 1; transform: none; }
+}
+
+/* ── 인트로: 로고 그리기 → 전시 제목 → 랜딩 ───────────────────────────
+   html.intro-on 은 head 의 인라인 스크립트가 붙인다. JS 가 없거나 동작 줄이기
+   설정이면 클래스가 없고, 그때 .intro 는 아예 그려지지 않는다.
+   단계 전환(draw → ink → write → out)은 app.js 가 클래스로 지시한다. */
+.intro { display: none; }
+.intro {
+  /* 인트로 배색. 이 두 값만 바꾸면 전체 색이 따라 바뀐다. */
+  --intro-bg: var(--color-paper);
+  --intro-fg: var(--color-terracotta);
+}
+.intro-on .intro {
+  display: grid; place-items: center;
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--intro-bg);
+}
+.intro-on body { overflow: hidden; }
+.intro-stage {
+  display: grid; justify-items: center; gap: var(--space-8); padding: var(--space-6);
+}
+
+.intro-logo { width: clamp(190px, 38vw, 306px); height: auto; overflow: visible; }
+/* 집과 누리 자국은 선으로 그려진다. 워드마크는 글자가 작아 선으로 그리면
+   지저분해지므로 면이 채워질 때 한 글자씩 올라오게 한다. */
+.intro-logo .il-house, .intro-logo .il-mark {
+  fill: var(--color-transparent);
+  stroke: var(--intro-fg); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+}
+.intro-logo .il-house { stroke-width: 2.5; }
+.intro-logo .il-word { fill: var(--intro-bg); opacity: 0; }
+
+.intro-title {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(28px, 6.4vw, 52px); color: var(--intro-fg);
+  letter-spacing: -.01em; white-space: nowrap;
+}
+.intro-title span {
+  display: inline-block; clip-path: inset(0 100% 0 0);
+}
+
+.intro-skip {
+  position: absolute; right: var(--page-gutter); bottom: var(--space-10);
+  font-size: 12px; color: var(--color-muted); padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-rule); border-radius: 999px; background: var(--color-transparent);
+  transition: color var(--dur-hover), border-color var(--dur-hover);
+}
+.intro-skip:hover { color: var(--color-ink); border-color: var(--color-ink); }
+
+/* 1단계 — 선 그리기 */
+.intro-draw .il-house { animation: intro-draw 800ms var(--ease-out) 100ms forwards; }
+.intro-draw .il-mark { animation: intro-draw 420ms var(--ease-out) forwards; }
+.intro-draw .il-mark:nth-of-type(2) { animation-delay: 620ms; }
+.intro-draw .il-mark:nth-of-type(3) { animation-delay: 720ms; }
+.intro-draw .il-mark:nth-of-type(4) { animation-delay: 820ms; }
+.intro-draw .il-mark:nth-of-type(5) { animation-delay: 920ms; }
+@keyframes intro-draw { to { stroke-dashoffset: 0; } }
+
+/* 2단계 — 면 채우기. 집은 잉크로 차고, 안쪽 자국은 종이색으로 뚫린다.
+   실제 로고가 '면에 구멍' 구조라 그 관계를 그대로 따른다. */
+/* intro-ink 가 intro-draw 애니메이션을 대체하므로, 그려둔 상태는
+   정적 선언으로 고정한다. 안 그러면 선이 되감기며 로고가 한 번 사라진다. */
+.intro-ink .il-house, .intro-ink .il-mark { stroke-dashoffset: 0; }
+.intro-ink .il-house { animation: intro-ink 350ms var(--ease-out) forwards; }
+.intro-ink .il-mark { animation: intro-punch 350ms var(--ease-out) 80ms forwards; }
+.intro-ink .il-word { animation: intro-word 260ms var(--ease-out) forwards; }
+@keyframes intro-ink { to { fill: var(--intro-fg); } }
+@keyframes intro-punch { to { fill: var(--intro-bg); stroke: var(--intro-bg); } }
+@keyframes intro-word { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* 3단계 — 제목 쓰기 (지연은 app.js 가 span 마다 넣는다) */
+.intro-write .intro-title span { animation: intro-write 200ms var(--ease-out) forwards; }
+@keyframes intro-write { to { clip-path: inset(0 0 0 0); } }
+.intro-write .intro-stage { animation: intro-lift 700ms var(--ease-out) forwards; }
+@keyframes intro-lift { to { transform: translateY(-14px); } }
+
+/* 4단계 — 걷히기 */
+.intro-out .intro { animation: intro-clear 600ms var(--ease-out) forwards; }
+@keyframes intro-clear { to { opacity: 0; visibility: hidden; } }
+
+@media (max-width: 640px) {
+  .intro-title { font-size: clamp(24px, 7.6vw, 34px); }
+  .intro-stage { gap: var(--space-6); }
+  .intro-skip { right: var(--space-5); bottom: var(--space-8); }
+}
