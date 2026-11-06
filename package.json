@@ -1,0 +1,10 @@
+{
+  "name": "getsite-my-v2",
+  "private": true,
+  "scripts": {
+    "test": "node tests/v2-flow.cjs && node tests/v2-flow.cjs --success"
+  },
+  "devDependencies": {
+    "jsdom": "30.1.3"
+  }
+}

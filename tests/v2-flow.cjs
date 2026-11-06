@@ -1,0 +1,31 @@
+const {JSDOM}=require('jsdom');
+const fs=require('fs'),assert=require('node:assert/strict');
+const root=require('node:path').resolve(__dirname,'..')+'/';
+const html=fs.readFileSync(root+'v2.html','utf8');
+const dom=new JSDOM(html,{url:'https://example.test/v2.html',runScripts:'outside-only',pretendToBeVisual:true});
+const w=dom.window,d=w.document,errors=[];
+const success=process.argv.includes('--success');
+let stored=null;
+if(success){
+ const db={collection(){return {doc(){return {get:async()=>({exists:false}),set:async value=>{stored=value;},update:async()=>{}};}};}};
+ const firestore=()=>db;firestore.FieldValue={serverTimestamp:()=> 'test-timestamp'};
+ w.firebase={apps:[{}],firestore};
+}
+w.matchMedia=()=>({matches:false,addEventListener(){}});w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+w.IntersectionObserver=class{observe(){} disconnect(){}};
+w.addEventListener('error',e=>errors.push(e.error));
+for(const s of d.querySelectorAll('script:not([src])'))if(s.textContent.trim())w.eval(s.textContent);
+w.eval(fs.readFileSync(root+'assets/v2.js','utf8'));
+assert.equal(errors.length,0,'no initialization errors');
+assert(d.getElementById('start').hidden,'landing hides form');
+assert.equal(d.querySelectorAll('.sample-card:not(.v2-extra)').length,3);
+d.querySelector('[data-get="hansakim"]').click();
+assert(!d.getElementById('start').hidden);assert(d.getElementById('selectedStyle').textContent.includes('김한사'));
+d.getElementById('makeProtoBtn').click();assert(!d.getElementById('miniCard').hidden,'invalid inputs stay in form');
+d.getElementById('siteName').value='테스트 작가';d.getElementById('siteName').dispatchEvent(new w.Event('input'));
+d.getElementById('purpose').selectedIndex=1;d.getElementById('contactEmail').value='test@example.test';
+d.getElementById('makeProtoBtn').click();assert(d.getElementById('miniCard').hidden);assert(!d.getElementById('protoCard').hidden);
+d.getElementById('showPriceBtn').click();assert(d.getElementById('protoCard').hidden);assert(!d.getElementById('priceCard').hidden);
+d.getElementById('startBuildBtn').click();assert.equal(d.getElementById('priceError').style.display,'block');
+d.getElementById('consentCheck').checked=true;d.getElementById('startBuildBtn').click();
+setTimeout(()=>{try{assert(!d.getElementById('doneCard').hidden);if(success){assert(d.getElementById('doneCard').querySelector('h3').textContent.includes('접수되었습니다'));assert.equal(stored.siteName,'테스트 작가');assert.equal(stored.email,'test@example.test');assert(stored.sample.includes('김한사'));}else{assert(d.getElementById('saveStatus').textContent.includes('실패'));assert(!d.getElementById('doneCard').querySelector('h3').textContent.includes('접수되었습니다'));assert(d.getElementById('retrySaveBtn'));}assert.equal(errors.length,0);console.log('PASS: initialization, selected sample, validation, exclusive steps, consent, mock save outcome. No live records written.');w.close();}catch(e){console.error(e);process.exitCode=1;w.close();}},30);

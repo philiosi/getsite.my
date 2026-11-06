@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,">
+<title>getsite.my v2 — 작품에서 시작하는 나만의 웹사이트</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+:root{--bg:#fff;--surface:#fff;--surface2:#F6F6F4;--ink:#111110;--ink2:#55534E;--ink3:#8A867E;--line:#E7E5DF;--line2:#CFCABA;--blue:#2451E6;--blue-soft:#EBEFFF;--ok:#177245;--err:#B3261E;--radius:16px;--shadow:0 1px 3px rgba(0,0,0,.06),0 12px 32px rgba(0,0,0,.06)}
+@media(prefers-color-scheme:dark){:root{--bg:#121110;--surface:#1B1A18;--surface2:#23221F;--ink:#F5F3EE;--ink2:#C2BDB0;--ink3:#8A867E;--line:#33312B;--line2:#4A473E;--blue:#8AA8FF;--blue-soft:#1E2A52;--ok:#7BC79A;--err:#F2A49E}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--blue)}button{font:inherit;cursor:pointer}input,select,textarea{font:inherit;color:var(--ink)}:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 72px}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{font-weight:900;letter-spacing:-.03em;font-size:19px}.logo span{color:var(--blue)}
+.nav{margin-left:auto;display:flex;gap:2px;flex-wrap:wrap}.nav a{color:var(--ink2);text-decoration:none;font-size:14px;font-weight:600;padding:7px 10px;border-radius:8px}.nav a:hover{background:var(--surface2);color:var(--ink)}.nav a.cta{background:var(--ink);color:var(--bg)}
+.hero-scroll{position:relative}
+.hero{display:grid;gap:30px;padding:26px 0 8px}
+@media(min-width:920px){.hero{grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center}}
+.hero h1{font-size:clamp(32px,4.6vw,50px);line-height:1.12;letter-spacing:-.04em;margin:0 0 14px;font-weight:900}
+.hero h1 em{font-style:normal;color:var(--blue)}
+.hero h1 .hl-line1,.hero h1 .hl-line2{display:inline-block}
+.hero h1 .hl-line1{transition:opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)}
+.hero h1 .hl-line1.pre{opacity:0;transform:translateY(12px)}
+.hero h1 .hl-line2{transition:opacity .7s ease-out,transform .7s cubic-bezier(.16,1,.3,1)}
+.hero h1 .hl-line2.pre{opacity:0;transform:translateY(30px)}
+.topic-line{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:19px;font-weight:800;letter-spacing:-.02em;min-height:1.5em}
+.topic-line::before{content:"";width:22px;height:3px;background:var(--blue);border-radius:2px;flex:none}
+.topic-rot{color:var(--blue);display:inline-block;white-space:nowrap}
+.topic-line.static .topic-rot{white-space:normal}
+@media(max-width:640px){.topic-line{font-size:17px}}
+@media(max-width:919px){.hero h1 .hl-line1.pre{transform:translateY(30px)}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lead{color:var(--ink2);font-size:17.5px;line-height:1.65;margin:0 0 24px;max-width:34em}
+.btn{display:inline-block;border-radius:999px;padding:13px 22px;font-weight:800;font-size:15px;border:1px solid transparent;text-decoration:none;text-align:center;background:none}
+.btn-p{background:var(--blue);color:#fff}.btn-ink{background:var(--ink);color:var(--bg)}.btn-g{background:var(--surface);border-color:var(--line2);color:var(--ink)}.btn-s{padding:8px 14px;font-size:13.5px}
+.sf-stage{position:relative;height:240px;background:#fff;border:1px solid var(--line2);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+@media(min-width:640px){.sf-stage{height:320px}}
+.sf-stage.sf-await{opacity:.08;transform:translateX(-44px);pointer-events:none}
+.sf-stage.sf-reveal{opacity:1;transform:translateX(0);transition:opacity 1.5s ease-out,transform 1.5s cubic-bezier(.16,1,.3,1)}
+.sf-controls.sf-await{opacity:0;transform:translateX(-44px);pointer-events:none}
+.sf-controls.sf-reveal{opacity:1;transform:translateX(0);transition:opacity 1.5s ease-out,transform 1.5s cubic-bezier(.16,1,.3,1)}
+.hero-ctas{transition:opacity 2s ease-out}
+.hero-ctas{opacity:0;pointer-events:none}.hero-ctas.cta-reveal{opacity:1;pointer-events:auto}
+@media(prefers-reduced-motion:reduce){.hero-ctas{opacity:1!important;pointer-events:auto!important}}
+.hero-preview{display:flex;gap:10px;margin-top:24px;transition:opacity .5s ease}
+.hero-preview figure{margin:0;flex:1 1 0;max-width:112px;min-width:0}
+.hero-preview img{width:100%;height:84px;object-fit:cover;object-position:top center;border-radius:10px;border:1px solid var(--line2);display:block;background:var(--surface2)}
+.hero-preview figcaption{font-size:11.5px;font-weight:700;color:var(--ink2);margin-top:5px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero-preview.hp-hide{opacity:0;pointer-events:none}
+.sf-card{position:absolute;left:50%;top:50%;width:min(140px,25%);aspect-ratio:3/4;margin:0;border-radius:8%/8%;overflow:hidden;background:#EDECE8;transform:translate(-50%,-50%);will-change:transform}
+.sf-card img{width:100%;height:100%;object-fit:cover;display:block}
+.sf-card figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 6px 6px;font-size:11px;font-weight:800;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6));text-align:center;letter-spacing:-.01em}
+.sf-controls{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.sf-prog{flex:1;min-width:70px;height:4px;background:var(--line);border-radius:99px;overflow:hidden}
+.sf-prog i{display:block;height:100%;width:0;background:var(--blue)}
+@keyframes filmscroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.pause-hint{background:rgba(17,17,16,.78);color:#fff;font-size:11.5px;font-weight:700;border-radius:999px;padding:4px 10px;pointer-events:none;white-space:nowrap}
+section.block{margin-top:56px}section.block>h2{font-size:clamp(24px,3.4vw,32px);letter-spacing:-.03em;line-height:1.2;margin:0 0 8px;font-weight:900}section.block>.sub{color:var(--ink2);margin:0 0 22px;max-width:48em;font-size:16px}
+.benefits{display:grid;gap:18px;margin-top:6px}@media(min-width:760px){.benefits{grid-template-columns:repeat(3,1fr)}}
+.benefit{border-top:2px solid var(--ink);padding-top:12px}
+.benefit h3{margin:0 0 6px;font-size:16.5px}.benefit p{margin:0;color:var(--ink2);font-size:14.5px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+.hint{color:var(--ink3);font-size:13px;margin-top:6px;line-height:1.55}
+.tag{display:inline-block;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--blue-soft);color:var(--blue);margin-bottom:8px}
+.tag-real{background:#E2F3E8;color:#14532D}.tag-sample{background:#FFF3D6;color:#7A5200;border:1px solid #E8CF8A}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.filters input[type=search]{flex:1;min-width:200px;border:1px solid var(--line2);border-radius:999px;padding:11px 16px;background:var(--surface)}
+.fbtn{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:700;font-size:13.5px;color:var(--ink)}.fbtn.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sample-grid{display:grid;gap:18px}@media(min-width:760px){.sample-grid{grid-template-columns:1fr 1fr}}
+.sample-card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface);display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.capbox{position:relative;height:240px;overflow:hidden;cursor:pointer;border-bottom:1px solid var(--line);background:#141412}
+.cap-track{position:absolute;left:0;top:0;width:100%;animation:filmscroll var(--dur,40s) linear infinite;animation-play-state:paused;will-change:transform}
+.capbox.inview:not(.paused) .cap-track{animation-play-state:running}
+.cap-track img{display:block;width:100%}
+.capbox.paused .cap-track{animation-play-state:paused}
+.capbox .pause-hint{position:absolute;right:10px;bottom:10px}
+.sample-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1}.sample-body h3{margin:0;font-size:17px}.sample-body .job{margin:0;color:var(--ink2);font-size:15px}
+.sample-actions{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;padding-top:8px}
+.how{display:grid;gap:10px}@media(min-width:900px){.how{grid-template-columns:repeat(5,1fr)}}
+.how-step{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--surface)}
+.how-step .n{font-size:12px;font-weight:900;color:var(--blue);letter-spacing:.06em}
+.how-step h3{margin:4px 0 6px;font-size:15.5px}.how-step p{margin:0;color:var(--ink2);font-size:13.5px;line-height:1.55}
+.field{margin-bottom:18px}.field label,.flabel{display:block;font-weight:700;font-size:14.5px;margin-bottom:7px}.req{color:var(--blue)}
+.field input[type=text],.field input[type=email],.field input[type=tel],.field input[type=url],.field input[type=number],.field select,.field textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:11px 13px;background:var(--surface);font-size:15.5px}.field textarea{min-height:84px;resize:vertical}
+.choices{display:flex;flex-wrap:wrap;gap:8px}.choices.col{flex-direction:column}.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line2);border-radius:10px;padding:11px 14px;background:var(--surface);cursor:pointer;font-size:15px}.choice input{width:18px;height:18px;margin-top:2px;accent-color:var(--blue);flex:none}.choice .sub{display:block;color:var(--ink2);font-size:13px}
+.choice:has(>input:checked){border-color:var(--blue);background:var(--blue-soft)}
+.sec-grid{display:grid;gap:8px}@media(min-width:760px){.sec-grid{grid-template-columns:1fr 1fr}}
+.field.invalid input,.field.invalid textarea{border-color:var(--err)}.ferr{display:none;color:var(--err);font-size:13px;font-weight:600;margin-top:6px}.field.invalid .ferr{display:block}
+.steps-flow{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}.steps-flow span{font-size:12.5px;font-weight:800;padding:6px 12px;border-radius:999px;border:1px solid var(--line2);color:var(--ink3)}.steps-flow span.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.proto-grid{display:grid;gap:14px}@media(min-width:760px){.proto-grid{grid-template-columns:1fr 1fr}}
+.proto-box{border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--surface)}.proto-box h4{margin:0 0 8px;font-size:15px}.proto-box p,.proto-box li{color:var(--ink2);font-size:14.5px}.proto-box ol,.proto-box ul{margin:6px 0 0;padding-left:20px}
+.swatches{display:flex;gap:4px;margin:8px 0}.swatches i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.12);display:block}
+table.price{width:100%;border-collapse:collapse;font-size:14.5px}table.price th,table.price td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.price td.r,table.price th.r{text-align:right}.kv{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}.vat{font-size:11.5px;color:var(--ink3);font-weight:600}
+.calc-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14.5px}.calc-total{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0 4px;flex-wrap:wrap;gap:8px}.calc-total .amt{font-size:28px;font-weight:900}
+.summary-box{background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:16px;white-space:pre-wrap;word-break:break-word;font-size:14px;line-height:1.7;max-height:440px;overflow:auto}
+.note{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface2);font-size:14px}.note b.t{display:block;margin-bottom:4px}
+.sec-callout{border:1px solid var(--line2);border-left:5px solid var(--blue);border-radius:12px;padding:16px 18px;background:var(--blue-soft);font-size:14.5px;line-height:1.65;color:var(--ink)}.sec-callout b.t{display:block;margin-bottom:5px;font-size:15.5px;font-weight:900;color:var(--ink)}
+.soon-badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#FFF3D6;color:#7A5200;border:1px solid #E8CF8A;margin-left:6px;vertical-align:1px}
+.choice.off{opacity:.55;cursor:not-allowed;background:var(--surface2)}.choice.off input{cursor:not-allowed}
+.calc-includes{margin:6px 0 0;padding-left:18px;color:var(--ink2);font-size:13.5px;line-height:1.6}
+.consent{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line2);border-radius:10px;padding:14px;background:var(--surface2);cursor:pointer}.consent input{width:19px;height:19px;accent-color:var(--blue);flex:none;margin-top:2px}
+.faq{border-top:1px solid var(--line)}.faq details{border-bottom:1px solid var(--line);padding:16px 0}.faq summary{font-weight:800;font-size:16px;cursor:pointer}.faq p{color:var(--ink2);margin:8px 0 0;max-width:48em}
+/* Gallery layout picker — live sample preview, names + preview + selection only */
+.gp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.gp-chip{border:1px solid var(--line2);background:var(--surface);border-radius:999px;padding:7px 13px;font-weight:700;font-size:13px;color:var(--ink2)}
+.gp-chip .n{font-size:10.5px;font-weight:900;color:var(--blue);margin-right:5px}
+.gp-chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.gp-chip.on .n{color:var(--blue)}
+.gp-sel{font-size:13.5px;font-weight:800;margin:10px 0 0}
+.gp-sel b{color:var(--blue)}
+.gp-stage{margin-top:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);padding:14px;overflow:hidden}
+.gp-card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gp-card[data-gp-open]{cursor:pointer;transition:transform .5s cubic-bezier(.22,1.14,.36,1),box-shadow .5s ease}
+.gp-card[data-gp-open]:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 18px 32px -12px rgba(15,15,25,.28)}
+.gp-card[data-gp-open]:focus-visible{outline:2px solid var(--blue);outline-offset:2px;transform:translateY(-4px) scale(1.02)}
+.gp-irow[data-gp-open]{cursor:pointer;transition:background .3s ease}
+.gp-irow[data-gp-open]:hover{background:var(--surface2)}
+.gp-scard[data-gp-open]{cursor:pointer}
+.gp-focus figure[data-gp-open]{cursor:pointer}
+.gp-cover.is-opening .gp-cov{transition:transform .44s cubic-bezier(.22,1.14,.36,1),opacity .38s ease!important}
+@media(prefers-reduced-motion:reduce){.gp-card[data-gp-open]{transition:none!important}}
+.gp-card figure{margin:0;overflow:hidden;background:var(--surface2)}
+.gp-card figure img{width:100%;height:100%;object-fit:cover;display:block}
+.gp-card .b{padding:9px 11px 11px}
+.gp-card .t{font-weight:800;font-size:13.5px;line-height:1.35}
+.gp-card .m{font-size:11px;color:var(--ink2);font-weight:700;margin-top:2px}
+.gp-card .y{color:var(--blue);font-weight:900}
+.gp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gp-grid figure{aspect-ratio:4/3}
+.gp-masonry{columns:3;column-gap:10px}
+.gp-masonry .gp-card{break-inside:avoid;margin-bottom:10px}
+.gp-masonry .gp-card:nth-child(odd) figure{aspect-ratio:4/3}
+.gp-masonry .gp-card:nth-child(even) figure{aspect-ratio:4/5}
+.gp-masonry .gp-card:nth-child(3n) figure{aspect-ratio:1/1}
+/* Hansa-style film gallery (strip / film layouts): film view -> single-work detail view */
+.gp-hansa{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gp-hansa-viewport{position:relative;height:368px;overflow:hidden;touch-action:pan-y;cursor:grab}
+.gp-hansa-viewport:active{cursor:grabbing}
+.gp-hansa-slide{position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);margin:0;background:var(--surface2);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:left .62s cubic-bezier(.16,1,.3,1),width .62s cubic-bezier(.16,1,.3,1),opacity .5s ease,filter .5s ease,transform .62s cubic-bezier(.22,1.16,.36,1),box-shadow .62s ease}
+.gp-hansa-slide img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:4/3;pointer-events:none}
+.gp-hansa-slide.is-center{left:50%;width:min(308px,54%);z-index:3;opacity:1;filter:none;transform:translate(-50%,-50%) translateY(-6px) scale(1.03);box-shadow:0 24px 44px -14px rgba(15,15,25,.35)}
+.gp-hansa-slide.is-prev{left:6%;width:min(196px,34%);z-index:2;opacity:.46;filter:blur(1.6px) saturate(.8)}
+.gp-hansa-slide.is-next{left:94%;width:min(196px,34%);z-index:2;opacity:.46;filter:blur(1.6px) saturate(.8)}
+.gp-hansa-slide.is-far{left:50%;width:min(196px,34%);z-index:1;opacity:0;pointer-events:none;transform:translate(-50%,-50%) scale(.72)}
+.gp-hansa-caption{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);width:min(520px,88%);text-align:center;font-size:13.5px;line-height:1.45;color:var(--ink2);pointer-events:none;transition:opacity .3s ease}
+/* Center selected: neighbours slide out left/right while the centre work
+   springs up larger (Apple-style), then the detail view takes over. */
+.gp-hansa.is-opening .gp-hansa-slide.is-prev{left:-20%;opacity:0}
+.gp-hansa.is-opening .gp-hansa-slide.is-next{left:120%;opacity:0}
+.gp-hansa.is-opening .gp-hansa-slide.is-far{opacity:0}
+.gp-hansa.is-opening .gp-hansa-slide.is-center{transform:translate(-50%,-50%) translateY(-26px) scale(1.18);box-shadow:0 34px 60px -16px rgba(15,15,25,.42)}
+.gp-hansa.is-opening .gp-hansa-caption{opacity:0;transition-duration:.12s}
+.gp-hansa.is-opening .gp-hansa-arrow{opacity:0;pointer-events:none;transition-duration:.12s}
+.gp-hansa.is-opening .gp-hansa-hint{opacity:0}
+.gp-hansa-arrow[disabled]{opacity:.32;pointer-events:none}
+.gp-hansa-caption .no{font-weight:900;color:var(--ink);margin-right:8px}
+.gp-hansa-caption .tt{font-weight:900;color:var(--ink);font-size:15px;margin-right:8px}
+.gp-hansa-arrow{position:absolute;top:42%;transform:translateY(-50%);z-index:6;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);color:var(--ink);font-size:19px;display:grid;place-items:center;box-shadow:var(--shadow);padding:0;transition:opacity .3s ease}
+.gp-hansa-arrow.prev{left:12px}.gp-hansa-arrow.next{right:12px}
+.gp-hansa-bar{display:flex;align-items:center;gap:14px;padding:12px 16px;border-top:1px solid var(--line);background:var(--surface);min-height:57px}
+.gp-hansa-count{font-size:20px;font-weight:900;letter-spacing:.04em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gp-hansa-count span{color:var(--ink3);font-size:14px;font-weight:800}
+.gp-hansa-line{flex:1;height:1px;background:var(--line2);min-width:16px}
+.gp-hansa-hint{font-size:12px;color:var(--ink2);font-weight:700;text-align:right;line-height:1.4;transition:opacity .12s ease}
+.gp-hansa-detailMeta{font-size:13px;font-weight:800;color:var(--ink);text-align:right;line-height:1.4}
+.gp-hansa-top{position:absolute;top:10px;right:10px;z-index:7;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.gp-hansa-top button{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:999px;padding:8px 13px;font-weight:800;font-size:13px;box-shadow:var(--shadow)}
+.gp-hansa-detailViewport{position:relative;height:368px;overflow:hidden;display:grid;place-items:center;padding:10px 64px 28px}
+.gp-hansa-detailViewport figure{margin:0;width:min(440px,100%);border-radius:12px;overflow:hidden;background:var(--surface2);box-shadow:var(--shadow);animation:gpDetailRise .55s cubic-bezier(.22,1.12,.36,1)}
+/* Detail chrome (top buttons, bottom bar) arrives as the FLIP image
+   settles — faded in with a short delay instead of popping in at the
+   swap frame or lingering from the film view. */
+.gp-hansa.is-detail .gp-hansa-top{animation:gpChromeIn .45s ease .16s both}
+.gp-hansa.is-detail .gp-hansa-bar{animation:gpChromeIn .45s ease .16s both}
+@keyframes gpChromeIn{from{opacity:0}to{opacity:1}}
+@keyframes gpDetailRise{from{opacity:0;transform:translateY(26px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* Arriving from a film/coverflow opening sequence: the detail figure is
+   FLIP-animated from the enlarged centre work's exact on-screen rect
+   (JS sets the inline transform), so the selection motion runs through
+   into the detail view with no restart and no jump. The detail
+   viewport's fixed height matches the film viewport's (368px / 322px
+   mobile) so the swap never changes the stage height — the bottom
+   bar stays put and the image's resting place is set from frame one. */
+.gp-hansa-detailViewport img{width:100%;height:auto;object-fit:cover;display:block;aspect-ratio:4/3}
+.gp-hansa.is-detail .gp-hansa-arrow{top:50%}
+.gp-hansa.is-closed{display:grid;place-items:center;min-height:180px;padding:24px}
+.gp-hansa-reopen{border:1px solid var(--line2);background:var(--surface);color:var(--ink);border-radius:999px;padding:11px 20px;font-weight:800;font-size:14px}
+@media(prefers-reduced-motion:reduce){.gp-hansa-slide{transition:none!important}.gp-hansa-detailViewport figure{animation:none}.gp-hansa.is-detail .gp-hansa-top,.gp-hansa.is-detail .gp-hansa-bar{animation:none}}
+.gp-flow{display:flex;flex-direction:column;gap:12px}
+.gp-flow .gp-card{display:grid;grid-template-columns:1.3fr 1fr}
+.gp-flow figure{aspect-ratio:16/10;height:100%}
+.gp-flow .b{align-self:center;padding:12px 14px 12px 4px}
+.gp-flow .gp-card:nth-child(even){grid-template-columns:1fr 1.3fr}
+.gp-flow .gp-card:nth-child(even) figure{order:2}
+.gp-flow .gp-card:nth-child(even) .b{padding:12px 4px 12px 14px}
+.gp-timeline{position:relative;padding-left:74px;display:flex;flex-direction:column;gap:10px}
+.gp-timeline::before{content:"";position:absolute;left:52px;top:6px;bottom:6px;width:2px;background:var(--line2);border-radius:2px}
+.gp-timeline .gp-card{display:grid;grid-template-columns:110px 1fr;position:relative}
+.gp-timeline .gp-card::before{content:"";position:absolute;left:-27px;top:16px;width:9px;height:9px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px var(--surface2)}
+.gp-timeline .yr{position:absolute;left:-74px;top:8px;width:40px;text-align:right;font-weight:900;font-size:15px}
+.gp-timeline figure{aspect-ratio:1/1;height:100%}
+.gp-timeline .b{align-self:center}
+.gp-index{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.gp-irow{display:grid;grid-template-columns:34px 56px 1fr auto;gap:12px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line)}
+.gp-irow:last-child{border-bottom:0}
+.gp-irow .no{font-size:12.5px;font-weight:900;color:var(--ink3)}
+.gp-irow img{width:56px;height:56px;object-fit:cover;border-radius:8px;display:block}
+.gp-irow .tt{font-weight:800;font-size:14px;line-height:1.3}
+.gp-irow .mm{font-size:11px;color:var(--ink2);font-weight:700}
+.gp-irow .yy{font-weight:900;font-size:14px;color:var(--blue)}
+.gp-focus figure{aspect-ratio:16/9;border-radius:10px;overflow:hidden;margin:0;position:relative;background:var(--surface2)}
+.gp-focus figure img{width:100%;height:100%;object-fit:cover;display:block}
+.gp-focus figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;background:linear-gradient(transparent,rgba(10,10,12,.75));color:#fff;font-weight:800;font-size:15px}
+.gp-focus figcaption span{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.85)}
+.gp-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.gp-thumbs button{width:52px;height:52px;padding:0;border-radius:8px;overflow:hidden;border:2px solid transparent;background:none}
+.gp-thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.gp-thumbs button.on{border-color:var(--blue)}
+.gp-cover{position:relative;height:250px;perspective:1100px}
+.gp-cov{position:absolute;left:50%;top:6px;width:min(270px,60%);aspect-ratio:4/3;margin-left:calc(min(270px,60%)/-2);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;background:var(--surface2);transition:transform .7s cubic-bezier(.22,1.14,.36,1),opacity .55s ease}
+.gp-cov img{width:100%;height:100%;object-fit:cover;display:block}
+.gp-navrow{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:10px;transition:opacity .15s ease}
+.gp-cover.is-opening + .gp-navrow{opacity:0}
+.gp-navrow .cnt{font-size:12.5px;font-weight:900;color:var(--ink2);letter-spacing:.08em}
+.gp-nav{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);font-size:15px;display:grid;place-items:center}
+.gp-nav:disabled{opacity:.3}
+.gp-stackwrap{position:relative;height:320px}
+.gp-scard{position:absolute;left:50%;top:50%;width:min(280px,78%);background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:transform .5s cubic-bezier(.32,.72,0,1),opacity .45s}
+.gp-scard figure{margin:0;aspect-ratio:4/3;overflow:hidden}
+.gp-scard figure img{width:100%;height:100%;object-fit:cover;display:block}
+.gp-scard .b{padding:9px 12px 12px}
+.gp-museum{position:relative;display:flex;align-items:flex-end;gap:10px;padding:22px 12px 34px;border-radius:10px;background:linear-gradient(to bottom,var(--surface) 0 76%,var(--line) 76% 100%)}
+.gp-museum::after{content:"";position:absolute;left:50%;bottom:12px;transform:translateX(-50%);width:34%;height:8px;border-radius:2px;background:color-mix(in srgb,var(--ink) 65%,transparent)}
+.gp-museum .gp-card{flex:1 1 0;min-width:0;background:transparent;border:0;border-radius:0;overflow:visible;position:relative;z-index:1}
+.gp-museum figure{background:var(--surface);padding:4px;border:1px solid var(--line2);border-radius:2px;box-shadow:0 10px 20px -10px rgba(20,20,30,.35)}
+.gp-museum .gp-card:nth-child(1) figure{aspect-ratio:4/5}.gp-museum .gp-card:nth-child(2) figure{aspect-ratio:1/1}.gp-museum .gp-card:nth-child(3) figure{aspect-ratio:4/3}.gp-museum .gp-card:nth-child(4) figure{aspect-ratio:3/4}.gp-museum .gp-card:nth-child(5) figure{aspect-ratio:1/1}.gp-museum .gp-card:nth-child(6) figure{aspect-ratio:4/5}
+.gp-museum .gp-card:nth-child(3){flex-grow:1.6}
+.gp-museum .b{padding:6px 1px 0}
+.gp-museum .t{font-size:11px}.gp-museum .m{display:none}
+
+@media(max-width:720px){
+.gp-grid{grid-template-columns:repeat(2,1fr)}
+.gp-masonry{columns:2}
+.gp-hansa-viewport{height:322px}
+.gp-hansa-slide.is-center{width:58%}
+.gp-hansa-slide.is-prev{left:2%;width:36%}
+.gp-hansa-slide.is-next{left:98%;width:36%}
+.gp-hansa-caption{bottom:64px;font-size:12.5px;width:92%}
+.gp-hansa-bar{flex-wrap:wrap;gap:8px 12px;padding:10px 12px}
+.gp-hansa-hint{text-align:left}
+.gp-hansa-detailMeta{text-align:left}
+.gp-hansa-detailViewport{height:322px;padding:8px 44px 26px}
+.gp-hansa-arrow{width:38px;height:38px;font-size:17px}
+.gp-hansa-arrow.prev{left:8px}.gp-hansa-arrow.next{right:8px}
+.gp-flow .gp-card,.gp-flow .gp-card:nth-child(even){grid-template-columns:1fr}
+.gp-flow .gp-card:nth-child(even) figure{order:0}
+.gp-flow .b,.gp-flow .gp-card:nth-child(even) .b{padding:10px 12px 12px}
+.gp-timeline{padding-left:56px}
+.gp-timeline::before{left:38px}
+.gp-timeline .gp-card{grid-template-columns:76px 1fr}
+.gp-timeline .gp-card::before{left:-23px}
+.gp-timeline .yr{left:-56px;width:32px;font-size:12.5px}
+.gp-irow{grid-template-columns:26px 46px 1fr auto;gap:9px;padding:8px 10px}
+.gp-irow img{width:46px;height:46px}
+.gp-cover{height:210px}
+.gp-stackwrap{height:290px}
+.gp-museum .gp-card{min-width:64px}
+.gp-museum{overflow-x:auto}
+}
+.hero-preview{transition:opacity .5s ease,height .55s ease,margin-top .55s ease}
+.hero-preview.hp-collapse{height:0!important;margin-top:0;opacity:0;pointer-events:none;overflow:hidden}
+.hero-preview.hp-gone{display:none}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:92vw;text-align:center}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.file-list{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.file-row{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--surface);font-size:13.5px}
+.file-row .fname{font-weight:700;word-break:break-all}
+.file-row .fsize{color:var(--ink3);font-weight:600;white-space:nowrap}
+.file-row .fstat{margin-left:auto;font-weight:800;white-space:nowrap}
+.file-row .fstat.ok{color:var(--ok)}.file-row .fstat.err{color:var(--err)}.file-row .fstat.ing{color:var(--blue)}
+.file-row .fdel{border:1px solid var(--line2);background:var(--surface);border-radius:8px;padding:4px 10px;font-weight:700;font-size:12.5px;flex:none}
+.save-status{border-radius:10px;padding:12px 14px;font-size:14.5px;font-weight:700;margin-bottom:14px;border:1px solid var(--line)}
+.save-status.ok{background:#E2F3E8;color:#14532D;border-color:#BFE3CC}
+.save-status.err{background:#FDECEA;color:#7A1F1A;border-color:#F2C4C0}
+.save-status.ing{background:var(--blue-soft);color:var(--ink)}
+@media(prefers-color-scheme:dark){.save-status.ok{background:#173325;color:#BFE8CF}.save-status.err{background:#3A1D1A;color:#F6CFCB}}
+footer.site{margin-top:56px;color:var(--ink3);font-size:13px;text-align:center;line-height:1.7}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cap-track{animation:none}*{transition:none!important}}
+</style>
+<noscript><style>.hero h1 .hl-line1.pre,.hero h1 .hl-line2.pre{opacity:1!important;transform:none!important}.hero-ctas{opacity:1!important;pointer-events:auto!important}.sf-stage.sf-await,.sf-controls.sf-await{opacity:1!important;transform:none!important;pointer-events:auto!important}</style></noscript>
+<link rel="stylesheet" href="assets/v2.css">
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+<div class="logo">getsite<span>.my</span></div>
+<nav class="nav" aria-label="주요 메뉴">
+<a href="#samples">샘플 보기</a><a href="#how">방법</a><a href="#start">시작하기</a><a href="#lookup">진행 조회</a>
+</nav></div></div>
+
+<div class="wrap">
+<div class="hero-scroll">
+<header class="hero">
+<div id="heroIntro">
+<p class="topic-line"><span class="sr-only">포트폴리오, 제품 소개, 아트갤러리, 브랜드 디자이너 포트폴리오, 내가 원하는 사이트</span><span class="topic-rot" id="topicRot" aria-hidden="true" style="color:#1D4ED8">포트폴리오</span></p>
+<h1 id="heroHeadline"><span class="hl-line1 pre">상상하지 마세요!!</span><br><em class="hl-line2 pre">보고 고르세요</em></h1>
+<div class="hero-ctas" id="heroCtas" style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn btn-p" href="#samples">주제별 샘플 보기</a><a class="btn btn-g" href="#how">진행 방법 보기</a></div>
+<div class="hero-preview" id="heroPreview" aria-hidden="true">
+<figure><img src="assets/99f0e8d8747024.jpg" alt=""><figcaption>거품숲 비누</figcaption></figure>
+<figure><img src="assets/143f925d987f13.jpg" alt=""><figcaption>윤서현</figcaption></figure>
+</div>
+</div>
+<div>
+<div class="sf-stage" id="sfStage" role="img" aria-label="실제 제작 사이트 히어로 캡처 5장: 윤서현, hansakim.com, 그림공방 하루, 거품숲, 브랜드 디자이너 포트폴리오">
+<figure class="sf-card"><img src="assets/143f925d987f13.jpg" alt="" fetchpriority="high"><figcaption>윤서현</figcaption></figure>
+<figure class="sf-card"><img src="assets/359da1c939c635.jpg" alt=""><figcaption>hansakim.com</figcaption></figure>
+<figure class="sf-card"><img src="assets/b25d075cbbe5a9.jpg" alt=""><figcaption>그림공방 하루</figcaption></figure>
+<figure class="sf-card"><img src="assets/99f0e8d8747024.jpg" alt=""><figcaption>거품숲</figcaption></figure>
+<figure class="sf-card"><img src="assets/a59709593cc1ec.jpg" alt=""><figcaption>브랜드 디자이너 포트폴리오</figcaption></figure>
+</div>
+<div class="sf-controls" id="sfControls">
+<button type="button" class="btn btn-g btn-s" id="sfToggle">일시정지</button>
+<button type="button" class="btn btn-g btn-s" id="sfRestart">처음부터</button>
+<div class="sf-prog" aria-hidden="true"><i id="sfProg"></i></div>
+</div>
+</div>
+</header>
+</div>
+
+<section class="block" id="samples" style="margin-top:44px">
+<h2>샘플 — 주제별 실제 사이트</h2>
+<p class="sub">완성된 실제 사이트를 먼저 보고, 내 사업에 맞는 방식을 고르세요.</p>
+<div class="filters" role="group" aria-label="샘플 필터">
+<button type="button" class="fbtn on" data-filter="all">전체</button>
+<button type="button" class="fbtn" data-filter="artist">예술가</button>
+<button type="button" class="fbtn" data-filter="product">제품 브랜드</button>
+<button type="button" class="fbtn" data-filter="portfolio">개인 포트폴리오</button>
+<button type="button" class="fbtn" data-filter="class">클래스·교육</button>
+<button type="button" class="fbtn" data-filter="exhibition">전시</button>
+<button type="button" class="fbtn" data-filter="shop">쇼핑·예약</button>
+<input type="search" id="sampleSearch" placeholder="검색: 예) 전시, 제품, 클래스" aria-label="샘플 검색">
+</div>
+<p class="hint" id="sampleCount" aria-live="polite"></p>
+<div class="sample-grid" id="sampleGrid">
+<article class="sample-card" data-sample-card data-cats="product shop" data-title="친환경 비누 ‘거품숲’" data-job="제품을 이해시키고 구매로 연결합니다."><div class="capbox" data-pause="soap" data-hint="실제 사이트 캡처 · 눌러서 멈추기" role="button" tabindex="0" aria-label="친환경 비누 ‘거품숲’ 실제 사이트 캡처 자동 스크롤 미리보기 멈추기/재생"><div class="cap-track" style="--dur:53s;animation-duration:53s"><img src="assets/9b24f7daa454e5.jpg" alt="친환경 비누 ‘거품숲’ 실제 사이트 캡처 화면" loading="lazy"><img src="assets/9b24f7daa454e5.jpg" alt="" aria-hidden="true"></div><span class="pause-hint">실제 사이트 캡처 · 눌러서 멈추기</span></div><div class="sample-body"><div><span class="tag tag-sample">샘플 제작물</span><h3>친환경 비누 ‘거품숲’</h3></div><p class="job">제품을 이해시키고 구매로 연결합니다.</p><div class="sample-actions"><button type="button" class="btn btn-p btn-s" data-get="soap">Get my product</button><a class="btn btn-g btn-s" href="https://getsite-soap.web.app" target="_blank" rel="noopener noreferrer">실제로 열어보기</a></div></div></article>
+<article class="sample-card" data-sample-card data-cats="artist exhibition" data-title="예술가 포트폴리오 — 윤서현 · 두 가지 버전" data-job="하단 버튼 하나로 오리지널 버전과 일러스트 버전을 오갑니다. 작품 세계를 이해시키고 전시 문의를 유도합니다."><div class="capbox" data-pause="artist" data-hint="실제 사이트 캡처 · 눌러서 멈추기" role="button" tabindex="0" aria-label="예술가 포트폴리오 — 윤서현 · 두 가지 버전 실제 사이트 캡처 자동 스크롤 미리보기 멈추기/재생"><div class="cap-track" style="--dur:230s;animation-duration:230s"><img src="assets/a8517a84dc87c1.jpg" alt="예술가 포트폴리오 — 윤서현 · 두 가지 버전 실제 사이트 캡처 화면" loading="lazy"><img src="assets/a8517a84dc87c1.jpg" alt="" aria-hidden="true"></div><span class="pause-hint">실제 사이트 캡처 · 눌러서 멈추기</span></div><div class="sample-body"><div><span class="tag tag-sample">가상 샘플 · 버전 전환</span><h3>예술가 포트폴리오 — 윤서현 · 두 가지 버전</h3></div><p class="job">하단 버튼 하나로 오리지널 버전과 일러스트 버전을 오갑니다. 작품 세계를 이해시키고 전시 문의를 유도합니다.</p><div class="sample-actions"><button type="button" class="btn btn-p btn-s" data-get="artist">Get my exhibition</button><a class="btn btn-g btn-s" href="https://getsite-artist.web.app" target="_blank" rel="noopener noreferrer">실제로 열어보기</a></div></div></article>
+<article class="sample-card" data-sample-card data-cats="portfolio" data-title="개인 포트폴리오 — 브랜드 디자이너" data-job="협업 문의를 받되, 맞지 않는 의뢰는 폼에서 걸러냅니다."><div class="capbox" data-pause="portfolio" data-hint="실제 사이트 캡처 · 눌러서 멈추기" role="button" tabindex="0" aria-label="개인 포트폴리오 — 브랜드 디자이너 실제 사이트 캡처 자동 스크롤 미리보기 멈추기/재생"><div class="cap-track" style="--dur:49s;animation-duration:49s"><img src="assets/64bec6789575e1.jpg" alt="개인 포트폴리오 — 브랜드 디자이너 실제 사이트 캡처 화면" loading="lazy"><img src="assets/64bec6789575e1.jpg" alt="" aria-hidden="true"></div><span class="pause-hint">실제 사이트 캡처 · 눌러서 멈추기</span></div><div class="sample-body"><div><span class="tag tag-sample">가상 샘플</span><h3>개인 포트폴리오 — 브랜드 디자이너</h3></div><p class="job">협업 문의를 받되, 맞지 않는 의뢰는 폼에서 걸러냅니다.</p><div class="sample-actions"><button type="button" class="btn btn-p btn-s" data-get="portfolio">Get my portfolio</button><a class="btn btn-g btn-s" href="https://getsite-portfolio.web.app" target="_blank" rel="noopener noreferrer">실제로 열어보기</a></div></div></article>
+<article class="sample-card" data-sample-card data-cats="class artist" data-title="그림공방 하루 — 미술 클래스" data-job="실제 클래스 사이트를 바탕으로 강사·연락처·수치를 전부 가상 데이터로 바꾼 샘플입니다. 클래스 문의를 받고, 정원·비용 안내를 문의로 연결합니다."><div class="capbox" data-pause="arthada" data-hint="실제 사이트 캡처 · 눌러서 멈추기" role="button" tabindex="0" aria-label="그림공방 하루 — 미술 클래스 실제 사이트 캡처 자동 스크롤 미리보기 멈추기/재생"><div class="cap-track" style="--dur:51s;animation-duration:51s"><img src="assets/81453849f43fc3.jpg" alt="그림공방 하루 — 미술 클래스 실제 사이트 캡처 화면" loading="lazy"><img src="assets/81453849f43fc3.jpg" alt="" aria-hidden="true"></div><span class="pause-hint">실제 사이트 캡처 · 눌러서 멈추기</span></div><div class="sample-body"><div><span class="tag tag-sample">가상 샘플 · 익명 데이터</span><h3>그림공방 하루 — 미술 클래스</h3></div><p class="job">실제 클래스 사이트를 바탕으로 강사·연락처·수치를 전부 가상 데이터로 바꾼 샘플입니다. 클래스 문의를 받고, 정원·비용 안내를 문의로 연결합니다.</p><div class="sample-actions"><button type="button" class="btn btn-p btn-s" data-get="arthada">Get my business</button><a class="btn btn-g btn-s" href="https://getsite-haru.web.app" target="_blank" rel="noopener noreferrer">실제로 열어보기</a></div></div></article>
+<article class="sample-card" data-sample-card data-cats="artist exhibition" data-title="도예가 김한사 — hansakim.com" data-job="실제로 납품되어 운영 중인 작가 사이트입니다. 작품과 전시 정보를 전합니다."><div class="capbox" data-pause="hansakim" data-hint="실제 사이트 캡처 · 눌러서 멈추기" role="button" tabindex="0" aria-label="도예가 김한사 — hansakim.com 실제 사이트 캡처 자동 스크롤 미리보기 멈추기/재생"><div class="cap-track" style="--dur:33s;animation-duration:33s"><img src="assets/7f78a291c341b0.jpg" alt="도예가 김한사 — hansakim.com 실제 사이트 캡처 화면" loading="lazy"><img src="assets/7f78a291c341b0.jpg" alt="" aria-hidden="true"></div><span class="pause-hint">실제 사이트 캡처 · 눌러서 멈추기</span></div><div class="sample-body"><div><span class="tag tag-real">실제 운영 중인 사이트</span><h3>도예가 김한사 — hansakim.com</h3></div><p class="job">실제로 납품되어 운영 중인 작가 사이트입니다. 작품과 전시 정보를 전합니다.</p><div class="sample-actions"><button type="button" class="btn btn-p btn-s" data-get="hansakim">Get my exhibition</button><a class="btn btn-g btn-s" href="https://hansakim.com" target="_blank" rel="noopener noreferrer">실제로 열어보기</a></div></div></article>
+<p class="hint" id="sampleEmpty" hidden>조건에 맞는 샘플이 없습니다. 필터를 바꿔보세요.</p>
+</div>
+</section>
+
+<section class="block" id="how">
+<h2>방법 — 이렇게 진행됩니다</h2>
+<p class="sub">다섯 단계뿐입니다. 가격과 결제는 구성안을 확인한 뒤에야 나옵니다.</p>
+<div class="how">
+<div class="how-step"><span class="n">STEP 1</span><h3>샘플 선택</h3><p>주제별 샘플 중 내 사업과 가장 가까운 방식을 고릅니다.</p></div>
+<div class="how-step"><span class="n">STEP 2</span><h3>최소 입력</h3><p>이메일·사이트 이름·목적 한 줄·자료 유무만 적습니다.</p></div>
+<div class="how-step"><span class="n">STEP 3</span><h3>추천 사이트 구성</h3><p>목적·섹션 구성·히어로 제시를 먼저 확인합니다.</p></div>
+<div class="how-step"><span class="n">STEP 4</span><h3>구성에 맞는 가격</h3><p>확인한 구성에 대해서만 가격을 제시합니다.</p></div>
+<div class="how-step"><span class="n">STEP 5</span><h3>제작 시작</h3><p>의뢰번호와 프리뷰 경로가 발급되고, 샘플 확인 후 결제 안내가 갑니다.</p></div>
+</div>
+</section>
+
+<section class="block" id="start">
+<h2>시작하기 — 마음에 드는 샘플에서</h2>
+<p class="sub">긴 폼은 없습니다. 최소 정보만 주시면 구성안을 먼저 보여드리고, 그 구성에 맞는 가격을 그다음에 제시합니다. 접수 내용은 서버(Firebase)에 저장됩니다. 결제는 샘플 확인 후 이메일로 안내합니다.</p>
+<div class="steps-flow" aria-label="진행 순서">
+<span id="flow1" class="on">1 · 최소 입력</span><span id="flow2">2 · 추천 사이트 구성</span><span id="flow3">3 · 가격 확인</span><span id="flow4">4 · 제작 시작</span>
+</div>
+
+<div class="card" id="miniCard">
+<h3 style="margin:0 0 4px;font-size:20px">최소 입력 — 1분이면 됩니다</h3>
+<p class="hint" style="margin:0 0 18px">무드·팔레트·모션은 여기서 묻지 않고 구성안에서 저희가 먼저 제안합니다. 넣고 싶은 섹션과 갤러리 구도는 아래에서 직접 고를 수 있습니다.</p>
+<form id="miniForm" novalidate>
+<div class="field" data-required="cemail"><label for="contactEmail">이메일 * <span style="color:var(--ink3);font-weight:500">— 구성안과 샘플 링크를 여기로 보냅니다</span></label><input type="email" id="contactEmail" autocomplete="email" placeholder="sample@example.com"><div class="ferr">이메일 형식이 올바르지 않습니다.</div></div>
+<div class="field" data-required="siteName"><label for="siteName">사이트 이름 *</label><input type="text" id="siteName" placeholder="예: 도예공방 흙과불"><div class="ferr">사이트 이름을 입력해주세요.</div></div>
+<div class="field" data-required="purpose"><label for="purpose">목적 1줄 *</label><input type="text" id="purpose" placeholder="예: 전시 문의를 받는 것"><div class="ferr">목적을 한 줄로 입력해주세요.</div></div>
+<div class="field"><span class="flabel">참고 샘플</span><div class="choices" id="refSampleChoices" role="radiogroup"></div><p class="hint">샘플 카드에서 버튼을 누르면 자동으로 선택됩니다.</p></div>
+<div class="field"><span class="flabel">넣고 싶은 섹션 <span style="color:var(--ink3);font-weight:500">— 여러 개 고를 수 있어요. 안 골라도 접수는 됩니다</span></span><label class="choice" style="margin-bottom:8px"><input type="checkbox" id="secAuto" checked><span>제작자에게 맡기기<span class="sub">주제·목적·자료에 맞춰 샘플 구성 그대로 제안해요</span></span></label><div class="sec-grid" id="secChoices"></div><p class="hint">대부분의 항목은 그 구성이 실제로 쓰인 샘플 기준이고, 일부는 확장 옵션으로 표기했습니다. 고른 섹션은 구성안에 먼저 반영됩니다.</p></div>
+<div class="field"><span class="flabel">작품 갤러리 구도 <span style="color:var(--ink3);font-weight:500">— 작품·사진·이력이 있는 사이트만, 샘플을 보면서 고르세요</span></span><div class="gp-chips" id="gpChips" role="radiogroup" aria-label="갤러리 구도 선택"></div><p class="gp-sel" id="gpSelLine" aria-live="polite"></p><div class="gp-stage" id="gpStage"></div><p class="hint">고른 구도는 바로 아래 구성안과 견적에 반영되고, 접수할 때 서버에 함께 저장됩니다.</p></div>
+<div class="sec-callout" style="margin-bottom:18px"><b class="t">섹션 구성은 샘플 이후에도 바뀔 수 있어요</b>고르신 섹션은 출발점입니다. 기본적으로는 전체 디자인 맥락 — 주제·목적·갖고 계신 자료 — 에 맞춰 저희가 구성을 결정해 반영합니다. 샘플을 받으신 뒤에는 의견을 주시면 섹션을 더하거나 빼고, 순서와 형태를 다양한 방식으로 수정할 수 있습니다.</div>
+<div class="field"><span class="flabel">자료가 있나요?</span><div class="choices" role="radiogroup">
+<label class="choice"><input type="radio" name="hasData" value="자료 유무 미정" checked><span>자료 있음<span class="sub">사진·소개글 등을 갖고 있어요</span></span></label>
+<label class="choice"><input type="radio" name="hasData" value="자료 없음 — 함께 정리"><span>자료 없음<span class="sub">구성안 단계에서 함께 정리해요</span></span></label>
+</div></div>
+<div class="field" id="photoField"><span class="flabel">자료 사진·영상 올리기</span><div class="note">사진·영상 자료는 여기서 첨부하지 않습니다. 접수가 끝나면 의뢰번호로 만든 전용 Google Drive 폴더 링크를 드리고, 그 폴더에 사진·영상을 직접 올려주시면 됩니다. 파일이 이 사이트를 거치지 않고 Drive에 바로 올라가서, 큰 영상 파일도 크기 제한 없이 올릴 수 있습니다.</div></div>
+<div class="field"><label for="contactName">이름 (선택)</label><input type="text" id="contactName" autocomplete="name" placeholder="이름 또는 브랜드명"></div>
+<p id="miniError" style="display:none;color:var(--err);font-weight:700;font-size:14px" role="alert"></p>
+<button type="button" class="btn btn-p" id="makeProtoBtn">내 구성안 보기</button>
+</form>
+</div>
+
+<div class="card" id="protoCard" hidden style="margin-top:16px">
+<h3 style="margin:0 0 4px;font-size:20px">추천 사이트 구성</h3>
+<p class="hint" id="protoBased" style="margin:0 0 4px"></p>
+<p class="hint" id="protoGallery" style="margin:0 0 16px"></p>
+<div class="proto-grid">
+<div class="proto-box"><h4>사이트 목적</h4><p id="protoPurpose" style="margin:0"></p></div>
+<div class="proto-box"><h4>히어로 섹션 제시</h4><p id="protoHero" style="margin:0"></p></div>
+<div class="proto-box"><h4>구성 (섹션 순서)</h4><ol id="protoSections"></ol></div>
+<div class="proto-box"><h4>DESIGN 토큰 초안</h4><div class="swatches" id="protoSwatches"></div><p id="protoTokens" style="margin:0"></p></div>
+</div>
+<p class="hint" style="margin-top:14px">이 구성안은 입력하신 주제·목적·참고 샘플을 바탕으로 자동 제안한 초안입니다. 디자인 세부(무드·팔레트·모션)는 “제작자에게 맡기기”가 기본값이며, 샘플 확인 단계에서 함께 조정합니다. 섹션 구성도 전체 디자인 맥락에 맞춰 반영되며, 샘플을 받은 뒤 의견을 주시면 다양한 형태로 수정할 수 있습니다. 궁금한 점은 <a href="#faq">자주 묻는 질문</a>에서 확인할 수 있습니다.</p>
+<button type="button" class="btn btn-p" id="showPriceBtn">이 구성, 얼마예요?</button>
+</div>
+
+<div class="card" id="priceCard" hidden style="margin-top:16px">
+<h3 style="margin:0 0 4px;font-size:20px">이 구성은 얼마예요?</h3>
+<p id="priceSentence" style="font-size:17px;font-weight:700;margin:10px 0 4px"></p>
+<p class="hint" style="margin:0 0 16px">가격표 전체가 아니라, 방금 본 구성안에 해당하는 기본 구성과 옵션만 보여드립니다. 모든 가격 VAT 별도, 계약금 50% + 잔금 50%입니다. 샘플 확인 후 섹션 구성이 바뀌면 가격도 바뀐 구성 기준으로 다시 안내합니다.</p>
+<div><b style="font-size:14.5px">기본 구성 — 500,000원에 모두 포함</b><table class="price" style="margin-top:6px"><tbody>
+<tr><td>히어로 1개 <span style="color:var(--ink3)">(모션 20초 내 / 이미지 연출)</span></td><td class="r"><span class="kv">포함</span></td></tr>
+<tr><td>원페이지 <span style="color:var(--ink3)" id="priceSectionLabel">(선택 섹션 기준)</span></td><td class="r"><span class="kv">포함</span></td></tr>
+<tr><td>언어 — 한국어 / 영어</td><td class="r"><span class="kv">포함</span></td></tr>
+<tr><td>Google Firebase(호스팅) 배포 + 도메인 연결 <span style="color:var(--ink3)">(도메인 구입은 별도)</span></td><td class="r"><span class="kv">포함</span></td></tr>
+<tr><td>유지보수 1년 무료</td><td class="r"><span class="kv">포함</span></td></tr>
+<tr><td><b>기본 구성 합계</b></td><td class="r"><span class="kv">500,000원</span></td></tr>
+</tbody></table></div>
+<div style="margin-top:18px"><b style="font-size:14.5px">추가 옵션 단가</b><table class="price" style="margin-top:6px"><tbody>
+<tr><td>추가 페이지</td><td class="r"><span class="kv">장당 100,000원</span></td></tr>
+<tr><td>영상 기반 모션 그래픽 (영상 작업) 30초</td><td class="r"><span class="kv">200,000원</span></td></tr>
+<tr><td>추가 수정 (기본 2회 포함)</td><td class="r"><span class="kv">회당 50,000원</span></td></tr>
+<tr><td>PG 연동 / 회원제 / 예약시스템</td><td class="r"><span class="kv">추후 오픈</span></td></tr>
+</tbody></table>
+<p class="hint" style="margin-top:10px">유지보수 1년 무료에는 작은 텍스트·이미지 교체, 링크·오류 수정, 호스팅·도메인 연결 상태 확인이 포함됩니다. 전면 재디자인·섹션 대폭 추가·신규 기능은 별도 견적입니다.</p></div>
+<div style="margin-top:20px">
+<h4 style="margin:0 0 4px;font-size:16px">견적 계산기 — 위 단가와 같습니다</h4>
+<p class="hint" style="margin:0 0 12px">고르는 즉시 합계가 바뀝니다. 예상 견적이며, 최종 견적은 상세 요구사항 확정 후 견적서로 발행합니다.</p>
+<div id="calcBody"></div>
+<div class="calc-total"><span style="font-weight:800">예상 합계 (VAT 별도)</span><span class="amt" id="calcTotal">500,000원</span></div>
+<p class="hint" style="margin:2px 0 0">도메인 구입 비용은 별도입니다. 한국어/영어는 기본 구성에 포함되어 별도 다국어 요금이 없습니다.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="btn btn-ink btn-s" id="copyQuoteBtn">견적 요약 복사</button><button type="button" class="btn btn-g btn-s" id="downloadQuoteBtn">견적 다운로드 (.txt)</button></div>
+<pre class="summary-box" id="quoteBox" style="margin-top:14px"></pre>
+</div>
+<div class="field" data-required="consent" style="margin-top:20px"><label class="consent" for="consentCheck"><input type="checkbox" id="consentCheck"><span><b>개인정보 수집·이용 동의 *</b><br><span style="font-size:14px">접수 처리와 샘플 발송, 이메일 소통을 위해 이름·이메일을 수집하는 데 동의합니다.</span></span></label><div class="ferr">동의가 필요합니다.</div></div>
+<p id="priceError" style="display:none;color:var(--err);font-weight:700;font-size:14px" role="alert"></p>
+<button type="button" class="btn btn-p" id="startBuildBtn">샘플 요청하기</button>
+<p class="hint">제작 시작을 눌러도 결제가 바로 일어나지 않습니다. 샘플을 먼저 확인한 뒤 결제 방법을 이메일로 안내하고, 결제 후에는 전용 페이지에서 세부 자료를 받습니다.</p>
+</div>
+
+<div class="card" id="doneCard" hidden style="margin-top:16px">
+<h3 style="margin:0 0 6px;font-size:20px">접수 상태 확인</h3>
+<div class="save-status ing" id="saveStatus" role="status">서버에 저장 중입니다…</div>
+<div class="note" style="margin-bottom:14px"><b class="t">내 의뢰번호</b><span id="successOrderNo" style="font-size:22px;font-weight:900"></span><br><span style="color:var(--ink2);font-size:14px">샘플 프리뷰 경로는 <b id="successSamplePath"></b> 입니다. 샘플이 준비되면 운영자(johanshna@gmail.com)가 등록 이메일로 링크와 개발 컨셉 설명을 보냅니다. 그다음 결제 안내 → 전용 페이지(세부 입력) 순서로 진행됩니다. 결제는 이 페이지에서 바로 받지 않고, 샘플 확인 후 이메일로 안내합니다.</span></div>
+<div id="driveBox" style="margin-bottom:14px"></div>
+<p class="hint" style="margin:0 0 10px">아래 두 버튼은 메일 프로그램을 여는 방식입니다. 버튼을 누른 뒤 메일 프로그램에서 내용을 확인하고 직접 보내주세요. 지금은 메일 프로그램으로 직접 보내는 방식입니다. 서버 자동 발송은 별도 메일 서비스 연동이 필요합니다.</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn btn-ink btn-s" id="copySummaryBtn">접수 요약 복사</button><button type="button" class="btn btn-g btn-s" id="downloadSummaryBtn">접수 요약 다운로드 (.txt)</button><a class="btn btn-p btn-s" id="operatorMailBtn" href="#">운영자에게 접수 내용 보내기</a><a class="btn btn-g btn-s" id="myMailBtn" href="#">내 접수 내용 이메일로 받기</a><a class="btn btn-g btn-s" href="#lookup">진행 조회로 이동</a></div>
+<pre class="summary-box" id="successBox" style="margin-top:14px"></pre>
+</div>
+</section>
+
+<section class="block" id="faq">
+<h2>자주 묻는 질문</h2>
+<div class="faq">
+<details><summary>비용은 어떻게 정해지나요?</summary><p>기본 구성은 50만 원입니다. 추가 페이지와 영상 작업은 선택한 범위에 따라 별도로 안내합니다. 모든 가격 VAT 별도이고, 최종 금액은 상세 요구사항 확정 후 견적서로 발행합니다.</p></details>
+<details><summary>샘플은 언제, 어떻게 받나요?</summary><p>접수 후 구성안 기준으로 샘플을 제작해, 운영자(johanshna@gmail.com)가 등록한 이메일로 프리뷰 링크(/p/주문번호 형태)와 개발 컨셉 설명을 보냅니다. 샘플 단계에서는 소스코드를 제공하지 않습니다. 구체적인 납기 일수는 약속하지 않으며 일정은 이메일로 조율합니다.</p></details>
+<details><summary>결제는 언제 하나요?</summary><p>샘플을 확인하고 진행을 결정한 뒤입니다. 계약금 50%, 납품 전 잔금 50%입니다. 결제는 샘플 확인 후 이메일로 안내합니다.</p></details>
+<details><summary>수정은 몇 회까지 되나요?</summary><p>기본 수정 2회가 포함됩니다. 추가 수정 단가는 구성안 확인 후 가격 단계에서 함께 안내합니다. 구조 변경·페이지 추가는 별도 견적입니다.</p></details>
+<details><summary>도메인은 어떻게 사나요? 비용은 얼마인가요?</summary><p>도메인은 가비아·후이즈·카페24 같은 국내 도메인 등록대행사에서 직접 구입하실 수 있습니다. 등록대행사 사이트에서 원하는 주소(예: mybrand.com)를 검색해 사용 가능하면, 회원가입 후 결제하면 바로 본인 소유가 됩니다. 비용은 확장자마다 다른데 .com 기준 보통 연 2만 원 안팎이고 .co.kr도 비슷한 수준입니다(등록대행사·할인 행사에 따라 달라집니다). 도메인은 본인 명의로 구입하시는 것이 원칙이라, 순서가 헷갈리시면 접수 후 이메일로 단계별로 안내해 드립니다. 도메인 구입 비용은 제작비와 별도입니다.</p></details>
+<details><summary>호스팅 서비스는 어디를 이용하나요?</summary><p>Google Firebase 호스팅을 이용합니다. 신청자 본인의 구글 계정에 연동해 만들기 때문에 사이트와 데이터의 소유권이 신청자께 있습니다. Firebase 무료 요금제 범위로 운영되며, 일반적인 소개·포트폴리오 사이트는 무료 범위로 충분한 경우가 많습니다. 방문자가 크게 늘어 유료 전환이 필요해지면 그때 미리 안내해 드립니다.</p></details>
+<details><summary>도메인과 호스팅(Google Firebase) 연동은 어떻게 하나요?</summary><p>연동은 배포할 때 개발자가 직접 해드립니다. 구입하신 도메인의 소유 확인과 DNS 설정까지 저희가 진행하므로, 신청자께서 직접 설정하실 일은 거의 없습니다. 연동이 끝나면 보안 연결(https)까지 적용된 상태로 납품합니다.</p></details>
+<details><summary>유지보수는 어떻게 되나요?</summary><p>납품 후 1년간 무료입니다. 텍스트·이미지 교체, 링크·오류 수정 같은 기본적인 수정과 호스팅·도메인 연결 상태 확인이 포함됩니다. 섹션 추가나 기능 추가는 유지보수 범위에 포함되지 않으며, 아래처럼 별도 요청으로 진행합니다.</p></details>
+<details><summary>내용 업데이트는 어떻게 하나요?</summary><p>납품 후 1년 무료 유지보수 기간에는 텍스트·이미지 교체 같은 기본 업데이트를 이메일로 요청하시면 반영해 드립니다. 구조 변경·섹션 추가는 별도 요청으로 진행합니다.</p></details>
+<details><summary>섹션이나 기능을 추가하고 싶으면요?</summary><p>가능합니다. 샘플을 받으신 뒤 의견을 주시면 섹션을 더하거나 빼고 순서·형태를 바꾸는 수정도 할 수 있고, 처음부터 없던 섹션·기능의 추가는 별도로 요청해 주시면 작업 범위와 비용을 확인해 안내해 드린 뒤 진행합니다. 구조가 크게 바뀌면 구성안과 가격을 바뀐 기준으로 다시 안내합니다.</p></details>
+<details><summary>납품물은 무엇인가요?</summary><p>완성 사이트(고객 도메인 연결 완료), 검수 리포트, 운영 안내입니다. 사이트는 고객 소유 계정·도메인으로 구축하는 것이 원칙입니다.</p></details>
+</div>
+</section>
+
+<section class="block" id="lookup">
+<h2>진행상황 조회</h2><p class="sub">의뢰번호로 조회합니다. 접수할 때 서버(Firebase)에 저장된 주문을 의뢰번호로 찾아서 보여드립니다.</p>
+<div class="card"><div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="lookupInput" placeholder="예: WO-2026-0001" style="flex:1;min-width:200px;border:1px solid var(--line2);border-radius:10px;padding:12px 14px;background:var(--surface)"><button type="button" class="btn btn-p" id="lookupBtn">조회하기</button></div><div id="lookupResult" style="margin-top:16px"></div></div>
+</section>
+
+<section class="block" id="detail">
+<h2>전용 페이지 — 상세 데이터 입력 <span style="font-size:14px;color:var(--blue)">결제 후 단계</span></h2>
+<p class="sub">결제가 확인된 의뢰 전용입니다. 제작 시작 후 안내받은 의뢰번호로 최종 카피와 확정 데이터를 올려주세요.</p>
+<div class="card">
+<div class="field"><label for="detailOrderNo">의뢰번호</label><input type="text" id="detailOrderNo" placeholder="WO-2026-0001"></div>
+<div class="field"><label for="finalCopy">최종 카피 확정본</label><textarea id="finalCopy" style="min-height:100px" placeholder="페이지별 최종 문구"></textarea></div>
+<div class="field"><span class="flabel">추가 자료 파일</span><div class="note">추가 자료(사진·영상)는 의뢰번호로 만든 전용 Google Drive 폴더에 직접 올려주세요. 폴더 링크는 위쪽 진행 조회 화면에서 의뢰번호로 확인할 수 있습니다.</div></div>
+<div class="field"><label for="detailAgree" style="display:flex;gap:10px;align-items:flex-start;font-weight:600"><input type="checkbox" id="detailAgree" style="width:19px;height:19px;accent-color:var(--blue);flex:none"> 카피 오탈자·가격·일정, 이미지 사용 권한, 공개 범위를 직접 확인했습니다</label></div>
+<button type="button" class="btn btn-p" id="detailSubmitBtn">상세 요구사항 제출하기</button><p class="hint" id="detailMsg"></p>
+</div>
+</section>
+
+<section class="block" id="admin" hidden>
+<h2>관리자</h2>
+<p class="sub">주문별 Drive 자료 폴더 설정과 주문 목록을 관리합니다. 폴더 링크는 주문한 고객의 조회 화면과 이곳에서만 보입니다.</p>
+<div class="card" style="margin-bottom:16px">
+<div class="field" style="margin-bottom:10px"><label for="driveApiInput">Drive 폴더 생성 API URL</label><input type="url" id="driveApiInput" placeholder="https://script.google.com/macros/s/…/exec"><p class="hint">주문이 접수되면 이 주소(Apps Script 웹 앱)로 주문번호를 보내 주문별 Google Drive 폴더를 만들고, 돌려받은 폴더 링크를 주문 기록에 저장합니다. 이 입력값은 관리자 기기에서만 임시로 바꾸는 값이며, 모든 고객에게 적용되는 값은 서버 기본값과 Firestore 설정입니다. 적용 우선순위는 이 기기의 임시값 → Firestore config/drive 설정 → 서버 기본값 순입니다. 비워 두면 서버 기본값과 Firestore 설정이 사용됩니다.</p></div>
+<button type="button" class="btn btn-p btn-s" id="driveApiSaveBtn">설정 저장</button>
+<p class="hint" id="driveApiSaveMsg" style="margin-top:8px"></p>
+</div>
+<div class="card">
+<h3 style="margin:0 0 12px;font-size:17px">주문 관리</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="adminLookupInput" placeholder="주문번호로 불러오기 — 예: WO-2026-0001" style="flex:1;min-width:200px;border:1px solid var(--line2);border-radius:10px;padding:11px 13px;background:var(--surface)"><button type="button" class="btn btn-p btn-s" id="adminLookupBtn">불러오기</button></div>
+<p class="hint">전체 주문을 한 번에 불러오지 않습니다. 주문번호를 아는 주문만 하나씩 열어 폴더 링크를 확인하거나 폴더 만들기를 재시도할 수 있습니다.</p>
+<div id="adminOrderList" style="margin-top:12px"></div>
+<div id="adminOrderDetail" style="margin-top:14px"></div>
+</div>
+</section>
+
+<footer class="site">getsite.my · 샘플 먼저 확인, 결제는 그다음 · 샘플 소스 미제공, 결제 후 고객 소유 계정으로 구축·납품<br>모든 가격 VAT 별도 · 최종 견적은 상세 요구사항 확정 후 확정 견적서로 재발행합니다</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+function $(id){return document.getElementById(id)}
+function fmt(n){return n.toLocaleString("ko-KR")+"원"}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2400)}
+function dl(name,text){var b=new Blob([text],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},400)}
+function copyT(text){if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){toast("복사됐습니다")},function(){toast("복사에 실패했습니다")})}else{var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");toast("복사됐습니다")}catch(e){toast("복사에 실패했습니다")}ta.remove()}}
+
+/* ===== 서비스 설정 (이 블록 한 곳만 바꾸면 됩니다) =====
+   OPERATOR_EMAIL: 서비스 관련 메일을 받는 운영자 이메일.
+   FIREBASE_CONFIG: Firebase 프로젝트 getsite-my 웹 앱 설정.
+   apiKey는 코드에 직접 쓰지 않고 플레이스홀더로 둡니다. 배포
+   단계에서는 아래 설정 줄의 플레이스홀더만 실제 키로 치환하세요.
+   (주의: 이 토큰을 다른 문자열이나 문장 안에 넣으면 치환 때
+   문자열이 깨져 페이지 전체 스크립트가 멈춥니다.) */
+var OPERATOR_EMAIL="johanshna@gmail.com";
+/* DRIVE_API_URL_DEFAULT: 모든 고객에게 적용되는 Drive 폴더 생성
+   API의 서버 기본값입니다. 배포 시 실제 Apps Script 웹 앱 URL로
+   치환되는 곳은 아래 설정 줄 한 곳뿐입니다. 비어 있으면 Firestore
+   config/drive 문서의 apiUrl 값을 사용합니다. */
+var DRIVE_API_URL_DEFAULT=(function(){try{return (typeof window.__DRIVE_API_URL__!=="undefined"&&window.__DRIVE_API_URL__)?String(window.__DRIVE_API_URL__).trim():""}catch(e){return ""}})();
+var FIREBASE_CONFIG={
+ apiKey:(function(){try{return (typeof "AIzaSyD07kkhsr7Gu0pQ1NFtNNLxtzSp7ArXreA"!=="undefined"&&"AIzaSyD07kkhsr7Gu0pQ1NFtNNLxtzSp7ArXreA")?"AIzaSyD07kkhsr7Gu0pQ1NFtNNLxtzSp7ArXreA":""}catch(e){return ""}})(),
+ authDomain:"getsite-my.firebaseapp.com",
+ projectId:"getsite-my",
+ storageBucket:"getsite-my.firebasestorage.app",
+ messagingSenderId:"155781329490",
+ appId:"1:155781329490:web:3c3562042d4ccefa88e58b"
+};
+var fbDb=null, fbReady=false, fbInitError="";
+function initFirebase(){
+ try{
+  if(typeof firebase==="undefined"){fbInitError="Firebase SDK를 불러오지 못했습니다.";return false}
+  if(!FIREBASE_CONFIG.apiKey){fbInitError="Firebase API 키가 설정되지 않았습니다. 배포 단계에서 실제 키로 치환해야 서버 저장이 동작합니다.";return false}
+  if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
+  fbDb=firebase.firestore(); fbReady=true; return true;
+ }catch(e){fbInitError=(e&&e.message)?e.message:String(e);return false}
+}
+initFirebase();
+function fmtSize(n){if(n<1024)return n+" B";if(n<1048576)return (n/1024).toFixed(1)+" KB";return (n/1048576).toFixed(1)+" MB"}
+function safeFileName(name){return String(name||"file").replace(/[\\/:*?"<>|#\[\]]/g,"_")}
+
+/* Drive folder API — URL resolution order (highest first):
+   1) localStorage override from the admin screen — this device only,
+      a temporary override for the operator's own browser;
+   2) Firestore config/drive document (field: apiUrl) — server-side
+      setting shared by every visitor;
+   3) DRIVE_API_URL_DEFAULT — the server default baked in at deploy.
+   Empty resolved URL = feature off, and the order flow works exactly
+   as before: reading the Firestore setting must never block an order.
+   Files never pass through this site or the script: the script only
+   creates a per-order Drive folder and returns its link, so no
+   upload size limit applies. */
+function driveLocalOverride(){try{return (localStorage.getItem("getsite.driveApiUrl")||"").trim()}catch(e){return ""}}
+function storeDriveApiUrl(v){try{localStorage.setItem("getsite.driveApiUrl",v||"")}catch(e){}}
+var driveConfigUrl="", driveConfigPromise=null;
+function loadDriveConfig(){
+ if(driveConfigPromise)return driveConfigPromise;
+ if(!fbReady||!fbDb)return Promise.resolve("");
+ driveConfigPromise=fbDb.collection("config").doc("drive").get().then(function(snap){
+  if(snap&&snap.exists){var d=snap.data()||{}; if(typeof d.apiUrl==="string")driveConfigUrl=d.apiUrl.trim()}
+  return driveConfigUrl;
+ }).catch(function(){return ""});
+ return driveConfigPromise;
+}
+function driveApiUrl(){return driveLocalOverride()||driveConfigUrl||DRIVE_API_URL_DEFAULT||""}
+function resolveDriveApiUrl(){
+ var local=driveLocalOverride();
+ if(local)return Promise.resolve(local);
+ return loadDriveConfig().then(function(cfg){return cfg||DRIVE_API_URL_DEFAULT||""});
+}
+function createDriveFolder(no){
+ /* Only the order number is sent — no customer name or other
+    personal data goes to the folder API. */
+ return resolveDriveApiUrl().then(function(base){
+  if(!base)throw new Error("Drive 폴더 생성 API URL이 설정되지 않았습니다.");
+  var url=base+(base.indexOf("?")===-1?"?":"&")+"order="+encodeURIComponent(no);
+  return fetch(url).then(function(r){return r.json()}).then(function(j){
+   if(j&&j.ok&&j.folderUrl)return j.folderUrl;
+   throw new Error((j&&j.error)||"폴더 생성에 실패했습니다.");
+  });
+ });
+}
+
+/* Warm the shared Drive setting early (non-blocking): by the time a
+   visitor submits an order, config/drive is usually already read.
+   A failed or missing config document simply leaves the default. */
+loadDriveConfig();
+
+/* Samples — previously made samples + the one real client site.
+   Previews are still captures of the real sites, never live embeds.
+   Each capture file is written as a literal img src in the static
+   sample-card markup (#sampleGrid), so single-file export resolves
+   every capture by its explicit filename. */
+var SAMPLES=[
+{id:"soap",title:"친환경 비누 ‘거품숲’",cats:["product","shop"],badge:"샘플 제작물",real:false,ctaType:"product",ctaLabel:"Get my product",url:"https://getsite-soap.web.app",capDur:53,job:"제품을 이해시키고 구매로 연결합니다.",
+ proto:{hero:"제품 히어로 모션 — 비누 거품이 피어오르는 짧은 루프, 표제는 제품 한 줄 소개, 대표 이미지는 제품 클로즈업, 행동 버튼은 “제품 보기” 1개",sections:["히어로 — 제품 모션과 한 줄 소개","정체성 — 브랜드가 지키는 재료 원칙","핵심 콘텐츠 — 제품 라인업과 성분","이야기·과정 — 만드는 방식","신뢰 근거 — 성분·제작 정보","문의 — 구매 문의"],palette:["#EFF6EC","#7FA36B","#2E3A2A","#FFFFFF"],paletteName:"내추럴 그린",fonts:"Pretendard (본문·표제)",motion:"Lv.2 적극 — 히어로 모션 루프 중심",pkg:"story"}},
+{id:"artist",title:"예술가 포트폴리오 — 윤서현 · 두 가지 버전",cats:["artist","exhibition"],badge:"가상 샘플 · 버전 전환",real:false,ctaType:"exhibition",ctaLabel:"Get my exhibition",url:"https://getsite-artist.web.app",capDur:230,job:"하단 버튼 하나로 오리지널 버전과 일러스트 버전을 오갑니다. 작품 세계를 이해시키고 전시 문의를 유도합니다.",
+ proto:{hero:"살아 있는 캔버스 모션 + 버전 전환 — 대표작 질감이 천천히 움직이는 히어로, 화면 하단 고정 버튼으로 “일러스트 버전 ↔ 오리지널 버전”을 한 페이지에서 전환, 표제는 작가 이름과 한 줄 세계관, 행동 버튼은 “작품 보기” 1개",sections:["히어로 — 대표작 캔버스 모션과 작가 이름 + 버전 전환 버튼","정체성 — 작가의 세계관 한 단락","일러스트 아틀리에 — 연작 모티프를 옮긴 일러스트 스터디 3점 (일러스트 버전)","핵심 콘텐츠 — 연작·작품 갤러리 (일러스트 버전은 프레임 패널)","이야기·과정 — 작업 방식과 노트","신뢰 근거 — 전시 이력(확인된 것만)","문의 — 전시·소장 문의"],palette:["#FAF7F1","#211D17","#C0391B","#B97E26"],paletteName:"종이 + 잉크 + 주홍",fonts:"Pretendard (본문) + Noto Serif KR (표제)",motion:"Lv.2 적극 — 캔버스 모션 + 버전 전환",pkg:"story"}},
+{id:"portfolio",title:"개인 포트폴리오 — 브랜드 디자이너",cats:["portfolio"],badge:"가상 샘플",real:false,ctaType:"portfolio",ctaLabel:"Get my portfolio",url:"https://getsite-portfolio.web.app",capDur:49,job:"협업 문의를 받되, 맞지 않는 의뢰는 폼에서 걸러냅니다.",
+ proto:{hero:"대표작 1장 — 가장 강한 작업 이미지가 히어로, 표제는 이름과 직무 한 줄, 행동 버튼은 “협업 문의” 1개",sections:["히어로 — 대표작 1장과 이름","정체성 — 어떤 디자이너인지 한 단락","핵심 콘텐츠 — 분야 필터 작품 갤러리 + 프로젝트 상세","이야기·과정 — 작업 방식","신뢰 근거 — 서비스 범위·협업 조건 공개","문의 — 조건 확인형 문의 폼"],palette:["#FFFFFF","#111110","#E7E5DF","#2451E6"],paletteName:"흑백 + 강조 1색",fonts:"Pretendard (본문·표제)",motion:"Lv.1 절제 — 등장 모션만",pkg:"story"}},
+{id:"arthada",title:"그림공방 하루 — 미술 클래스",cats:["class","artist"],badge:"가상 샘플 · 익명 데이터",real:false,ctaType:"business",ctaLabel:"Get my business",url:"https://getsite-haru.web.app",capDur:51,job:"실제 클래스 사이트를 바탕으로 강사·연락처·수치를 전부 가상 데이터로 바꾼 샘플입니다. 클래스 문의를 받고, 정원·비용 안내를 문의로 연결합니다.",
+ proto:{hero:"현장 사진 슬라이드쇼 — 수업 장면 4장이 천천히 교차, 표제는 클래스 이름과 한 줄 약속, 행동 버튼은 “수업 문의” 1개",sections:["히어로 — 현장 슬라이드쇼","정체성 — 강사 소개와 수업 철학","핵심 콘텐츠 — 클래스 목록 필터·상세","이야기·과정 — 최근 수업 현장","신뢰 근거 — 확인된 수업 정보만","문의 — 정원·비용 안내형 문의"],palette:["#FFF4E8","#D9A05B","#7A4A21","#2E2118"],paletteName:"웜 페이퍼 + 우드",fonts:"Pretendard (본문) + 세리프 표제",motion:"Lv.1 절제 — 슬라이드쇼 중심",pkg:"story"}},
+{id:"hansakim",title:"도예가 김한사 — hansakim.com",cats:["artist","exhibition"],badge:"실제 운영 중인 사이트",real:true,ctaType:"exhibition",ctaLabel:"Get my exhibition",url:"https://hansakim.com",capDur:33,job:"실제로 납품되어 운영 중인 작가 사이트입니다. 작품과 전시 정보를 전합니다.",
+ proto:{hero:"대표 비주얼 1장 — 작가의 대표작이 히어로, 표제는 작가 이름, 행동 버튼은 “문의하기” 1개 (실제 납품 사례 hansakim.com과 같은 구조)",sections:["히어로 — 대표작 비주얼","정체성 — 작가 소개","핵심 콘텐츠 — 작품 아카이브","이야기·과정 — 작가의 서사","신뢰 근거 — 전시 이력(실제 확인분만)","문의 — 전시·소장 문의"],palette:["#F3EDE2","#3E3830","#5B7A8A","#FFFFFF"],paletteName:"흙·유약 (실제 사례 계열)",fonts:"Pretendard (본문) + 세리프 표제",motion:"Lv.1 절제",pkg:"story"}}
+];
+var curFilter="all", selectedSample="soap";
+function renderSamples(){
+ var q=($("sampleSearch").value||"").trim().toLowerCase();
+ var shown=0;
+ document.querySelectorAll("[data-sample-card]").forEach(function(card){
+  var cats=(card.getAttribute("data-cats")||"").split(" ");
+  var okF=curFilter==="all"||cats.indexOf(curFilter)>-1;
+  var hay=(card.getAttribute("data-title")+" "+card.getAttribute("data-job")).toLowerCase();
+  var ok=okF&&(!q||hay.indexOf(q)>-1);
+  card.style.display=ok?"":"none";
+  if(ok)shown++;
+ });
+ $("sampleCount").textContent="샘플 "+shown+"개 표시 중 (전체 "+SAMPLES.length+"개)";
+ var emptyEl=$("sampleEmpty"); if(emptyEl)emptyEl.hidden=shown>0;
+ observeCaps();
+}
+/* Sample film previews run only while their card is on screen.
+   Cards start when they reach the middle band of the viewport
+   (threshold 0.45) and pause again once scrolled out of view. */
+var capObserver=null;
+function observeCaps(){
+ if(!("IntersectionObserver" in window)){document.querySelectorAll(".capbox").forEach(function(b){b.classList.add("inview")});return}
+ if(!capObserver){
+  capObserver=new IntersectionObserver(function(entries){
+   entries.forEach(function(en){
+    var box=en.target, ph=box.querySelector(".pause-hint");
+    if(en.isIntersecting){
+     box.classList.add("inview");
+     if(ph)ph.textContent=box.classList.contains("paused")?"멈춤 — 다시 누르면 재생":"재생 중 · 실제 사이트 캡처 · 눌러서 멈추기";
+    }else{
+     box.classList.remove("inview");
+     if(ph&&!box.classList.contains("paused"))ph.textContent=box.getAttribute("data-hint")||"실제 사이트 캡처 · 눌러서 멈추기";
+    }
+   });
+  },{threshold:0.45});
+ }
+ document.querySelectorAll(".capbox").forEach(function(b){capObserver.observe(b)});
+}
+document.querySelectorAll(".fbtn").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll(".fbtn").forEach(function(x){x.classList.remove("on")});b.classList.add("on");curFilter=b.getAttribute("data-filter");renderSamples()})});
+$("sampleSearch").addEventListener("input",renderSamples);
+document.addEventListener("click",function(e){
+ var sb=e.target.closest("[data-pause]"); if(sb&&!e.target.closest("a,button")){sb.classList.toggle("paused");var ph=sb.querySelector(".pause-hint");if(ph)ph.textContent=sb.classList.contains("paused")?"멈춤 — 다시 누르면 재생":(sb.classList.contains("inview")?"재생 중 · 실제 사이트 캡처 · 눌러서 멈추기":(sb.getAttribute("data-hint")||"눌러서 멈추기"));return}
+ var g=e.target.closest("[data-get]"); if(g){selectSample(g.getAttribute("data-get"),true);return}
+});
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.hasAttribute&&e.target.hasAttribute("data-pause")){e.target.classList.toggle("paused")}});
+function renderRefChoices(){
+ $("refSampleChoices").innerHTML=SAMPLES.map(function(s){return '<label class="choice"><input type="radio" name="refSample" value="'+s.id+'"'+(selectedSample===s.id?" checked":"")+'><span>'+esc(s.title)+'<span class="sub">'+esc(s.ctaLabel)+' 유형</span></span></label>'}).join("");
+ document.querySelectorAll("input[name=refSample]").forEach(function(r){r.addEventListener("change",function(){selectedSample=r.value})});
+}
+function selectSample(id,scroll){if(scroll)window.dispatchEvent(new CustomEvent("v2open",{detail:id}));
+ selectedSample=id; renderRefChoices();
+ if(scroll){document.getElementById("start").scrollIntoView({behavior:"smooth",block:"start"});toast("참고 샘플이 선택됐습니다. 최소 정보만 입력하면 구성안을 보여드립니다.")}
+}
+renderSamples(); renderRefChoices();
+
+/* Section picker — sections drawn from the samples actually made.
+   Multiple choice; "제작자에게 맡기기" (secAuto) is the default and
+   re-engages whenever nothing is picked, so intake works with zero
+   picks. The gallery item links to the gallery-layout picker below
+   it, which keeps working whether this item is picked or not. */
+var SEC_OPTIONS=[
+{id:"hero",name:"히어로 (첫 화면)",sub:"대표 이미지·영상과 한 줄 소개로 시작 · 윤서현 샘플",proto:"히어로 — 대표 비주얼과 한 줄 소개"},
+{id:"about",name:"본인 소개 (About)",sub:"프로필과 소개글, 활동을 한눈에 · hansakim.com",proto:"본인 소개 (About) — 프로필과 소개글"},
+{id:"story",name:"브랜드·작가 스토리",sub:"지키는 원칙과 세계관을 한 단락으로 · 거품숲 샘플",proto:"브랜드·작가 스토리 — 정체성과 세계관"},
+{id:"gallery",name:"작품·제품 갤러리",sub:"작품·제품을 모아 보여주는 핵심 섹션 · 윤서현 샘플 — 바로 아래 ‘작품 갤러리 구도’ 선택과 연결됩니다. 이 항목을 고르지 않아도 구도는 따로 고를 수 있어요",proto:""},
+{id:"featured",name:"대표작·대표 제품",sub:"가장 강한 것부터 골라서 보여주기 · 브랜드 디자이너 샘플",proto:"대표작·대표 제품 — 핵심만 골라서"},
+{id:"history",name:"이력·연혁",sub:"전시·경력을 연도 순으로 정리 · hansakim.com",proto:"이력·연혁 — 연도별 타임라인"},
+{id:"process",name:"작업 과정·이야기",sub:"만드는 방식과 과정을 사진과 글로 · 거품숲 샘플",proto:"작업 과정·이야기 — 제작 과정"},
+{id:"services",name:"서비스·가격 안내",sub:"제공 범위와 조건을 미리 공개 · 브랜드 디자이너 샘플",proto:"서비스·가격 안내 — 범위와 조건 공개"},
+{id:"trust",name:"후기·신뢰 근거",sub:"후기, 성분·제작 정보 같은 근거 자료 · 거품숲 샘플",proto:"후기·신뢰 근거 — 확인된 정보만"},
+{id:"faq",name:"자주 묻는 질문 (FAQ)",sub:"문의 전에 궁금증을 먼저 해결 · 그림공방 하루(가상 샘플)의 안내 구성",proto:"자주 묻는 질문 (FAQ)"},
+{id:"contact",name:"연락처·문의 (이메일 보내기)",sub:"연락처 공개와 메일로 문의받는 폼 · 브랜드 디자이너 샘플",proto:"문의 — 연락처와 이메일 보내기 폼"},
+{id:"booking",name:"예약·구매·결제",sub:"구매·예약 동선과 결제 안내 · 거품숲 샘플",proto:"예약·구매·결제 — 신청 동선과 안내"},
+{id:"newsletter",name:"뉴스레터·소식 구독",sub:"새 전시·신제품 소식을 이메일로 · 확장 옵션 (샘플 외 추가 가능)",proto:"뉴스레터·소식 구독 — 구독 폼"}
+];
+function renderSecChoices(){
+ $("secChoices").innerHTML=SEC_OPTIONS.map(function(o){return '<label class="choice"><input type="checkbox" name="wantSec" value="'+o.id+'"><span>'+esc(o.name)+'<span class="sub">'+esc(o.sub)+'</span></span></label>'}).join("");
+ document.querySelectorAll("input[name=wantSec]").forEach(function(c){c.addEventListener("change",function(){
+  $("secAuto").checked=!document.querySelectorAll("input[name=wantSec]:checked").length;
+  updateSectionLabels(); if(!$("protoCard").hidden)renderCalc();
+ })});
+ $("secAuto").addEventListener("change",function(){
+  if($("secAuto").checked){document.querySelectorAll("input[name=wantSec]:checked").forEach(function(c){c.checked=false})}
+  else if(!document.querySelectorAll("input[name=wantSec]:checked").length){$("secAuto").checked=true}
+  updateSectionLabels(); if(!$("protoCard").hidden)renderCalc();
+ });
+}
+function selectedSections(){
+ var ids={};document.querySelectorAll("input[name=wantSec]:checked").forEach(function(c){ids[c.value]=true});
+ return SEC_OPTIONS.filter(function(o){return ids[o.id]});
+}
+function secNamesText(secs){return secs.length?secs.map(function(o){return o.name}).join(", "):"섹션 구성: 개발자에게 일임 — 개발 시 주제·목적·자료에 맞춰 결정"}
+var SECTION_DELEGATE_TEXT="섹션 구성: 개발자에게 일임 — 개발 시 주제·목적·자료에 맞춰 결정";
+var GALLERY_DELEGATE_TEXT="갤러리 구도: 개발자에게 일임 — 개발 시 주제·목적·자료에 맞춰 결정";
+function sectionPriceLabel(){var secs=selectedSections();return secs.length?("선택 섹션 "+secs.length+"개"):("섹션 구성 일임(개발 시 결정)")}
+function galleryReqText(){return gpLayout==="auto"?GALLERY_DELEGATE_TEXT:("갤러리 구도: "+gpName())}
+function updateSectionLabels(){var el=$("priceSectionLabel");if(el)el.textContent="("+sectionPriceLabel()+")"}
+renderSecChoices();
+updateSectionLabels();
+
+/* Materials are no longer attached to the form: after an order is
+   saved, the customer uploads photos/videos directly into a
+   per-order Google Drive folder (see the Drive folder flow below). */
+
+/* Gallery layout picker — the Work Gallery Layouts compositions as a
+   live sample choice: name + preview + selection only, no explanations.
+   Index rows are dedicated markup here (number / thumb / body / year as
+   separate grid items), not the shared card reused. */
+var GP_WORKS=[
+{img:"assets/0bcb63630c2592.webp",title:"흙의 기억",year:"2026",cat:"도예 · 연작",alt:"흰 유약과 회청이 겹층을 이룬 도자기 항아리 (샘플)"},
+{img:"assets/32a0c9d7796d7b.webp",title:"파도의 결",year:"2025",cat:"회화",alt:"짙은 파랑과 흰색 물감이 파도처럼 두껍게 겹친 추상화 (샘플)"},
+{img:"assets/dcc211f69ea226.webp",title:"지층의 시간",year:"2025",cat:"회화",alt:"테라코타와 황토색 층이 수평으로 쌓인 추상화 (샘플)"},
+{img:"assets/f75ca657c84860.webp",title:"달항아리, 백(白)",year:"2024",cat:"도예",alt:"따뜻한 회색 배경 앞에 놓인 둥근 백자 달항아리 (샘플)"},
+{img:"assets/ed7e6f2c6b6f0b.webp",title:"손의 온도",year:"2024",cat:"과정 기록",alt:"물레 위에서 붉은 흙을 빚는 손의 클로즈업 (샘플)"},
+{img:"assets/ff50aff77a1deb.webp",title:"청자의 방",year:"2023",cat:"도예",alt:"나무 선반 위에 놓인 청자 화병들 (샘플)"}
+];
+var GP_LAYOUTS=[
+{id:"auto",name:"제작자에게 맡기기"},
+{id:"grid",name:"그리드"},{id:"masonry",name:"메이슨리"},{id:"strip",name:"가로 확장"},
+{id:"flow",name:"세로 플로우"},{id:"focus",name:"포커스"},{id:"timeline",name:"연혁 타임라인"},
+{id:"index",name:"인덱스"},{id:"coverflow",name:"커버플로우"},{id:"stack",name:"카드 스택"},
+{id:"museum",name:"뮤지엄 월"},{id:"film",name:"가로 필름"}
+];
+var gpLayout="auto", gpActive=0, gpCover=0, gpDeck=[0,1,2,3,4,5], gpHansaMode="film", gpHansaSuppressClick=false, gpDetailIdx=null, gpFlipRect=null;
+function gpName(){var l=GP_LAYOUTS.filter(function(x){return x.id===gpLayout})[0];return l?l.name:""}
+function gpCard(w,i){
+ return '<article class="gp-card" data-gp-open="'+i+'" role="button" tabindex="0" aria-label="'+esc(w.title)+' 상세 보기"><figure><img src="'+w.img+'" alt="'+esc(w.alt)+'" loading="lazy"></figure><div class="b"><div class="t">'+esc(w.title)+'</div><div class="m"><span class="y">'+w.year+'</span> · '+esc(w.cat)+'</div></div></article>';
+}
+function gpSharedDetailHTML(){
+ var w=GP_WORKS[gpDetailIdx], total=GP_WORKS.length;
+ var countHTML='<span class="gp-hansa-count">'+gpNum(gpDetailIdx)+' <span>/ '+String(total).padStart(2,"0")+'</span></span>';
+ return '<div class="gp-hansa is-detail">'
+  +'<div class="gp-hansa-top"><button type="button" data-gp-detail-back>← 목록으로 돌아가기</button><button type="button" data-gp-detail-close aria-label="닫기">닫기 ✕</button></div>'
+  +'<div class="gp-hansa-detailViewport"><figure><img src="'+w.img+'" alt="'+esc(w.alt)+'"></figure>'
+  +'<button type="button" class="gp-hansa-arrow prev" data-gp-detail-prev aria-label="이전 작품"'+(gpDetailIdx<=0?" disabled":"")+'>←</button>'
+  +'<button type="button" class="gp-hansa-arrow next" data-gp-detail-next aria-label="다음 작품"'+(gpDetailIdx>=total-1?" disabled":"")+'>→</button>'
+  +'</div>'
+  +'<div class="gp-hansa-bar">'+countHTML+'<span class="gp-hansa-line"></span><span class="gp-hansa-detailMeta">'+esc(w.title)+' · '+w.year+' · '+esc(w.cat)+'</span></div>'
+  +'</div>';
+}
+function gpOpenDetail(i){gpDetailIdx=i;gpActive=i;gpCover=i;renderGPStage()}
+/* Single-motion FLIP into the detail view. gpFlipRect holds the centre
+   work's exact on-screen rect AT THE CLICK (its normal film/coverflow
+   resting place — there is no separate opening enlargement any more).
+   The detail DOM renders in the same frame as the click, so the caption
+   and the bottom bar leave WITH the click instead of vanishing late at
+   a swap, and the detail figure — same 4:3 box as the slide, so one
+   uniform scale, no stretch — starts transformed onto the clicked rect
+   and springs to its resting place in ONE continuous growth. The old
+   two-step sequence (enlarge up top, swap DOM, then sink ~60px down to
+   the detail centre) is what read as "커졌다가 밑으로 떨어진다". */
+function gpApplyFlip(st){
+ if(!gpFlipRect)return;
+ var r=gpFlipRect; gpFlipRect=null;
+ if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+ var fig=st.querySelector(".gp-hansa-detailViewport figure");
+ if(!fig||!r.width||!r.height)return;
+ /* Measure the figure's NATURAL rect: the stylesheet rise animation
+    starts at translateY(26px) scale(.93), and measuring through its
+    first frame skews the FLIP start. Disable it BEFORE measuring —
+    and leave it disabled afterwards: clearing the inline animation
+    in cleanup re-applied the keyframes, restarting the rise on the
+    already-settled image so it dropped back down half a second
+    after the detail view appeared. */
+ fig.style.animation="none";
+ fig.getBoundingClientRect();
+ var last=fig.getBoundingClientRect();
+ if(!last.width||!last.height)return;
+ var dx=(r.left+r.width/2)-(last.left+last.width/2);
+ var dy=(r.top+r.height/2)-(last.top+last.height/2);
+ var s=r.width/last.width;
+ fig.style.transformOrigin="center center";
+ fig.style.transform="translate("+dx+"px,"+dy+"px) scale("+s+","+s+")";
+ fig.getBoundingClientRect();
+ fig.style.transition="transform .58s cubic-bezier(.22,1.08,.36,1)";
+ fig.style.transform="translate(0px,0px) scale(1,1)";
+ /* Cleanup clears ONLY the transition, never the transform: the
+    transform already rests at identity, and touching it (the old
+    timeout cleared both, half a second after settling) is what
+    re-dropped the image. */
+ var cleaned=false;
+ function clean(){if(cleaned)return;cleaned=true;fig.style.transition=""}
+ fig.addEventListener("transitionend",function h(e){if(e.propertyName==="transform"){fig.removeEventListener("transitionend",h);clean()}});
+ setTimeout(clean,720);
+}
+function gpCoverOpenDetail(){
+ var st=$("gpStage"), cover=st.querySelector(".gp-cover");
+ var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ if(!cover||reduce){gpOpenDetail(gpCover);return}
+ /* No opening sequence: capture the centre card's rect as it rests at
+    the click and go straight to the detail view — gpApplyFlip grows
+    that rect into the detail figure in a single motion, and the
+    nav row / neighbouring cards leave in the same frame. */
+ var centerEl=st.querySelector('[data-gpc="'+gpCover+'"]');
+ if(centerEl){var r=centerEl.getBoundingClientRect();gpFlipRect={left:r.left,top:r.top,width:r.width,height:r.height}}
+ gpOpenDetail(gpCover);
+}
+function renderGPChips(){
+ $("gpChips").innerHTML=GP_LAYOUTS.map(function(l,i){
+  return '<button type="button" class="gp-chip'+(gpLayout===l.id?" on":"")+'" data-gp="'+l.id+'" role="radio" aria-checked="'+(gpLayout===l.id)+'">'+(i>0?'<span class="n">'+String(i).padStart(2,"0")+'</span>':"")+esc(l.name)+'</button>';
+ }).join("");
+ document.querySelectorAll("[data-gp]").forEach(function(b){b.addEventListener("click",function(){var prevLayout=gpLayout;gpLayout=b.getAttribute("data-gp");gpDetailIdx=null;if(gpLayout!==prevLayout&&(gpLayout==="strip"||gpLayout==="film")){gpActive=0;gpHansaMode="film"}renderGPChips();renderGPStage()})});
+ $("gpSelLine").innerHTML="선택 중: <b>"+esc(gpName())+"</b>";
+}
+function gpNum(i){return String(i+1).padStart(2,"0")}
+function gpHansaArrowsHTML(){
+ var prev='<button type="button" class="gp-hansa-arrow prev" data-hansa-prev aria-label="← 이전 작품"'+(gpActive<=0?" disabled":"")+'>←</button>';
+ var next='<button type="button" class="gp-hansa-arrow next" data-hansa-next aria-label="→ 다음 작품"'+(gpActive>=GP_WORKS.length-1?" disabled":"")+'>→</button>';
+ return prev+next;
+}
+function gpHansaHTML(){
+ var total=GP_WORKS.length, w=GP_WORKS[gpActive];
+ var countHTML='<span class="gp-hansa-count">'+gpNum(gpActive)+' <span>/ '+String(total).padStart(2,"0")+'</span></span>';
+ if(gpHansaMode==="closed"){
+  return '<div class="gp-hansa is-closed"><button type="button" class="gp-hansa-reopen" data-hansa-reopen>미리보기 열기</button></div>';
+ }
+ if(gpHansaMode==="detail"){
+  return '<div class="gp-hansa is-detail">'
+   +'<div class="gp-hansa-top"><button type="button" data-hansa-shrink>← 목록으로 축소</button><button type="button" data-hansa-close aria-label="닫기">닫기 ✕</button></div>'
+   +'<div class="gp-hansa-detailViewport"><figure><img src="'+w.img+'" alt="'+esc(w.alt)+'"></figure>'+gpHansaArrowsHTML()+'</div>'
+   +'<div class="gp-hansa-bar">'+countHTML+'<span class="gp-hansa-line"></span><span class="gp-hansa-detailMeta">'+esc(w.title)+' · '+w.year+' · '+esc(w.cat)+'</span></div>'
+   +'</div>';
+ }
+ /* Film view: centre work large and sharp, immediate neighbours smaller,
+    blurred and clipped at the edges; farther works hidden. */
+ var slides=GP_WORKS.map(function(x,i){
+  var off=i-gpActive, cls=off===0?"is-center":off===-1?"is-prev":off===1?"is-next":"is-far";
+  return '<figure class="gp-hansa-slide '+cls+'" data-hansa-slide="'+i+'" role="button" tabindex="0" aria-label="'+esc(x.title)+(i===gpActive?' 상세 보기':' 중앙으로 이동')+'"><img src="'+x.img+'" alt="'+esc(x.alt)+'" loading="lazy"></figure>';
+ }).join("");
+ return '<div class="gp-hansa">'
+  +'<div class="gp-hansa-viewport" data-hansa-viewport>'+slides+gpHansaArrowsHTML()
+  +'<div class="gp-hansa-caption"><span class="no">'+gpNum(gpActive)+'</span><span class="tt">'+esc(w.title)+'</span><span>'+w.year+' · '+esc(w.cat)+'</span></div>'
+  +'</div>'
+  +'<div class="gp-hansa-bar">'+countHTML+'<span class="gp-hansa-line"></span><span class="gp-hansa-hint">좌우로 드래그하여 탐색 · 옆 작품은 중앙으로, 중앙 작품을 누르면 크게 봅니다</span></div>'
+  +'</div>';
+}
+/* Film-mode navigation animates in place: swapping slide classes on the
+   live DOM lets the CSS transitions run — neighbours slide left/right and
+   the new centre springs up larger. Falls back to a full render when the
+   film DOM is not on stage. */
+function gpHansaSync(){
+ var st=$("gpStage"), slides=st.querySelectorAll("[data-hansa-slide]");
+ if(!slides.length){renderGPStage();return}
+ slides.forEach(function(s,i){
+  var off=i-gpActive;
+  s.className="gp-hansa-slide "+(off===0?"is-center":off===-1?"is-prev":off===1?"is-next":"is-far");
+  s.setAttribute("aria-label",GP_WORKS[i].title+(i===gpActive?" 상세 보기":" 중앙으로 이동"));
+ });
+ var w=GP_WORKS[gpActive];
+ var cap=st.querySelector(".gp-hansa-caption");
+ if(cap)cap.innerHTML='<span class="no">'+gpNum(gpActive)+'</span><span class="tt">'+esc(w.title)+'</span><span>'+w.year+' · '+esc(w.cat)+'</span>';
+ var cnt=st.querySelector(".gp-hansa-count");
+ if(cnt)cnt.innerHTML=gpNum(gpActive)+' <span>/ '+String(GP_WORKS.length).padStart(2,"0")+'</span>';
+ var pv=st.querySelector("[data-hansa-prev]"), nx=st.querySelector("[data-hansa-next]");
+ if(pv)pv.disabled=gpActive<=0;
+ if(nx)nx.disabled=gpActive>=GP_WORKS.length-1;
+}
+/* Centre work selected: straight to the detail view in the click frame.
+   The caption and bottom bar are part of the film DOM, so they leave
+   WITH the click — not late, at a swap — while gpApplyFlip grows the
+   centre slide's resting rect into the detail figure in one motion.
+   (The previous design first enlarged the centre up top via
+   .is-opening, waited out the spring, then swapped DOM: the detail
+   figure landed ~60px lower, so the image visibly sank after growing,
+   and the bottom bar only disappeared at that late swap.) */
+function gpHansaOpenDetail(){
+ var st=$("gpStage"), box=st.querySelector(".gp-hansa");
+ var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+ if(!box||reduce){gpHansaMode="detail";renderGPStage();return}
+ var center=box.querySelector(".gp-hansa-slide.is-center");
+ if(center){var r=center.getBoundingClientRect();gpFlipRect={left:r.left,top:r.top,width:r.width,height:r.height}}
+ gpHansaMode="detail"; renderGPStage();
+}
+function gpCovTransform(off){
+ return "translateX("+(off*58)+"%) translateZ("+(-Math.abs(off)*120)+"px) rotateY("+(-off*34)+"deg)"+(off===0?" translateY(-10px) scale(1.06)":"");
+}
+/* Coverflow selection changes update the live cards so they slide sideways
+   and the new centre rises larger, instead of snapping via a re-render. */
+function gpCoverSync(){
+ var st=$("gpStage"), els=st.querySelectorAll("[data-gpc]");
+ if(!els.length){renderGPStage();return}
+ els.forEach(function(el){
+  var i=Number(el.getAttribute("data-gpc")), off=i-gpCover, ao=Math.abs(off);
+  el.style.transform=gpCovTransform(off);
+  el.style.opacity=ao>3?0:1-ao*0.16;
+  el.style.zIndex=20-ao;
+  el.style.pointerEvents=ao>3?"none":"auto";
+  el.setAttribute("aria-label",GP_WORKS[i].title+(i===gpCover?" 상세 보기":" 중앙으로 이동"));
+ });
+ var cnt=st.querySelector(".gp-navrow .cnt");
+ if(cnt)cnt.textContent=String(gpCover+1).padStart(2,"0")+" / "+String(GP_WORKS.length).padStart(2,"0")+" · "+GP_WORKS[gpCover].title;
+ var pv=$("gpCovPrev"), nx=$("gpCovNext");
+ if(pv)pv.disabled=gpCover===0;
+ if(nx)nx.disabled=gpCover===GP_WORKS.length-1;
+}
+function renderGPStage(){
+ var st=$("gpStage");
+ if(gpDetailIdx!==null){
+  st.innerHTML=gpSharedDetailHTML();
+  gpApplyFlip(st);
+  var dBack=st.querySelector("[data-gp-detail-back]"), dClose=st.querySelector("[data-gp-detail-close]"), dPrev=st.querySelector("[data-gp-detail-prev]"), dNext=st.querySelector("[data-gp-detail-next]");
+  function dBackFn(){gpDetailIdx=null;renderGPStage()}
+  if(dBack)dBack.addEventListener("click",dBackFn);
+  if(dClose)dClose.addEventListener("click",dBackFn);
+  if(dPrev)dPrev.addEventListener("click",function(){if(gpDetailIdx>0){gpDetailIdx--;gpActive=gpDetailIdx;renderGPStage()}});
+  if(dNext)dNext.addEventListener("click",function(){if(gpDetailIdx<GP_WORKS.length-1){gpDetailIdx++;gpActive=gpDetailIdx;renderGPStage()}});
+  return;
+ }
+ var eff=gpLayout==="auto"?"grid":gpLayout, h="";
+ if(eff==="grid"||eff==="masonry"){h='<div class="gp-'+eff+'">'+GP_WORKS.map(gpCard).join("")+"</div>"}
+ else if(eff==="strip"||eff==="film"){h=gpHansaHTML()}
+ else if(eff==="flow"){h='<div class="gp-flow">'+GP_WORKS.map(gpCard).join("")+"</div>"}
+ else if(eff==="timeline"){
+  var sorted=GP_WORKS.map(function(w,i){return i}).sort(function(a,b){return GP_WORKS[b].year-GP_WORKS[a].year});
+  h='<div class="gp-timeline">'+sorted.map(function(i){var w=GP_WORKS[i];return '<article class="gp-card" data-gp-open="'+i+'" role="button" tabindex="0" aria-label="'+esc(w.title)+' 상세 보기"><span class="yr">'+w.year+'</span><figure><img src="'+w.img+'" alt="'+esc(w.alt)+'" loading="lazy"></figure><div class="b"><div class="t">'+esc(w.title)+'</div><div class="m">'+esc(w.cat)+'</div></div></article>'}).join("")+"</div>";
+ }
+ else if(eff==="index"){
+  h='<div class="gp-index">'+GP_WORKS.map(function(w,i){return '<div class="gp-irow" data-gp-open="'+i+'" role="button" tabindex="0" aria-label="'+esc(w.title)+' 상세 보기"><span class="no">'+String(i+1).padStart(2,"0")+'</span><img src="'+w.img+'" alt="'+esc(w.alt)+'" loading="lazy"><span><span class="tt">'+esc(w.title)+'</span><br><span class="mm">'+esc(w.cat)+'</span></span><span class="yy">'+w.year+'</span></div>'}).join("")+"</div>";
+ }
+ else if(eff==="focus"){
+  var w=GP_WORKS[gpActive];
+  h='<div class="gp-focus"><figure data-gp-open="'+gpActive+'" role="button" tabindex="0" aria-label="'+esc(w.title)+' 상세 보기"><img src="'+w.img+'" alt="'+esc(w.alt)+'"><figcaption>'+esc(w.title)+'<span>'+w.year+' · '+esc(w.cat)+'</span></figcaption></figure><div class="gp-thumbs">'+GP_WORKS.map(function(x,i){return '<button type="button" data-gpf="'+i+'" class="'+(gpActive===i?"on":"")+'" aria-label="'+esc(x.title)+' 보기"><img src="'+x.img+'" alt=""></button>'}).join("")+"</div></div>";
+ }
+ else if(eff==="coverflow"){
+  h='<div class="gp-cover">'+GP_WORKS.map(function(x,i){var off=i-gpCover,ao=Math.abs(off);return '<div class="gp-cov" data-gpc="'+i+'" role="button" tabindex="0" aria-label="'+esc(x.title)+(i===gpCover?' 상세 보기':' 중앙으로 이동')+'" style="transform:'+gpCovTransform(off)+';opacity:'+(ao>3?0:1-ao*0.16)+';z-index:'+(20-ao)+';pointer-events:'+(ao>3?"none":"auto")+'"><img src="'+x.img+'" alt="'+esc(x.alt)+'" loading="lazy"></div>'}).join("")+'</div><div class="gp-navrow"><button type="button" class="gp-nav" id="gpCovPrev" aria-label="이전 작품"'+(gpCover===0?" disabled":"")+'>←</button><span class="cnt">'+String(gpCover+1).padStart(2,"0")+" / "+String(GP_WORKS.length).padStart(2,"0")+" · "+esc(GP_WORKS[gpCover].title)+'</span><button type="button" class="gp-nav" id="gpCovNext" aria-label="다음 작품"'+(gpCover===GP_WORKS.length-1?" disabled":"")+'>→</button></div>';
+ }
+ else if(eff==="stack"){
+  h='<div class="gp-stackwrap">'+gpDeck.map(function(wi,pos){var x=GP_WORKS[wi];return '<article class="gp-scard" data-gp-open="'+wi+'" role="button" tabindex="0" aria-label="'+esc(x.title)+' 상세 보기" style="transform:translate(-50%,-50%) translate('+(pos*16)+'px,'+(-pos*12)+'px) rotate('+(pos*2.5)+'deg);z-index:'+(10-pos)+'"><figure><img src="'+x.img+'" alt="'+esc(x.alt)+'" loading="lazy"></figure><div class="b"><div class="t">'+esc(x.title)+'</div><div class="m"><span class="y">'+x.year+'</span> · '+esc(x.cat)+'</div></div></article>'}).join("")+'</div><div class="gp-navrow"><span class="cnt">'+esc(GP_WORKS[gpDeck[0]].title)+'</span><button type="button" class="gp-nav" id="gpDeckNext" style="width:auto;padding:0 16px;border-radius:999px;font-weight:800;font-size:13px">다음 카드 넘기기</button></div>';
+ }
+ else if(eff==="museum"){h='<div class="gp-museum">'+GP_WORKS.map(gpCard).join("")+"</div>"}
+ st.innerHTML=h;
+ gpApplyFlip(st);
+ /* Hansa film/detail bindings — film-mode moves animate in place (slides
+    glide, centre springs up); picking the centre work plays the opening
+    sequence into the detail view, whose arrows swap the single work. */
+ st.querySelectorAll("[data-hansa-slide]").forEach(function(c){
+  function activate(){
+   if(gpHansaSuppressClick||gpHansaMode!=="film")return;
+   var i=Number(c.getAttribute("data-hansa-slide"));
+   if(i===gpActive){gpHansaOpenDetail()}
+   else{gpActive=i;gpHansaSync()}
+  }
+  c.addEventListener("click",activate);
+  c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();activate()}});
+ });
+ var hPrev=st.querySelector("[data-hansa-prev]"), hNext=st.querySelector("[data-hansa-next]");
+ if(hPrev)hPrev.addEventListener("click",function(){if(gpActive>0){gpActive--;if(gpHansaMode==="film"){gpHansaSync()}else{renderGPStage()}}});
+ if(hNext)hNext.addEventListener("click",function(){if(gpActive<GP_WORKS.length-1){gpActive++;if(gpHansaMode==="film"){gpHansaSync()}else{renderGPStage()}}});
+ var hShrink=st.querySelector("[data-hansa-shrink]"), hClose=st.querySelector("[data-hansa-close]"), hReopen=st.querySelector("[data-hansa-reopen]");
+ if(hShrink)hShrink.addEventListener("click",function(){gpHansaMode="film";renderGPStage()});
+ if(hClose)hClose.addEventListener("click",function(){gpHansaMode="closed";renderGPStage()});
+ if(hReopen)hReopen.addEventListener("click",function(){gpHansaMode="film";renderGPStage()});
+ var hVp=st.querySelector("[data-hansa-viewport]");
+ if(hVp){
+  var dragX=null, dragT=0;
+  hVp.addEventListener("pointerdown",function(e){dragX=e.clientX;dragT=Date.now()});
+  hVp.addEventListener("pointerup",function(e){
+   if(dragX===null)return;
+   var dx=e.clientX-dragX, dt=Math.max(Date.now()-dragT,1); dragX=null;
+   if(Math.abs(dx)>36){gpHansaSuppressClick=true;setTimeout(function(){gpHansaSuppressClick=false},350)}
+   if(Math.abs(dx)<36)return;
+   var steps=Math.floor(Math.abs(dx)/110)+1;
+   if(Math.abs(dx)/dt>0.6)steps+=1;
+   var ni=dx<0?gpActive+steps:gpActive-steps;
+   gpActive=Math.max(0,Math.min(GP_WORKS.length-1,ni));
+   gpHansaSync();
+  });
+  hVp.addEventListener("pointercancel",function(){dragX=null});
+ }
+ st.querySelectorAll("[data-gp-open]").forEach(function(el){
+  function openIt(){gpOpenDetail(Number(el.getAttribute("data-gp-open")))}
+  el.addEventListener("click",openIt);
+  el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();openIt()}});
+ });
+ st.querySelectorAll("[data-gpf]").forEach(function(b){b.addEventListener("click",function(){gpActive=Number(b.getAttribute("data-gpf"));renderGPStage()})});
+ st.querySelectorAll("[data-gpc]").forEach(function(el){
+  function covActivate(){var i=Number(el.getAttribute("data-gpc"));if(i!==gpCover){gpCover=i;gpCoverSync()}else{gpCoverOpenDetail()}}
+  el.addEventListener("click",covActivate);
+  el.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();covActivate()}});
+ });
+ var pv=$("gpCovPrev"),nx=$("gpCovNext"),dn=$("gpDeckNext");
+ if(pv)pv.addEventListener("click",function(){if(gpCover>0){gpCover--;gpCoverSync()}});
+ if(nx)nx.addEventListener("click",function(){if(gpCover<GP_WORKS.length-1){gpCover++;gpCoverSync()}});
+ if(dn)dn.addEventListener("click",function(){gpDeck.push(gpDeck.shift());renderGPStage()});
+}
+renderGPChips(); renderGPStage();
+document.addEventListener("keydown",function(e){
+ if(e.key!=="Escape")return;
+ if(gpDetailIdx!==null){gpDetailIdx=null;renderGPStage()}
+ else if(gpHansaMode==="detail"){gpHansaMode="film";renderGPStage()}
+});
+
+/* Prototype generation — depends on inputs */
+var orders=[], orderSeq=0, lastSummary="", protoText="";
+function radioVal(name){var r=document.querySelector("input[name="+name+"]:checked");return r?r.value:""}
+function markF(id,bad){var f=document.querySelector('[data-required="'+id+'"]');if(f)f.classList.toggle("invalid",bad);return !bad}
+function setFlow(n){window.dispatchEvent(new CustomEvent("v2step",{detail:n}));[1,2,3,4].forEach(function(i){$("flow"+i).classList.toggle("on",i<=n)})}
+$("makeProtoBtn").addEventListener("click",function(){
+ var ok=true;
+ if(!markF("siteName",!$("siteName").value.trim()))ok=false;
+ if(!markF("purpose",!$("purpose").value.trim()))ok=false;
+ var em=$("contactEmail").value.trim(); if(!markF("cemail",!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)))ok=false;
+ var e=$("miniError"); e.style.display=ok?"none":"block"; e.textContent=ok?"":"이메일·사이트 이름·목적 1줄을 채워주세요.";
+ if(!ok)return;
+ var s=SAMPLES.filter(function(x){return x.id===selectedSample})[0]||SAMPLES[0];
+ var name=$("siteName").value.trim(), purpose=$("purpose").value.trim();
+ var secs=selectedSections();
+ $("protoBased").textContent="기준 샘플: "+s.title+" ("+s.badge+") — 이 샘플의 구조를 “"+name+"”에 맞게 바꿔 제안합니다.";
+ $("protoGallery").textContent=galleryReqText()+" · 선택 섹션: "+secNamesText(secs)+(secs.length?(" (총 "+secs.length+"개)"):"");
+ $("protoPurpose").textContent="“"+name+"”의 목적은 "+purpose+" — 모든 섹션을 이 한 가지 목적으로 연결합니다. (참고 샘플이 하는 일: "+s.job+")";
+ $("protoHero").textContent=s.proto.hero;
+ var secList=secs.length?secs.map(function(o){return o.id==="gallery"?("작품·제품 갤러리 — "+(gpLayout==="auto"?"구도: 개발자에게 일임":("구도: "+gpName()))):o.proto}):s.proto.sections;
+ $("protoSections").innerHTML=secList.map(function(x){return "<li>"+esc(x)+"</li>"}).join("");
+ $("protoSwatches").innerHTML=s.proto.palette.map(function(c){return '<i style="background:'+c+'"></i>'}).join("");
+ $("protoTokens").innerHTML="팔레트: "+esc(s.proto.paletteName)+" ("+s.proto.palette.join(" · ")+")<br>폰트 쌍: "+esc(s.proto.fonts)+"<br>모션 레벨: "+esc(s.proto.motion);
+ protoText=["[추천 사이트 구성] "+name,"기준 샘플: "+s.title,galleryReqText(),"선택 섹션: "+secNamesText(secs),"목적: "+purpose,"히어로: "+s.proto.hero,"구성: "+secList.join(" → "),"DESIGN 토큰: "+s.proto.paletteName+" "+s.proto.palette.join(", ")+" / "+s.proto.fonts+" / "+s.proto.motion].join("\n");
+ /* Package follows the sample's composition */
+ calcState.base=s.proto.pkg; renderCalc(); updateSectionLabels();
+ $("priceSentence").textContent="이 구성은 기본 구성 — 히어로 1개(모션 20초 내/이미지 연출) + 원페이지("+sectionPriceLabel()+") + 한국어/영어 + Firebase(호스팅) 배포 + 도메인 연결 + 유지보수 1년 무료 — 으로 500,000원이에요. 도메인 구입 비용은 별도입니다. 아래에서 옵션을 더하면 합계가 바로 바뀝니다.";
+ $("protoCard").hidden=false; setFlow(2);
+ $("protoCard").scrollIntoView({behavior:"smooth",block:"start"});
+});
+$("showPriceBtn").addEventListener("click",function(){$("priceCard").hidden=false;setFlow(3);$("priceCard").scrollIntoView({behavior:"smooth",block:"start"})});
+
+/* Calculator — prices must match the option table above */
+var CALC={
+ base:[{id:"story",name:"기본 구성 — 히어로 1개(모션 20초 내/이미지 연출) + 원페이지 + 한국어/영어 + Firebase(호스팅) 배포 + 도메인 연결 + 유지보수 1년 무료",price:500000}],
+ soon:[{id:"pg",name:"PG 연동"},{id:"member",name:"회원제"},{id:"reserve",name:"예약시스템"}],
+ motions:[{id:"basic",name:"기본 히어로섹션(모션/이미지)",price:0},{id:"video30",name:"영상 기반 모션 그래픽(영상 작업) 30초",price:200000}]
+};
+var calcState={base:"story",extraPages:0,extraPagesDesc:"",motion:"basic"};
+function calcTotal(){
+ var b=CALC.base.filter(function(x){return x.id===calcState.base})[0];var total=b.price;
+ total+=calcState.extraPages*100000;
+ var m=CALC.motions.filter(function(x){return x.id===calcState.motion})[0];total+=m.price;
+ return total;
+}
+function quoteText(){
+ var b=CALC.base.filter(function(x){return x.id===calcState.base})[0];var lines=["[견적 요약] getsite.my","기본 구성: "+b.name+" — "+fmt(b.price)];
+ var secsNow=selectedSections();
+ lines.push(secsNow.length?("원페이지 구성: 선택 섹션 "+secsNow.length+"개 — "+secNamesText(secsNow)):("원페이지 구성: "+SECTION_DELEGATE_TEXT));
+ lines.push(galleryReqText());
+ lines.push("포함: 유지보수 1년 무료 · 도메인 구입 비용은 별도");
+ if(calcState.extraPages){lines.push("추가 페이지 "+calcState.extraPages+"장 — "+fmt(calcState.extraPages*100000));lines.push("추가 페이지 설명: "+(calcState.extraPagesDesc.trim()||"(미입력)"))}
+ var m=CALC.motions.filter(function(x){return x.id===calcState.motion})[0];lines.push("모션: "+m.name+(m.price?" — "+fmt(m.price):" — 기본 구성 포함"));
+ lines.push("예상 합계: "+fmt(calcTotal())+" (VAT 별도, 도메인 구입 비용 별도)");
+ lines.push("계약금 50% + 잔금 50% · 수정 기본 2회 포함, 추가 회당 50,000원");
+ return lines.join("\n");
+}
+function renderCalc(){
+ var selBase=CALC.base.filter(function(x){return x.id===calcState.base})[0];
+ var h='<div class="field"><span class="flabel">기본 구성 — 구성안 기준, 500,000원</span><p style="margin:0;font-size:15px">'+selBase.name+' — <b>'+fmt(selBase.price)+'</b></p><ul class="calc-includes"><li>히어로 1개 (모션 20초 내 / 이미지 연출)</li><li>원페이지 — '+esc(sectionPriceLabel())+(selectedSections().length?(" ("+esc(secNamesText(selectedSections()))+")"):"")+'</li><li>언어 — 한국어 / 영어 기본 포함</li><li>Google Firebase(호스팅) 배포 + 도메인 연결 (도메인 구입은 별도)</li><li>유지보수 1년 무료</li></ul></div>';
+ h+='<div class="field"><label for="extraPages">추가 페이지 (장당 100,000원)</label><input type="number" id="extraPages" min="0" max="20" value="'+calcState.extraPages+'">';
+ h+='<div id="extraPagesDescWrap" style="margin-top:10px;'+(calcState.extraPages>0?"":"display:none")+'"><label for="extraPagesDesc">어떤 섹션/페이지인지 설명해 주세요</label><textarea id="extraPagesDesc" placeholder="예: 작품 상세 페이지 1장 — 작품마다 큰 이미지와 설명, 문의 버튼">'+esc(calcState.extraPagesDesc)+'</textarea><p class="hint" id="pageDescWarn" style="display:none;color:var(--err);font-weight:700">추가 페이지 설명을 입력해 주세요.</p></div>';
+ h+='</div>';
+ h+='<div class="field"><span class="flabel">모션그래픽</span><div class="choices" role="radiogroup">'+CALC.motions.map(function(m){return '<label class="choice"><input type="radio" name="calcMotion" value="'+m.id+'"'+(calcState.motion===m.id?" checked":"")+'><span>'+m.name+(m.price?" "+fmt(m.price):" — 기본 구성 포함")+'</span></label>'}).join("")+'</div></div>';
+ h+='<div class="field"><span class="flabel">기능 옵션</span><div class="choices">'+CALC.soon.map(function(o){return '<label class="choice off"><input type="checkbox" disabled><span>'+o.name+'<span class="soon-badge">추후 오픈</span></span></label>'}).join("")+'</div><p class="hint">PG 연동 / 회원제 / 예약시스템은 준비 중이라 지금은 선택할 수 없습니다.</p></div>';
+ h+='<div class="field"><span class="flabel">유지보수 — 1년 무료 (기본 구성 포함)</span><p style="margin:0;font-size:14.5px;color:var(--ink2)">작은 텍스트·이미지 교체, 링크·오류 수정, 호스팅·도메인 연결 상태 확인까지 포함됩니다. 전면 재디자인·섹션 대폭 추가·신규 기능은 별도 견적입니다.</p></div>';
+ $("calcBody").innerHTML=h;$("calcTotal").textContent=fmt(calcTotal());$("quoteBox").textContent=quoteText();bindCalc();
+}
+function bindCalc(){
+ document.querySelectorAll("input[name=calcMotion]").forEach(function(r){r.addEventListener("change",function(){calcState.motion=r.value;renderCalc()})});
+ var ep=$("extraPages");if(ep)ep.addEventListener("input",function(){calcState.extraPages=Math.max(0,parseInt(ep.value||"0",10)||0);var w=$("extraPagesDescWrap");if(w)w.style.display=calcState.extraPages>0?"block":"none";$("calcTotal").textContent=fmt(calcTotal());$("quoteBox").textContent=quoteText()});
+ var ed=$("extraPagesDesc");if(ed)ed.addEventListener("input",function(){calcState.extraPagesDesc=ed.value;$("quoteBox").textContent=quoteText();var w=$("pageDescWarn");if(w)w.style.display=ed.value.trim()?"none":"block"});
+}
+renderCalc();
+$("copyQuoteBtn").addEventListener("click",function(){copyT(quoteText())});
+$("downloadQuoteBtn").addEventListener("click",function(){dl("견적서.txt",quoteText())});
+
+/* Start build -> order saved to Firestore (orders/{의뢰번호})
+   first. Only after the save does the Drive folder step run: the
+   order number goes to the Apps Script API, and the returned
+   folder link is stored on the order as driveFolderUrl. A folder
+   failure never fails the order — the admin screen can retry it.
+   A failed save is shown as a failure with a retry button — never
+   silently swapped for a local record. Payment is still guided by
+   email afterwards. */
+var pendingOrder=null;
+function setSaveStatus(kind,html){
+ var el=$("saveStatus"); if(!el)return;
+ el.className="save-status "+kind; el.innerHTML=html;
+}
+function renderDriveBox(state){
+ var box=$("driveBox"); if(!box||!pendingOrder)return;
+ if(state==="ok"&&pendingOrder.driveFolderUrl){
+  box.innerHTML='<div class="note"><b class="t">자료 올리기</b>사진·영상 등 제작에 필요한 자료는 아래 폴더에 직접 올려주세요. 파일이 이 사이트를 거치지 않고 Google Drive에 바로 올라가서, 큰 영상도 크기 제한 없이 올릴 수 있습니다.<br><a class="btn btn-p btn-s" style="margin-top:10px" href="'+esc(pendingOrder.driveFolderUrl)+'" target="_blank" rel="noopener noreferrer">자료 올리기: Drive 폴더 열기</a></div>';
+ }else if(state==="ing"){
+  box.innerHTML='<div class="note"><b class="t">자료 올리기</b>의뢰번호('+esc(pendingOrder.no)+') 전용 Drive 폴더를 만들고 있습니다. 잠시만 기다려주세요.</div>';
+ }else if(state==="fail"){
+  box.innerHTML='<div class="note"><b class="t">자료 올리기</b>접수는 정상적으로 완료됐지만, 자료 폴더가 아직 준비되지 않았습니다. 잠시 후 아래 진행 조회에서 의뢰번호로 다시 확인해 주세요.</div>';
+ }else{
+  box.innerHTML='<div class="note"><b class="t">자료 보내기</b>사진·영상 등 자료는 의뢰번호('+esc(pendingOrder.no)+')와 함께 운영자 이메일('+OPERATOR_EMAIL+')로 보내주세요.</div>';
+ }
+}
+function requestDriveFolder(){
+ if(!pendingOrder)return;
+ var order=pendingOrder;
+ resolveDriveApiUrl().then(function(resolved){
+  if(!pendingOrder||pendingOrder.no!==order.no)return;
+  if(!resolved){renderDriveBox("none");return}
+  renderDriveBox("ing");
+  createDriveFolder(order.no).then(function(url){
+   if(!pendingOrder||pendingOrder.no!==order.no)return;
+   pendingOrder.driveFolderUrl=url;
+   var se=orders.filter(function(o){return o.no===order.no})[0]; if(se)se.driveFolderUrl=url;
+   if(fbReady&&pendingOrder.saved){fbDb.collection("orders").doc(order.no).update({driveFolderUrl:url}).catch(function(){})}
+   renderDriveBox("ok");
+  }).catch(function(){if(pendingOrder&&pendingOrder.no===order.no)renderDriveBox("fail")});
+ });
+}
+function genOrderNoLocal(){
+ var t=Date.now().toString().slice(-6);
+ return "WO-"+new Date().getFullYear()+"-"+t;
+}
+function makeOrderNo(){
+ if(!fbReady)return Promise.resolve(genOrderNoLocal());
+ var tries=0;
+ function attempt(){
+  tries++;
+  var no="WO-"+new Date().getFullYear()+"-"+String(Math.floor(1000+Math.random()*9000));
+  return fbDb.collection("orders").doc(no).get().then(function(snap){
+   if(!snap.exists)return no;
+   if(tries<6)return attempt();
+   return genOrderNoLocal();
+  }).catch(function(){return genOrderNoLocal()});
+ }
+ return attempt();
+}
+function savePendingOrder(){
+ if(!pendingOrder)return Promise.resolve(false);
+ if(!fbReady){
+  setSaveStatus("err","서버 저장에 실패했습니다 — 다시 시도해 주세요.<br><span style='font-weight:600'>이유: "+esc(fbInitError||"서버에 연결할 수 없습니다.")+"</span><br><button type='button' class='btn btn-p btn-s' id='retrySaveBtn' style='margin-top:10px'>서버 저장 다시 시도</button>");
+  bindRetry(); return Promise.resolve(false);
+ }
+ setSaveStatus("ing","서버에 저장 중입니다…");
+ var doc={
+  siteName:pendingOrder.site, purpose:pendingOrder.purpose, email:pendingOrder.email,
+  name:pendingOrder.name, sample:pendingOrder.sampleTitle,
+  sections:pendingOrder.sectionNames, sectionsDelegated:pendingOrder.sectionNames.length===0,
+  sectionRequirement:pendingOrder.sectionNames.length?("선택 섹션 "+pendingOrder.sectionNames.length+"개"):SECTION_DELEGATE_TEXT,
+  galleryLayout:pendingOrder.galleryLayoutId, galleryRequirement:pendingOrder.galleryReq,
+  materials:pendingOrder.materials, driveFolderUrl:pendingOrder.driveFolderUrl||"",
+  estimate:pendingOrder.estimate, status:"샘플 제작 대기",
+  summary:pendingOrder.summary,
+  createdAt:firebase.firestore.FieldValue.serverTimestamp()
+ };
+ return fbDb.collection("orders").doc(pendingOrder.no).set(doc).then(function(){
+  pendingOrder.saved=true;
+  $("doneCard").querySelector("h3").textContent="접수되었습니다";
+  setSaveStatus("ok","접수 내용이 저장됐습니다. (의뢰번호 "+esc(pendingOrder.no)+")");
+  toast("접수가 완료됐습니다. 의뢰번호 "+pendingOrder.no);
+  return true;
+ }).catch(function(e){
+  setSaveStatus("err","서버 저장에 실패했습니다 — 다시 시도해 주세요.<br><span style='font-weight:600'>이유: "+esc((e&&e.message)?e.message:String(e))+"</span><br><button type='button' class='btn btn-p btn-s' id='retrySaveBtn' style='margin-top:10px'>서버 저장 다시 시도</button>");
+  bindRetry();
+  return false;
+ });
+}
+function bindRetry(){var b=$("retrySaveBtn");if(b)b.addEventListener("click",function(){if(!fbReady)initFirebase();savePendingOrder().then(function(saved){if(saved)requestDriveFolder()})})}
+$("startBuildBtn").addEventListener("click",function(){
+ if(!markF("consent",!$("consentCheck").checked)){$("priceError").style.display="block";$("priceError").textContent="개인정보 수집·이용 동의가 필요합니다.";return}
+ $("priceError").style.display="none";
+ if(calcState.extraPages>0&&!calcState.extraPagesDesc.trim()){var pw=$("pageDescWarn");if(pw)pw.style.display="block";toast("추가 페이지 설명을 입력해 주세요. 비워 둔 채로도 접수는 됩니다.")}
+ var btn=$("startBuildBtn"); btn.disabled=true; btn.textContent="접수 중…";
+ loadDriveConfig();
+ makeOrderNo().then(function(no){
+  var s=SAMPLES.filter(function(x){return x.id===selectedSample})[0]||SAMPLES[0];
+  var secs=selectedSections();
+  var materials=radioVal("hasData");
+  var sectionLine=secs.length?("선택 섹션 "+secs.length+"개: "+secNamesText(secs)):SECTION_DELEGATE_TEXT;
+  lastSummary=["[getsite.my 제작 의뢰 접수]","의뢰번호: "+no,"프리뷰 경로: /p/"+no,"","사이트 이름: "+$("siteName").value.trim(),"목적: "+$("purpose").value.trim(),"참고 샘플: "+s.title,"자료: "+materials,"이름: "+($("contactName").value.trim()||"없음")+" / 이메일: "+$("contactEmail").value.trim(),"",protoText,"",sectionLine,galleryReqText(),"자료 전달: 의뢰번호 전용 Drive 폴더에 직접 업로드 (폴더 링크는 접수 완료 화면·진행 조회에서 확인)","","--- 견적 ---",quoteText(),"","다음 단계: 샘플 제작 → 운영자("+OPERATOR_EMAIL+")가 등록 이메일로 샘플 링크 + 컨셉 설명 발송 → 확인 후 결제 안내(계약금 50%) → 전용 페이지에서 세부 입력 → 최종 제작·납품"].join("\n");
+  pendingOrder={no:no,site:$("siteName").value.trim(),purpose:$("purpose").value.trim(),email:$("contactEmail").value.trim(),name:$("contactName").value.trim(),sampleTitle:s.title,sectionNames:secs.map(function(o){return o.name}),galleryLayoutId:gpLayout,galleryReq:galleryReqText(),materials:materials,estimate:calcTotal(),summary:lastSummary,driveFolderUrl:"",saved:false};
+  orders.push({no:no,site:pendingOrder.site,email:pendingOrder.email,summary:lastSummary,driveFolderUrl:""});
+  $("successOrderNo").textContent=no;$("successSamplePath").textContent="/p/"+no;$("successBox").textContent=lastSummary;
+  var subj="[getsite.my 의뢰] "+no+" — "+pendingOrder.site;
+  $("operatorMailBtn").href="mailto:"+OPERATOR_EMAIL+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(lastSummary);
+  $("myMailBtn").href="mailto:"+encodeURIComponent(pendingOrder.email)+"?subject="+encodeURIComponent(subj)+"&body="+encodeURIComponent(lastSummary);
+  $("doneCard").hidden=false;setFlow(4);
+  setSaveStatus("ing","서버에 저장 중입니다…");
+  renderDriveBox(driveApiUrl()?"ing":"none");
+  $("doneCard").scrollIntoView({behavior:"smooth",block:"start"});
+  btn.disabled=false; btn.textContent="샘플 요청하기";
+  savePendingOrder().then(function(saved){if(saved)requestDriveFolder()});
+ });
+});
+$("copySummaryBtn").addEventListener("click",function(){copyT(lastSummary)});
+$("downloadSummaryBtn").addEventListener("click",function(){dl("접수요약.txt",lastSummary)});
+
+/* Lookup — reads the Firestore orders document for the order number.
+   The Drive folder link is customer-private: it is rendered only
+   here (the customer's own lookup) and in the admin screen. */
+function lookupDriveHtml(url){
+ if(!url)return "";
+ return '<div style="margin-top:12px"><a class="btn btn-p btn-s" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">자료 올리기: Drive 폴더 열기</a><p class="hint" style="margin-top:6px">사진·영상 등 자료는 이 폴더에 직접 올려주세요. 파일이 이 사이트를 거치지 않고 Drive에 바로 올라가 크기 제한이 없습니다. 이 링크는 의뢰하신 분만 아는 주소이니 다른 곳에 공유하지 마세요.</p></div>';
+}
+function sessionLookupHtml(no){
+ var se=orders.filter(function(o){return o.no===no})[0];
+ if(!se)return "";
+ return '<div class="note"><b class="t">'+esc(no)+' — '+esc(se.site||"")+'</b>이 브라우저에서 접수한 주문입니다. 샘플이 준비되면 운영자('+OPERATOR_EMAIL+')가 '+esc(se.email||"")+' 로 링크와 컨셉 설명을 보냅니다.</div>'+lookupDriveHtml(se.driveFolderUrl);
+}
+function doLookup(no){
+ var box=$("lookupResult"); if(!box)return;
+ no=(no||"").trim();
+ if(!no){box.innerHTML='<p class="hint">의뢰번호를 입력해주세요.</p>';return}
+ if(!fbReady){
+  var sh=sessionLookupHtml(no);
+  box.innerHTML=sh||'<div class="note"><b class="t">조회할 수 없습니다</b>서버에 연결할 수 없어 지금은 조회가 되지 않습니다. '+esc(fbInitError||"")+'<br>잠시 후 다시 시도해 주세요.</div>';
+  return;
+ }
+ box.innerHTML='<p class="hint">서버에서 조회 중입니다…</p>';
+ fbDb.collection("orders").doc(no).get().then(function(snap){
+  if(!snap.exists){
+   var sh2=sessionLookupHtml(no);
+   box.innerHTML=sh2||'<p class="hint">해당 의뢰번호를 찾을 수 없습니다. 의뢰번호를 다시 확인해 주세요.</p>';
+   return;
+  }
+  var d=snap.data()||{};
+  var secsTxt=d.sectionsDelegated?SECTION_DELEGATE_TEXT:(("선택 섹션 "+((d.sections||[]).length)+"개: "+(d.sections||[]).join(", ")));
+  box.innerHTML='<div class="note"><b class="t">'+esc(no)+' — '+esc(d.siteName||"")+'</b>현재 단계: '+esc(d.status||"샘플 제작 대기")+'<br>프리뷰 경로: /p/'+esc(no)+'<br>목적: '+esc(d.purpose||"")+'<br>참고 샘플: '+esc(d.sample||"")+'<br>'+esc(secsTxt)+'<br>'+esc(d.galleryRequirement||"")+'<br>자료: '+esc(d.materials||"")+'<br>예상 견적: '+esc(d.estimate!=null?fmt(d.estimate):"-")+'<br>샘플이 준비되면 운영자('+OPERATOR_EMAIL+')가 '+esc(d.email||"")+' 로 링크와 컨셉 설명을 보냅니다.</div>'+lookupDriveHtml(d.driveFolderUrl);
+ }).catch(function(e){
+  box.innerHTML='<div class="note"><b class="t">조회에 실패했습니다</b>'+esc((e&&e.message)?e.message:String(e))+'</div>';
+ });
+}
+$("lookupBtn").addEventListener("click",function(){doLookup($("lookupInput").value)});
+/* Detail (post-payment) — saves the final copy to the same orders
+   document. Extra files are not uploaded here: the customer puts
+   them in the per-order Drive folder directly. */
+$("detailSubmitBtn").addEventListener("click",function(){
+ var no=$("detailOrderNo").value.trim();
+ if(!no){$("detailMsg").textContent="의뢰번호를 입력해주세요.";return}
+ if(!$("detailAgree").checked){$("detailMsg").textContent="확인 체크가 필요합니다.";return}
+ if(!fbReady){$("detailMsg").textContent="서버에 연결할 수 없어 제출할 수 없습니다. "+fbInitError;return}
+ $("detailMsg").textContent="서버에 제출 중입니다…";
+ fbDb.collection("orders").doc(no).update({finalCopy:$("finalCopy").value,detailSubmittedAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){
+  $("detailMsg").textContent="상세 요구사항이 서버에 저장됐습니다. 추가 자료 파일은 의뢰번호 전용 Drive 폴더에 올려주세요.";
+ }).catch(function(e){
+  $("detailMsg").textContent="제출에 실패했습니다. 의뢰번호가 맞는지 확인해 주세요. ("+((e&&e.message)?e.message:String(e))+")";
+ });
+});
+/* Admin — Drive API setting + per-order management. There is no
+   bulk order list: the section is not linked from the page, and an
+   order is opened one at a time by its order number (plus orders
+   placed in this browser session), so other customers' emails and
+   folder links are never enumerated in this client. Orders without
+   a folder link get a "폴더 만들기" retry button. */
+var adminOrdersCache=[];
+function makeFolderFor(o,btn){
+ if(btn){btn.disabled=true;btn.textContent="만드는 중…"}
+ createDriveFolder(o.no).then(function(url){
+  o.driveFolderUrl=url;
+  var se=orders.filter(function(x){return x.no===o.no})[0]; if(se)se.driveFolderUrl=url;
+  if(pendingOrder&&pendingOrder.no===o.no){pendingOrder.driveFolderUrl=url;renderDriveBox("ok")}
+  if(fbReady){fbDb.collection("orders").doc(o.no).update({driveFolderUrl:url}).catch(function(){})}
+  toast("Drive 폴더가 만들어졌습니다: "+o.no);
+  loadAdminOrders(); showAdminDetailByNo(o.no);
+ }).catch(function(e){
+  toast("폴더 생성 실패: "+((e&&e.message)?e.message:String(e)));
+  if(btn){btn.disabled=false;btn.textContent="폴더 만들기"}
+ });
+}
+function showAdminDetailByNo(no){
+ var o=adminOrdersCache.filter(function(x){return x.no===no})[0];
+ var box=$("adminOrderDetail"); if(!box||!o)return;
+ box.innerHTML='<div class="note"><b class="t">'+esc(o.no)+' — '+esc(o.siteName||"")+'</b>상태: '+esc(o.status||"-")+'<br>이메일: '+esc(o.email||"-")+'<br>목적: '+esc(o.purpose||"-")+'<br>자료: '+esc(o.materials||"-")+(o.driveFolderUrl?'<br>자료 폴더: <a href="'+esc(o.driveFolderUrl)+'" target="_blank" rel="noopener noreferrer">Drive 폴더 열기</a>':'<br>자료 폴더: 아직 없음<br><button type="button" class="btn btn-p btn-s" id="adminMakeFolder" style="margin-top:8px">폴더 만들기</button>')+'</div>';
+ var b=$("adminMakeFolder"); if(b)b.addEventListener("click",function(){makeFolderFor(o,b)});
+}
+function upsertAdminOrder(o){
+ var ex=adminOrdersCache.filter(function(x){return x.no===o.no})[0];
+ if(ex){for(var k in o)ex[k]=o[k]}else{adminOrdersCache.push(o)}
+}
+function renderAdminSessionOrders(){
+ var list=$("adminOrderList"); if(!list)return;
+ var sess=orders.map(function(o){return{no:o.no,siteName:o.site,email:o.email,status:"이 브라우저에서 접수",driveFolderUrl:o.driveFolderUrl||"",source:"session"}});
+ sess.forEach(upsertAdminOrder);
+ if(!sess.length){list.innerHTML="";return}
+ list.innerHTML='<p class="hint" style="margin:0 0 8px">이 브라우저에서 접수한 주문</p>'+sess.map(function(o){
+  var idx=adminOrdersCache.indexOf(adminOrdersCache.filter(function(x){return x.no===o.no})[0]);
+  return '<div class="file-row"><span class="fname">'+esc(o.no)+'</span><span>'+esc(o.siteName||"")+'</span><span style="margin-left:auto;display:flex;gap:6px;align-items:center;flex:none">'+(o.driveFolderUrl?'<a href="'+esc(o.driveFolderUrl)+'" target="_blank" rel="noopener noreferrer" style="font-weight:800">폴더 열기</a>':'<button type="button" class="fdel" data-mkfolder="'+idx+'">폴더 만들기</button>')+'<button type="button" class="fdel" data-adetail="'+idx+'">상세</button></span></div>';
+ }).join("");
+ list.querySelectorAll("[data-adetail]").forEach(function(b){b.addEventListener("click",function(){showAdminDetailByNo(adminOrdersCache[Number(b.getAttribute("data-adetail"))].no)})});
+ list.querySelectorAll("[data-mkfolder]").forEach(function(b){b.addEventListener("click",function(){makeFolderFor(adminOrdersCache[Number(b.getAttribute("data-mkfolder"))],b)})});
+}
+function loadAdminOrders(){renderAdminSessionOrders()}
+function adminLookupOrder(){
+ var no=($("adminLookupInput").value||"").trim();
+ var box=$("adminOrderDetail"); if(!box)return;
+ if(!no){box.innerHTML='<p class="hint">주문번호를 입력해주세요.</p>';return}
+ var se=orders.filter(function(o){return o.no===no})[0];
+ if(se){upsertAdminOrder({no:se.no,siteName:se.site,email:se.email,status:"이 브라우저에서 접수",driveFolderUrl:se.driveFolderUrl||"",source:"session"});showAdminDetailByNo(no);return}
+ if(!fbReady){box.innerHTML='<div class="note"><b class="t">불러올 수 없습니다</b>서버에 연결할 수 없어 주문을 불러오지 못했습니다. '+esc(fbInitError||"")+'</div>';return}
+ box.innerHTML='<p class="hint">서버에서 불러오는 중입니다…</p>';
+ fbDb.collection("orders").doc(no).get().then(function(snap){
+  if(!snap.exists){box.innerHTML='<p class="hint">해당 주문번호를 찾을 수 없습니다.</p>';return}
+  var d=snap.data()||{};
+  upsertAdminOrder({no:no,siteName:d.siteName||"",email:d.email||"",status:d.status||"",purpose:d.purpose||"",materials:d.materials||"",driveFolderUrl:d.driveFolderUrl||"",source:"db"});
+  showAdminDetailByNo(no);
+ }).catch(function(e){
+  box.innerHTML='<div class="note"><b class="t">불러오기에 실패했습니다</b>'+esc((e&&e.message)?e.message:String(e))+'</div>';
+ });
+}
+function openAdmin(){
+ var sec=$("admin"); if(!sec)return;
+ sec.hidden=false;
+ var inp=$("driveApiInput"); if(inp)inp.value=driveLocalOverride();
+ loadAdminOrders();
+ sec.scrollIntoView({behavior:"smooth",block:"start"});
+}
+(function(){
+ var lookupBtn=$("adminLookupBtn");
+ if(lookupBtn)lookupBtn.addEventListener("click",adminLookupOrder);
+ var saveBtn=$("driveApiSaveBtn");
+ if(saveBtn)saveBtn.addEventListener("click",function(){
+  storeDriveApiUrl($("driveApiInput").value.trim());
+  var msg=$("driveApiSaveMsg");
+  if(msg)msg.textContent="이 기기에 임시값이 저장됐습니다. 모든 고객에게 적용하려면 서버 기본값 또는 Firestore config/drive 설정이 필요합니다.";
+  toast("모든 고객에게 적용하려면 서버 기본값 또는 Firestore config/drive 설정이 필요합니다.");
+ });
+ if((window.location.hash||"")==="#admin"){$("admin").hidden=false;var inp=$("driveApiInput");if(inp)inp.value=driveLocalOverride();loadAdminOrders()}
+})();
+
+/* /p/{의뢰번호} preview path — when this page is reached under a
+   /p/WO-... path (Firebase hosting rewrite serves this page there),
+   look that order up and show its summary and sample status. */
+(function(){
+ var m=(window.location.pathname||"").match(/\/p\/(WO-\d{4}-\d+)/)||(window.location.search||"").match(/[?&]p=(WO-\d{4}-\d+)/);
+ if(m&&m[1]){
+  var no=m[1];
+  var li=$("lookupInput"); if(li)li.value=no;
+  doLookup(no);
+  var lk=$("lookup"); if(lk)setTimeout(function(){lk.scrollIntoView({behavior:"smooth",block:"start"})},300);
+ }
+})();
+
+
+})();
+</script>
+<script src="assets/v2.js"></script>
+</body>
+</html>
