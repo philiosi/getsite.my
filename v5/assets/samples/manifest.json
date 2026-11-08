@@ -1,0 +1,375 @@
+{
+  "_failed": [],
+  "artist": {
+    "hero": "hero.webp",
+    "about": {
+      "file": "about.webp",
+      "w": 1440,
+      "h": 615,
+      "thumb": "about-640.webp"
+    },
+    "statement": {
+      "file": "statement.webp",
+      "w": 1440,
+      "h": 522,
+      "thumb": "statement-640.webp"
+    },
+    "works": {
+      "file": "works.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "works-640.webp"
+    },
+    "atelier": {
+      "file": "atelier.webp",
+      "w": 1440,
+      "h": 758,
+      "thumb": "atelier-640.webp"
+    },
+    "exhibitions": {
+      "file": "exhibitions.webp",
+      "w": 1440,
+      "h": 890,
+      "thumb": "exhibitions-640.webp"
+    },
+    "studio": {
+      "file": "studio.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "studio-640.webp"
+    },
+    "collab": {
+      "file": "collab.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "collab-640.webp"
+    },
+    "contact": {
+      "file": "contact.webp",
+      "w": 1440,
+      "h": 876,
+      "thumb": "contact-640.webp"
+    }
+  },
+  "hansakim": {
+    "hero": "hero.webp",
+    "artist": {
+      "file": "artist.webp",
+      "w": 1440,
+      "h": 781,
+      "thumb": "artist-640.webp"
+    },
+    "works": {
+      "file": "works.webp",
+      "w": 1440,
+      "h": 794,
+      "thumb": "works-640.webp"
+    },
+    "chronicle": {
+      "file": "chronicle.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "chronicle-640.webp"
+    },
+    "collections": {
+      "file": "collections.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "collections-640.webp"
+    },
+    "studio": {
+      "file": "studio.webp",
+      "w": 1440,
+      "h": 547,
+      "thumb": "studio-640.webp"
+    },
+    "media": {
+      "file": "media.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "media-640.webp"
+    },
+    "contact": {
+      "file": "contact.webp",
+      "w": 1440,
+      "h": 570,
+      "thumb": "contact-640.webp"
+    }
+  },
+  "nooreemadang": {
+    "hero": "hero.webp",
+    "family": {
+      "file": "family.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "family-640.webp"
+    },
+    "artist-note": {
+      "file": "artist-note.webp",
+      "w": 1440,
+      "h": 653,
+      "thumb": "artist-note-640.webp"
+    },
+    "favorites": {
+      "file": "favorites.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "favorites-640.webp"
+    },
+    "visit": {
+      "file": "visit.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "visit-640.webp"
+    }
+  },
+  "haru": {
+    "hero": "hero.webp",
+    "about": {
+      "file": "about.webp",
+      "w": 1440,
+      "h": 759,
+      "thumb": "about-640.webp"
+    },
+    "classes": {
+      "file": "classes.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "classes-640.webp"
+    },
+    "field": {
+      "file": "field.webp",
+      "w": 1440,
+      "h": 796,
+      "thumb": "field-640.webp"
+    },
+    "trust": {
+      "file": "trust.webp",
+      "w": 1440,
+      "h": 613,
+      "thumb": "trust-640.webp"
+    },
+    "guide": {
+      "file": "guide.webp",
+      "w": 1440,
+      "h": 745,
+      "thumb": "guide-640.webp"
+    },
+    "contact": {
+      "file": "contact.webp",
+      "w": 1440,
+      "h": 920,
+      "thumb": "contact-640.webp"
+    }
+  },
+  "soap": {
+    "hero": "hero.webp",
+    "benefits": {
+      "file": "benefits.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "benefits-640.webp"
+    },
+    "package": {
+      "file": "package.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "package-640.webp"
+    },
+    "forwhom": {
+      "file": "forwhom.webp",
+      "w": 1440,
+      "h": 929,
+      "thumb": "forwhom-640.webp"
+    },
+    "ingredients": {
+      "file": "ingredients.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "ingredients-640.webp"
+    },
+    "inquiry": {
+      "file": "inquiry.webp",
+      "w": 1440,
+      "h": 1066,
+      "thumb": "inquiry-640.webp"
+    },
+    "buy": {
+      "file": "buy.webp",
+      "w": 1440,
+      "h": 797,
+      "thumb": "buy-640.webp"
+    }
+  },
+  "cup": {
+    "hero": "hero.webp"
+  },
+  "cup3d": {
+    "hero": "hero.webp",
+    "turntable": {
+      "file": "turntable.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "turntable-640.webp"
+    }
+  },
+  "portfolio": {
+    "hero": "hero.webp",
+    "about": {
+      "file": "about.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "about-640.webp"
+    },
+    "manifesto": {
+      "file": "manifesto.webp",
+      "w": 1440,
+      "h": 662,
+      "thumb": "manifesto-640.webp"
+    },
+    "works": {
+      "file": "works.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "works-640.webp"
+    },
+    "story": {
+      "file": "story.webp",
+      "w": 1440,
+      "h": 925,
+      "thumb": "story-640.webp"
+    },
+    "services": {
+      "file": "services.webp",
+      "w": 1440,
+      "h": 902,
+      "thumb": "services-640.webp"
+    },
+    "contact": {
+      "file": "contact.webp",
+      "w": 1440,
+      "h": 788,
+      "thumb": "contact-640.webp"
+    }
+  },
+  "portfolio-react": {
+    "hero": "hero.webp",
+    "about": {
+      "file": "about.webp",
+      "w": 1032,
+      "h": 966,
+      "thumb": "about-640.webp"
+    },
+    "manifesto": {
+      "file": "manifesto.webp",
+      "w": 1032,
+      "h": 270,
+      "thumb": "manifesto-640.webp"
+    },
+    "works": {
+      "file": "works.webp",
+      "w": 1032,
+      "h": 1100,
+      "thumb": "works-640.webp"
+    },
+    "story": {
+      "file": "story.webp",
+      "w": 1032,
+      "h": 1100,
+      "thumb": "story-640.webp"
+    },
+    "services": {
+      "file": "services.webp",
+      "w": 1032,
+      "h": 575,
+      "thumb": "services-640.webp"
+    },
+    "clients": {
+      "file": "clients.webp",
+      "w": 1032,
+      "h": 174,
+      "thumb": "clients-640.webp"
+    }
+  },
+  "cafe": {
+    "hero": "hero.webp",
+    "story": {
+      "file": "story.webp",
+      "w": 1440,
+      "h": 604,
+      "thumb": "story-640.webp"
+    },
+    "gallery": {
+      "file": "gallery.webp",
+      "w": 1440,
+      "h": 817,
+      "thumb": "gallery-640.webp"
+    },
+    "menu": {
+      "file": "menu.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "menu-640.webp"
+    },
+    "visit": {
+      "file": "visit.webp",
+      "w": 1440,
+      "h": 603,
+      "thumb": "visit-640.webp"
+    }
+  },
+  "gallery-layouts": {
+    "hero": "hero.webp"
+  },
+  "hero-stack-fan": {
+    "hero": "hero.webp"
+  },
+  "motion-1": {
+    "hero": "hero.webp"
+  },
+  "motion-2": {
+    "hero": "hero.webp",
+    "scene-watercolor": {
+      "file": "scene-watercolor.webp",
+      "thumb": "scene-watercolor-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-tiles": {
+      "file": "scene-tiles.webp",
+      "thumb": "scene-tiles-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-wall": {
+      "file": "scene-wall.webp",
+      "thumb": "scene-wall-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-scroll-film": {
+      "file": "scene-scroll-film.webp",
+      "thumb": "scene-scroll-film-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-camera": {
+      "file": "scene-camera.webp",
+      "thumb": "scene-camera-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-brush": {
+      "file": "scene-brush.webp",
+      "thumb": "scene-brush-640.webp",
+      "w": 1440,
+      "h": 900
+    },
+    "scene-video": {
+      "file": "scene-video.webp",
+      "thumb": "scene-video-640.webp",
+      "w": 1440,
+      "h": 900
+    }
+  }
+}

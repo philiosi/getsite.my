@@ -292,6 +292,8 @@ footer.site{margin-top:56px;color:var(--ink3);font-size:13px;text-align:center;l
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cap-track{animation:none}*{transition:none!important}}
 </style>
 <noscript><style>.hero h1 .hl-line1.pre,.hero h1 .hl-line2.pre{opacity:1!important;transform:none!important}.hero-ctas{opacity:1!important;pointer-events:auto!important}.sf-stage.sf-await,.sf-controls.sf-await{opacity:1!important;transform:none!important;pointer-events:auto!important}</style></noscript>
+<link rel="stylesheet" href="./v3/embed/gallery-embed.css">
+<script type="module" src="./v3/embed/gallery-embed.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="topbar-in">
@@ -912,6 +914,7 @@ function gpCoverSync(){
  if(nx)nx.disabled=gpCover===GP_WORKS.length-1;
 }
 function renderGPStage(){
+ if(window.__gpx){window.__gpx(gpLayout);return}
  var st=$("gpStage");
  if(gpDetailIdx!==null){
   st.innerHTML=gpSharedDetailHTML();

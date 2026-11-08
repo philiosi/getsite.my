@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="ko">
   <head>
+    <script>/* getsite-embed */ if (new URLSearchParams(location.search).get("embed") === "1") document.documentElement.classList.add("embed");</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
@@ -226,6 +227,12 @@
       .compare h3 { margin: 0 0 4px; font-family: "Noto Serif KR", serif; font-size: 19px; font-weight: 700; }
       .compare .c-sub { margin: 0 0 16px; color: var(--muted); font-size: 13.5px; line-height: 1.6; }
       .foot-note { margin: 26px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+    
+      /* getsite-embed: ?embed=1 shows only the stage (the v4 order page's scene picker). */
+      html.embed, html.embed body { margin: 0; height: 100%; background: #111; overflow: hidden; }
+      html.embed .wrap { max-width: none; padding: 0; margin: 0; height: 100%; }
+      html.embed .intro, html.embed .tabs, html.embed .panel, html.embed .compare, html.embed .foot-note { display: none !important; }
+      html.embed .stage { aspect-ratio: auto; height: 100%; border-radius: 0; box-shadow: none; }
     </style>
   </head>
   <body>
@@ -868,6 +875,24 @@
       scenes[0].start();
       if (!state.playing) { stage.classList.add("paused"); pauseBtn.textContent = "재생"; }
       requestAnimationFrame(loop);
+    
+      /* getsite-embed: #scene=1..7 opens that scene; the parent page (same origin only) may send
+         {getsite:'motion', scene:n} or {getsite:'motion', play:true|false}. */
+      (function () {
+        const embed = new URLSearchParams(location.search).get("embed") === "1";
+        if (embed) document.documentElement.classList.add("embed");
+        // Embedded, the page's pause is the picker's pause: the video tab must not start on its own.
+        const cine = document.getElementById("cineVideo");
+        if (embed && cine) cine.addEventListener("play", () => { if (!state.playing) cine.pause(); });
+        const fromHash = () => { const m = /scene=([1-7])/.exec(location.hash); if (m) switchTo(Number(m[1]) - 1); };
+        fromHash();
+        addEventListener("hashchange", fromHash);
+        addEventListener("message", (e) => {
+          if (e.origin !== location.origin || !e.data || e.data.getsite !== "motion") return;
+          if (Number.isInteger(e.data.scene) && e.data.scene >= 1 && e.data.scene <= scenes.length) switchTo(e.data.scene - 1);
+          if (typeof e.data.play === "boolean") setPlaying(e.data.play);
+        });
+      })();
     </script>
   </body>
 </html>

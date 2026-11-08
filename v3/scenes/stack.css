@@ -1,0 +1,62 @@
+.st {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--c-paper);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.st:active { cursor: grabbing; }
+
+.st-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  transform-origin: 50% 100%;
+  max-width: none;
+  white-space: nowrap;
+  font-family: var(--c-fontDisplay);
+  font-weight: var(--c-weightDisplay);
+  letter-spacing: var(--c-trackDisplay);
+  line-height: 1;
+  color: var(--c-ink);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.st-deck { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.st-card {
+  position: absolute;
+  left: calc(var(--w) / -2);
+  top: calc(var(--h) / -2);
+  width: var(--w);
+  height: var(--h);
+  overflow: hidden;
+  border-radius: calc(var(--w) * 0.035);
+  background: var(--c-paper2);
+  box-shadow:
+    0 0 0 1px color-mix(in oklch, var(--c-ink) 7%, transparent),
+    0 18px 40px -22px color-mix(in oklch, var(--c-ink) 55%, transparent);
+  opacity: 0;
+  cursor: inherit;
+  will-change: transform;
+  touch-action: none;
+}
+.st-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.st-card.is-cutout img { object-fit: contain; padding: 12%; }
+.st-card:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+.st-thumb { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--c-paper); }
+.st-thumb img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 38%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 4px;
+  background: var(--c-paper2);
+}

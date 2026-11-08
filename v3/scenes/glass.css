@@ -1,0 +1,77 @@
+.gl { position: absolute; inset: 0; overflow: hidden; background: var(--c-paper2); }
+.gl-photo, .gl-canvas, .gl-fog, .gl-soft, .gl-wash { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gl-photo { object-fit: cover; }
+.gl-canvas { display: block; touch-action: none; cursor: crosshair; }
+.gl-fog { display: none; }
+.is-fallback .gl-fog { display: block; }
+.is-fallback { cursor: pointer; }
+.gl-soft { object-fit: cover; display: block; }
+.gl-wash { background: var(--c-paper); opacity: 0.6; }
+
+.gl-title {
+  position: absolute;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-family: var(--c-fontDisplay);
+  font-weight: var(--c-weightDisplay);
+  letter-spacing: var(--c-trackDisplay);
+  line-height: 1.16;
+  color: var(--c-ink);
+  pointer-events: none;
+}
+.gl-title span { display: block; white-space: nowrap; }
+/* In GL mode the words live in the fog; this copy is for assistive tech only. */
+.gl > .gl-title { clip-path: inset(50%); }
+
+.gl-blade {
+  position: absolute;
+  left: -4%;
+  top: -7px;
+  width: 108%;
+  height: 14px;
+  visibility: hidden;
+  background: var(--c-night);
+  border-bottom: 3px solid var(--c-ink);
+  box-shadow: 0 4px 10px color-mix(in oklch, var(--c-ink) 30%, transparent);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* The sill is not data-nodrag: it is where the page can still be swiped away. */
+.gl-sill {
+  position: absolute;
+  inset: auto 0 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0 var(--space-xl) 0 var(--space-md);
+  background: var(--c-night);
+  color: var(--c-onNight);
+  cursor: grab;
+}
+.gl-grip { flex: none; width: 16px; height: 16px; }
+.gl-hint {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gl-squeegee {
+  flex: none;
+  margin-left: auto;
+  height: 36px;
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-full);
+  background: var(--c-onNight);
+  color: var(--c-night);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform var(--press) ease-out;
+}
+.gl-squeegee:active { transform: scale(0.96); }
+@media (max-width: 360px) { .gl-sill { padding-right: var(--space-sm); } }

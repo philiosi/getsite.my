@@ -1,0 +1,295 @@
+/* Step 3 reference links + notes + file uploads, Step 4 reference summary, Step 5 upload receipt.
+   Uses only tokens defined in v4.css so light and dark themes follow automatically. */
+
+/* Step 3: give the references column room to sit side-by-side with notes on desktop, matching .compose (5fr / 7fr). */
+#panel-3 .form-grid:has(.refs) {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 0 18px;
+  align-items: start;
+}
+@media (max-width: 919px) {
+  #panel-3 .form-grid:has(.refs) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px 18px;
+  }
+}
+#panel-3 .form-grid:has(.refs) > .field {
+  min-width: 0;
+}
+
+.refs {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+.ref-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 11fr) minmax(0, 9fr);
+  gap: 8px;
+  align-items: start;
+  min-width: 0;
+}
+.ref-row > * {
+  min-width: 0;
+}
+.ref-row .field {
+  margin-bottom: 0;
+  min-width: 0;
+}
+.ref-no {
+  width: 24px;
+  height: 24px;
+  margin-top: 13px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.refs .ref-row input[type="text"],
+.refs .ref-row input.ref-note,
+.refs .ref-row .ref-note input {
+  background: var(--paper-2);
+}
+
+@container (max-width: 520px) {
+  .ref-row {
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 6px 8px;
+  }
+  .ref-row > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Step 3: reference file upload block */
+.ref-files {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  min-width: 0;
+}
+.ref-drop {
+  position: relative;
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  text-align: center;
+  border: 1.5px dashed var(--ink-3); /* the drop zone boundary needs 3:1 (WCAG 1.4.11) */
+  border-radius: var(--r-input);
+  padding: 18px;
+  background: var(--paper);
+  cursor: pointer;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: border-color .18s var(--ease), background .18s var(--ease);
+}
+.ref-drop b {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.ref-drop span {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+.ref-drop:hover,
+.ref-drop.is-over {
+  border-color: var(--ink);
+  background: var(--paper-2);
+}
+.ref-drop:focus-within {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Visually hidden but keyboard-focusable so Enter/Space activates the picker. */
+#ref-files {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  outline: none;
+}
+
+#ref-files-err {
+  display: block;
+  color: var(--err);
+  font-size: 13px;
+  font-weight: 600;
+}
+/* Kept rendered when empty (zero height) so role=alert stays a live region. */
+#ref-files-err:empty {
+  margin: 0;
+}
+
+.ref-file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.ref-file-list[hidden],
+.ref-file-list:empty {
+  display: none;
+}
+.ref-file-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 4px 6px 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-input);
+  background: var(--paper-2);
+}
+.ref-file-list .nm {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.ref-file-list .sz {
+  flex: none;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ref-file-list .rm {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .15s var(--ease), color .15s var(--ease);
+}
+.ref-file-list .rm:hover {
+  background: var(--paper-3);
+  color: var(--ink);
+}
+
+.ref-file-note {
+  display: grid;
+  gap: 6px;
+  margin-top: 4px;
+  min-width: 0;
+}
+.ref-file-note label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.ref-file-note textarea {
+  resize: vertical;
+  min-width: 0;
+}
+.ref-file-note textarea::placeholder {
+  color: var(--ink-3);
+}
+
+/* Step 4: reference summary box */
+.sum .box ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+.sum .box li {
+  overflow-wrap: anywhere;
+}
+.sum .ref-note {
+  color: var(--ink-3);
+  font-size: 13.5px;
+  overflow-wrap: anywhere;
+}
+.sum li + li.ref-files-sum {
+  margin-top: 4px;
+}
+
+/* Step 5: upload receipt block */
+.uploads {
+  margin: 14px 0;
+  padding: 14px 16px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.uploads h5 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.uploads ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.uploads li {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.uploads li[data-ok="true"] {
+  color: var(--ok);
+}
+.uploads li[data-ok="false"] {
+  color: var(--err);
+}
+.uploads li[data-pending] {
+  color: var(--ink-2);
+}
+.uploads p {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-2);
+}
+.uploads [data-retry-uploads] {
+  justify-self: start;
+}

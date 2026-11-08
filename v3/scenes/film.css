@@ -1,0 +1,185 @@
+.film {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: var(--c-night);
+  color: var(--c-onNight);
+  cursor: grab;
+}
+.film.is-held { cursor: grabbing; }
+
+.film-plate {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+  background: var(--c-night);
+}
+.film-plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.film-dim { position: absolute; inset: 0; background: var(--c-night); opacity: 0.4; }
+
+.film-copy {
+  position: absolute;
+  left: var(--space-xl);
+  right: var(--space-xl);
+  bottom: 64px;
+  min-width: 0;
+  will-change: transform;
+}
+.film-title {
+  margin: 0;
+  font-family: var(--c-fontDisplay);
+  font-weight: var(--c-weightDisplay);
+  font-style: normal;
+  letter-spacing: var(--c-trackDisplay);
+  line-height: 1.14;
+  word-spacing: 0.14em;
+  color: var(--c-onNight);
+}
+.film-row {
+  display: block;
+  white-space: nowrap;
+  /* Clips only the rise; tracking overhang stays visible at the sides. */
+  clip-path: inset(0 -1em);
+}
+.film-row-in { display: block; will-change: transform; }
+.film-body {
+  margin: var(--space-sm) 0 0;
+  max-width: 34em;
+  font: 500 clamp(0.875rem, 1.4cqw, 1.125rem)/1.5 var(--font-ui);
+  color: var(--c-onNight);
+  will-change: transform, opacity;
+}
+
+.film-sign {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-xl);
+  font-family: var(--c-fontDisplay);
+  font-weight: var(--c-weightDisplay);
+  font-size: clamp(1.125rem, 2cqw, 1.75rem);
+  letter-spacing: var(--c-trackDisplay);
+  color: var(--c-onNight);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.film-cover {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.film-ground { fill: var(--c-night); }
+.film-g {
+  font-family: var(--c-fontDisplay);
+  font-weight: var(--c-weightDisplay);
+  text-rendering: geometricPrecision;
+}
+.film-ink { fill: var(--c-onNight); }
+
+.film-close { position: absolute; inset: 0; background: var(--c-night); visibility: hidden; }
+
+.film-bar {
+  position: absolute;
+  left: var(--space-xl);
+  right: var(--space-xl);
+  bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  pointer-events: none;
+  cursor: default;
+  font: 500 0.75rem/1 var(--font-ui);
+  color: var(--c-onNight);
+}
+.film-time {
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: var(--c-night);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.film-time-total { opacity: 0.66; }
+.film-btns { display: flex; gap: var(--space-2xs); pointer-events: auto; }
+.film-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--c-onNight);
+  transition: transform var(--press) ease-out;
+}
+.film-btn::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-night);
+}
+.film-btn svg { grid-area: 1 / 1; position: relative; width: 12px; height: 12px; }
+.film-btn:active { transform: scale(0.9); }
+.film-btn:focus-visible { outline: 2px solid var(--c-onNight); outline-offset: -4px; }
+
+.film-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: color-mix(in oklch, var(--c-onNight) 22%, transparent);
+  pointer-events: none;
+}
+.film-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+.film-rail-tick { position: absolute; top: 0; width: 2px; height: 2px; background: var(--c-night); }
+
+@media (max-width: 640px) {
+  .film-copy { left: var(--space-md); right: var(--space-md); bottom: 60px; }
+  .film-sign { left: var(--space-md); top: var(--space-sm); }
+  .film-bar { left: var(--space-md); right: var(--space-xs); bottom: var(--space-2xs); }
+}
+
+.film-thumb {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  container-type: size;
+  background: var(--c-night);
+}
+.film-thumb-word {
+  font-family: var(--c-fontDisplay);
+  font-weight: max(var(--c-weightDisplay), 500);
+  line-height: 1.1;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0.025em transparent;
+}

@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "getsite-my"
+  },
+  "targets": {
+    "getsite-my": {
+      "hosting": {
+        "gallery-lab": [
+          "getsite-gallery-lab"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

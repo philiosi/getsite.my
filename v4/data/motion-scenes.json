@@ -1,0 +1,51 @@
+{
+  "sampleId": "motion-2",
+  "page": "/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html",
+  "publicUrl": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html",
+  "videoNote": "영상 옵션(+200,000원)과 함께 제작합니다. 영상을 먼저 만든 뒤, 웹 페이지에 맞게 Remotion으로 다시 제작해 첫 장면에 넣습니다. 7번 샘플이 실제로 이렇게 다시 만든 영상입니다.",
+  "scenes": [
+    {
+      "slug": "scene-watercolor",
+      "index": 1,
+      "name": "수채 번짐 마스크",
+      "hint": "번짐 자국이 자라나며 다음 작품이 드러납니다"
+    },
+    {
+      "slug": "scene-tiles",
+      "index": 2,
+      "name": "타일 플립 모자이크",
+      "hint": "격자 타일이 물결처럼 뒤집히며 바뀝니다"
+    },
+    {
+      "slug": "scene-wall",
+      "index": 3,
+      "name": "스프링 진열 벽",
+      "hint": "고른 작품이 탄성 있게 크게 펼쳐집니다"
+    },
+    {
+      "slug": "scene-scroll-film",
+      "index": 4,
+      "name": "스크롤 필름",
+      "hint": "스크롤에 맞춰 장면이 이야기처럼 이어집니다"
+    },
+    {
+      "slug": "scene-camera",
+      "index": 5,
+      "name": "전시실 카메라 이동",
+      "hint": "전시실 벽을 따라 작품을 하나씩 지나갑니다"
+    },
+    {
+      "slug": "scene-brush",
+      "index": 6,
+      "name": "커서 붓질",
+      "hint": "문지르는 자리마다 채색이 드러납니다"
+    },
+    {
+      "slug": "scene-video",
+      "index": 7,
+      "name": "영상 시네마틱",
+      "hint": "기존 영상을 Remotion으로 다시 만든 10초 시네마틱 샷을 첫 장면으로 재생합니다",
+      "video": true
+    }
+  ]
+}

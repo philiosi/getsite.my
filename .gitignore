@@ -1,3 +1,13 @@
 preview/
 .openai/
 node_modules/
+public/
+deploy/*/public/
+deploy/*/.firebase/
+.firebase/
+firestore-debug.log
+*-debug.log
+backups/
+.hallmark/
+.env
+.env.*

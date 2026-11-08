@@ -1,0 +1,53 @@
+/* The layout behind an open work: fades and blurs with the viewer's own progress. */
+.g-root.is-viewing > :not(.g-view) {
+  opacity: calc(1 - 0.86 * var(--view-p, 0));
+  filter: blur(calc(10px * var(--view-p, 0))) saturate(calc(1 - 0.4 * var(--view-p, 0)));
+  pointer-events: none;
+}
+.g-view { position: absolute; inset: 0; z-index: 30; touch-action: none; user-select: none; -webkit-user-select: none; overflow: hidden; }
+.g-view-scrim { position: absolute; inset: 0; }
+.g-view-track { position: absolute; inset: 0; pointer-events: none; }
+.g-view-img {
+  position: absolute; left: 0; top: 0;
+  pointer-events: auto; /* a tap on the photo is not a tap beside it */
+  transform-origin: 0 0;
+  object-fit: cover;
+  will-change: transform;
+  box-shadow: 0 24px 60px color-mix(in oklch, var(--c-ink) calc(28% * var(--chrome, 0)), transparent);
+}
+.g-view-cap, .g-view-arrow, .g-view-close { opacity: var(--chrome, 0); }
+.g-view-cap {
+  position: absolute; left: 50%; bottom: var(--space-lg); transform: translateX(-50%);
+  display: flex; align-items: baseline; gap: var(--space-sm);
+  max-width: calc(100% - 2 * var(--space-lg));
+  margin: 0; white-space: nowrap; color: var(--c-ink); font-size: var(--text-xs);
+}
+.g-view-no { color: var(--c-muted); font-variant-numeric: tabular-nums; }
+.g-view-title { font: var(--c-weightDisplay) var(--text-lg)/1.2 var(--c-fontDisplay); letter-spacing: -0.02em; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.g-view-meta { color: var(--c-muted); }
+.g-view-arrow, .g-view-close {
+  position: absolute;
+  display: grid; place-items: center;
+  border: 0; border-radius: var(--radius-full, 999px);
+  background: var(--c-paper); color: var(--c-ink);
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--c-ink) 14%, transparent);
+  font: 600 var(--text-md, 1rem)/1 var(--font-ui);
+  cursor: pointer;
+  transition: transform var(--press, 100ms) ease-out, background-color 160ms ease-out;
+}
+.g-view-arrow { top: 50%; width: 44px; height: 44px; margin-top: -22px; }
+.g-view-arrow.is-prev { left: var(--space-md); }
+.g-view-arrow.is-next { right: var(--space-md); }
+.g-view-close { top: var(--space-md); right: var(--space-md); height: 36px; padding: 0 var(--space-md); font-size: var(--text-xs); }
+.g-view-arrow:hover, .g-view-close:hover { background: var(--c-paper2); }
+.g-view-arrow:active, .g-view-close:active { transform: scale(0.95); }
+.g-view-arrow:disabled { opacity: calc(var(--chrome, 0) * 0.3); cursor: default; }
+.g-view button:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .g-view-arrow { top: auto; bottom: var(--space-md); margin-top: 0; }
+  .g-view-cap { bottom: calc(var(--space-md) + 52px); flex-wrap: wrap; justify-content: center; white-space: normal; text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g-root.is-viewing > :not(.g-view) { filter: none; }
+  .g-view-arrow:active, .g-view-close:active { transform: none; }
+}

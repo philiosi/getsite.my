@@ -1,0 +1,7 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Optional refs/{key}/ uploads may be designed later; currently all access is denied.
+    match /{path=**} { allow read, write: if false; }
+  }
+}

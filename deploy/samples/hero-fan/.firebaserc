@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "getsite-my"
+  },
+  "targets": {
+    "getsite-my": {
+      "hosting": {
+        "hero-fan": [
+          "getsite-hero-fan"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

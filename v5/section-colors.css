@@ -1,0 +1,44 @@
+/* v5: one fixed colour per section, so a section reads the same everywhere it appears
+   (step 3 flow tile, the "구성 순서" list, the step 4 card). Keyed by section id, never by order.
+   Hues are spread so sections that usually sit next to each other differ a lot
+   (hue index = position in sections.json × 5 mod 13, 13 steps of ~27.7°).
+   Every element that carries data-section="<id>" or data-id="<id>" gets:
+     --sec-bg    pale ground          (light: L 95.5%, dark: L 30%)
+     --sec-soft  sketch blocks         (light: L 87%,   dark: L 40%)
+     --sec-acc   strips, dots, lines   (light: L 64%,   dark: L 72%)
+     --sec-ink   text on --sec-bg      (light: L 36%,   dark: L 90%)  AA ≥ 4.5:1 on --sec-bg */
+
+[data-section="hero"], [data-id="hero"] { --sec-h: 15; }
+[data-section="about"], [data-id="about"] { --sec-h: 153; }
+[data-section="story"], [data-id="story"] { --sec-h: 292; }
+[data-section="gallery"], [data-id="gallery"] { --sec-h: 70; }
+[data-section="featured"], [data-id="featured"] { --sec-h: 209; }
+[data-section="history"], [data-id="history"] { --sec-h: 347; }
+[data-section="process"], [data-id="process"] { --sec-h: 126; }
+[data-section="services"], [data-id="services"] { --sec-h: 264; }
+[data-section="trust"], [data-id="trust"] { --sec-h: 43; }
+[data-section="faq"], [data-id="faq"] { --sec-h: 181; }
+[data-section="contact"], [data-id="contact"] { --sec-h: 320; }
+[data-section="booking"], [data-id="booking"] { --sec-h: 98; }
+[data-section="newsletter"], [data-id="newsletter"] { --sec-h: 237; }
+
+[data-section], [data-id] {
+  --sec-bg: oklch(95.5% 0.035 var(--sec-h, 260));
+  --sec-soft: oklch(87% 0.06 var(--sec-h, 260));
+  --sec-acc: oklch(64% 0.13 var(--sec-h, 260));
+  --sec-ink: oklch(36% 0.1 var(--sec-h, 260));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) [data-section], :root:not([data-theme="light"]) [data-id] {
+    --sec-bg: oklch(30% 0.045 var(--sec-h, 260));
+    --sec-soft: oklch(40% 0.06 var(--sec-h, 260));
+    --sec-acc: oklch(72% 0.12 var(--sec-h, 260));
+    --sec-ink: oklch(90% 0.06 var(--sec-h, 260));
+  }
+}
+:root[data-theme="dark"] [data-section], :root[data-theme="dark"] [data-id] {
+  --sec-bg: oklch(30% 0.045 var(--sec-h, 260));
+  --sec-soft: oklch(40% 0.06 var(--sec-h, 260));
+  --sec-acc: oklch(72% 0.12 var(--sec-h, 260));
+  --sec-ink: oklch(90% 0.06 var(--sec-h, 260));
+}

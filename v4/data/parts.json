@@ -1,0 +1,743 @@
+{
+  "version": "p-82cad756a2",
+  "assetBase": "https://getsite-my.web.app/v4/",
+  "motion": {
+    "sampleId": "motion-2",
+    "page": "/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html",
+    "videoNote": "영상 옵션(+200,000원)과 함께 제작합니다. 영상을 먼저 만든 뒤, 웹 페이지에 맞게 Remotion으로 다시 제작해 첫 장면에 넣습니다. 7번 샘플이 실제로 이렇게 다시 만든 영상입니다."
+  },
+  "bySection": {
+    "hero": [
+      {
+        "ref": "artist:hero",
+        "sampleId": "artist",
+        "slug": "hero",
+        "file": "assets/samples/artist/hero.webp",
+        "thumb": "assets/samples/artist/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-artist.web.app/"
+      },
+      {
+        "ref": "hansakim:hero",
+        "sampleId": "hansakim",
+        "slug": "hero",
+        "file": "assets/samples/hansakim/hero.webp",
+        "thumb": "assets/samples/hansakim/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://hansakim.com/"
+      },
+      {
+        "ref": "nooreemadang:hero",
+        "sampleId": "nooreemadang",
+        "slug": "hero",
+        "file": "assets/samples/nooreemadang/hero.webp",
+        "thumb": "assets/samples/nooreemadang/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/"
+      },
+      {
+        "ref": "haru:hero",
+        "sampleId": "haru",
+        "slug": "hero",
+        "file": "assets/samples/haru/hero.webp",
+        "thumb": "assets/samples/haru/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-haru.web.app/"
+      },
+      {
+        "ref": "soap:hero",
+        "sampleId": "soap",
+        "slug": "hero",
+        "file": "assets/samples/soap/hero.webp",
+        "thumb": "assets/samples/soap/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-soap.web.app/"
+      },
+      {
+        "ref": "cup:hero",
+        "sampleId": "cup",
+        "slug": "hero",
+        "file": "assets/samples/cup/hero.webp",
+        "thumb": "assets/samples/cup/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-cup.web.app/"
+      },
+      {
+        "ref": "cup3d:hero",
+        "sampleId": "cup3d",
+        "slug": "hero",
+        "file": "assets/samples/cup3d/hero.webp",
+        "thumb": "assets/samples/cup3d/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-cup3d.web.app/"
+      },
+      {
+        "ref": "portfolio:hero",
+        "sampleId": "portfolio",
+        "slug": "hero",
+        "file": "assets/samples/portfolio/hero.webp",
+        "thumb": "assets/samples/portfolio/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-portfolio.web.app/"
+      },
+      {
+        "ref": "portfolio-react:hero",
+        "sampleId": "portfolio-react",
+        "slug": "hero",
+        "file": "assets/samples/portfolio-react/hero.webp",
+        "thumb": "assets/samples/portfolio-react/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-react-portfolio.web.app/"
+      },
+      {
+        "ref": "cafe:hero",
+        "sampleId": "cafe",
+        "slug": "hero",
+        "file": "assets/samples/cafe/hero.webp",
+        "thumb": "assets/samples/cafe/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-cafe.web.app/"
+      },
+      {
+        "ref": "gallery-layouts:hero",
+        "sampleId": "gallery-layouts",
+        "slug": "hero",
+        "file": "assets/samples/gallery-layouts/hero.webp",
+        "thumb": "assets/samples/gallery-layouts/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-gallery-lab.web.app/"
+      },
+      {
+        "ref": "hero-stack-fan:hero",
+        "sampleId": "hero-stack-fan",
+        "slug": "hero",
+        "file": "assets/samples/hero-stack-fan/hero.webp",
+        "thumb": "assets/samples/hero-stack-fan/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-hero-fan.web.app/"
+      },
+      {
+        "ref": "motion-1:hero",
+        "sampleId": "motion-1",
+        "slug": "hero",
+        "file": "assets/samples/motion-1/hero.webp",
+        "thumb": "assets/samples/motion-1/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-motion.web.app/1.html"
+      },
+      {
+        "ref": "motion-2:hero",
+        "sampleId": "motion-2",
+        "slug": "hero",
+        "file": "assets/samples/motion-2/hero.webp",
+        "thumb": "assets/samples/motion-2/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-motion.web.app/2.html"
+      },
+      {
+        "ref": "motion-2:scene-watercolor",
+        "sampleId": "motion-2",
+        "slug": "scene-watercolor",
+        "file": "assets/samples/motion-2/scene-watercolor.webp",
+        "thumb": "assets/samples/motion-2/scene-watercolor-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=1",
+        "kind": "motion",
+        "scene": 1,
+        "name": "수채 번짐 마스크",
+        "hint": "번짐 자국이 자라나며 다음 작품이 드러납니다"
+      },
+      {
+        "ref": "motion-2:scene-tiles",
+        "sampleId": "motion-2",
+        "slug": "scene-tiles",
+        "file": "assets/samples/motion-2/scene-tiles.webp",
+        "thumb": "assets/samples/motion-2/scene-tiles-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=2",
+        "kind": "motion",
+        "scene": 2,
+        "name": "타일 플립 모자이크",
+        "hint": "격자 타일이 물결처럼 뒤집히며 바뀝니다"
+      },
+      {
+        "ref": "motion-2:scene-wall",
+        "sampleId": "motion-2",
+        "slug": "scene-wall",
+        "file": "assets/samples/motion-2/scene-wall.webp",
+        "thumb": "assets/samples/motion-2/scene-wall-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=3",
+        "kind": "motion",
+        "scene": 3,
+        "name": "스프링 진열 벽",
+        "hint": "고른 작품이 탄성 있게 크게 펼쳐집니다"
+      },
+      {
+        "ref": "motion-2:scene-scroll-film",
+        "sampleId": "motion-2",
+        "slug": "scene-scroll-film",
+        "file": "assets/samples/motion-2/scene-scroll-film.webp",
+        "thumb": "assets/samples/motion-2/scene-scroll-film-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=4",
+        "kind": "motion",
+        "scene": 4,
+        "name": "스크롤 필름",
+        "hint": "스크롤에 맞춰 장면이 이야기처럼 이어집니다"
+      },
+      {
+        "ref": "motion-2:scene-camera",
+        "sampleId": "motion-2",
+        "slug": "scene-camera",
+        "file": "assets/samples/motion-2/scene-camera.webp",
+        "thumb": "assets/samples/motion-2/scene-camera-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=5",
+        "kind": "motion",
+        "scene": 5,
+        "name": "전시실 카메라 이동",
+        "hint": "전시실 벽을 따라 작품을 하나씩 지나갑니다"
+      },
+      {
+        "ref": "motion-2:scene-brush",
+        "sampleId": "motion-2",
+        "slug": "scene-brush",
+        "file": "assets/samples/motion-2/scene-brush.webp",
+        "thumb": "assets/samples/motion-2/scene-brush-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=6",
+        "kind": "motion",
+        "scene": 6,
+        "name": "커서 붓질",
+        "hint": "문지르는 자리마다 채색이 드러납니다"
+      },
+      {
+        "ref": "motion-2:scene-video",
+        "sampleId": "motion-2",
+        "slug": "scene-video",
+        "file": "assets/samples/motion-2/scene-video.webp",
+        "thumb": "assets/samples/motion-2/scene-video-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-my.web.app/motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html#scene=7",
+        "kind": "motion",
+        "scene": 7,
+        "name": "영상 시네마틱",
+        "hint": "기존 영상을 Remotion으로 다시 만든 10초 시네마틱 샷을 첫 장면으로 재생합니다",
+        "video": true
+      }
+    ],
+    "about": [
+      {
+        "ref": "artist:about",
+        "sampleId": "artist",
+        "slug": "about",
+        "file": "assets/samples/artist/about.webp",
+        "thumb": "assets/samples/artist/about-640.webp",
+        "w": 1440,
+        "h": 615,
+        "anchor": "https://getsite-artist.web.app/#about"
+      },
+      {
+        "ref": "hansakim:artist",
+        "sampleId": "hansakim",
+        "slug": "artist",
+        "file": "assets/samples/hansakim/artist.webp",
+        "thumb": "assets/samples/hansakim/artist-640.webp",
+        "w": 1440,
+        "h": 781,
+        "anchor": "https://hansakim.com/#artist"
+      },
+      {
+        "ref": "nooreemadang:family",
+        "sampleId": "nooreemadang",
+        "slug": "family",
+        "file": "assets/samples/nooreemadang/family.webp",
+        "thumb": "assets/samples/nooreemadang/family-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#family"
+      },
+      {
+        "ref": "haru:about",
+        "sampleId": "haru",
+        "slug": "about",
+        "file": "assets/samples/haru/about.webp",
+        "thumb": "assets/samples/haru/about-640.webp",
+        "w": 1440,
+        "h": 759,
+        "anchor": "https://getsite-haru.web.app/#about"
+      },
+      {
+        "ref": "portfolio:about",
+        "sampleId": "portfolio",
+        "slug": "about",
+        "file": "assets/samples/portfolio/about.webp",
+        "thumb": "assets/samples/portfolio/about-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-portfolio.web.app/#about"
+      },
+      {
+        "ref": "portfolio-react:about",
+        "sampleId": "portfolio-react",
+        "slug": "about",
+        "file": "assets/samples/portfolio-react/about.webp",
+        "thumb": "assets/samples/portfolio-react/about-640.webp",
+        "w": 1032,
+        "h": 966,
+        "anchor": "https://getsite-react-portfolio.web.app/#about"
+      }
+    ],
+    "story": [
+      {
+        "ref": "artist:statement",
+        "sampleId": "artist",
+        "slug": "statement",
+        "file": "assets/samples/artist/statement.webp",
+        "thumb": "assets/samples/artist/statement-640.webp",
+        "w": 1440,
+        "h": 522,
+        "anchor": "https://getsite-artist.web.app/"
+      },
+      {
+        "ref": "cafe:story",
+        "sampleId": "cafe",
+        "slug": "story",
+        "file": "assets/samples/cafe/story.webp",
+        "thumb": "assets/samples/cafe/story-640.webp",
+        "w": 1440,
+        "h": 604,
+        "anchor": "https://getsite-cafe.web.app/#story"
+      },
+      {
+        "ref": "portfolio:manifesto",
+        "sampleId": "portfolio",
+        "slug": "manifesto",
+        "file": "assets/samples/portfolio/manifesto.webp",
+        "thumb": "assets/samples/portfolio/manifesto-640.webp",
+        "w": 1440,
+        "h": 662,
+        "anchor": "https://getsite-portfolio.web.app/"
+      },
+      {
+        "ref": "portfolio-react:manifesto",
+        "sampleId": "portfolio-react",
+        "slug": "manifesto",
+        "file": "assets/samples/portfolio-react/manifesto.webp",
+        "thumb": "assets/samples/portfolio-react/manifesto-640.webp",
+        "w": 1032,
+        "h": 270,
+        "anchor": "https://getsite-react-portfolio.web.app/"
+      },
+      {
+        "ref": "soap:benefits",
+        "sampleId": "soap",
+        "slug": "benefits",
+        "file": "assets/samples/soap/benefits.webp",
+        "thumb": "assets/samples/soap/benefits-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-soap.web.app/#benefits"
+      },
+      {
+        "ref": "nooreemadang:artist-note",
+        "sampleId": "nooreemadang",
+        "slug": "artist-note",
+        "file": "assets/samples/nooreemadang/artist-note.webp",
+        "thumb": "assets/samples/nooreemadang/artist-note-640.webp",
+        "w": 1440,
+        "h": 653,
+        "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#artist-note"
+      }
+    ],
+    "featured": [
+      {
+        "ref": "portfolio:works",
+        "sampleId": "portfolio",
+        "slug": "works",
+        "file": "assets/samples/portfolio/works.webp",
+        "thumb": "assets/samples/portfolio/works-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-portfolio.web.app/#works"
+      },
+      {
+        "ref": "portfolio-react:works",
+        "sampleId": "portfolio-react",
+        "slug": "works",
+        "file": "assets/samples/portfolio-react/works.webp",
+        "thumb": "assets/samples/portfolio-react/works-640.webp",
+        "w": 1032,
+        "h": 1100,
+        "anchor": "https://getsite-react-portfolio.web.app/#works"
+      },
+      {
+        "ref": "cafe:menu",
+        "sampleId": "cafe",
+        "slug": "menu",
+        "file": "assets/samples/cafe/menu.webp",
+        "thumb": "assets/samples/cafe/menu-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-cafe.web.app/#menu"
+      },
+      {
+        "ref": "artist:atelier",
+        "sampleId": "artist",
+        "slug": "atelier",
+        "file": "assets/samples/artist/atelier.webp",
+        "thumb": "assets/samples/artist/atelier-640.webp",
+        "w": 1440,
+        "h": 758,
+        "anchor": "https://getsite-artist.web.app/#atelier"
+      },
+      {
+        "ref": "soap:package",
+        "sampleId": "soap",
+        "slug": "package",
+        "file": "assets/samples/soap/package.webp",
+        "thumb": "assets/samples/soap/package-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-soap.web.app/#package"
+      },
+      {
+        "ref": "haru:classes",
+        "sampleId": "haru",
+        "slug": "classes",
+        "file": "assets/samples/haru/classes.webp",
+        "thumb": "assets/samples/haru/classes-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-haru.web.app/#classes"
+      }
+    ],
+    "history": [
+      {
+        "ref": "artist:exhibitions",
+        "sampleId": "artist",
+        "slug": "exhibitions",
+        "file": "assets/samples/artist/exhibitions.webp",
+        "thumb": "assets/samples/artist/exhibitions-640.webp",
+        "w": 1440,
+        "h": 890,
+        "anchor": "https://getsite-artist.web.app/#exhibitions"
+      },
+      {
+        "ref": "hansakim:chronicle",
+        "sampleId": "hansakim",
+        "slug": "chronicle",
+        "file": "assets/samples/hansakim/chronicle.webp",
+        "thumb": "assets/samples/hansakim/chronicle-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://hansakim.com/#chronicle"
+      },
+      {
+        "ref": "hansakim:collections",
+        "sampleId": "hansakim",
+        "slug": "collections",
+        "file": "assets/samples/hansakim/collections.webp",
+        "thumb": "assets/samples/hansakim/collections-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://hansakim.com/#collections"
+      }
+    ],
+    "process": [
+      {
+        "ref": "portfolio:story",
+        "sampleId": "portfolio",
+        "slug": "story",
+        "file": "assets/samples/portfolio/story.webp",
+        "thumb": "assets/samples/portfolio/story-640.webp",
+        "w": 1440,
+        "h": 925,
+        "anchor": "https://getsite-portfolio.web.app/#story"
+      },
+      {
+        "ref": "portfolio-react:story",
+        "sampleId": "portfolio-react",
+        "slug": "story",
+        "file": "assets/samples/portfolio-react/story.webp",
+        "thumb": "assets/samples/portfolio-react/story-640.webp",
+        "w": 1032,
+        "h": 1100,
+        "anchor": "https://getsite-react-portfolio.web.app/#story"
+      },
+      {
+        "ref": "haru:field",
+        "sampleId": "haru",
+        "slug": "field",
+        "file": "assets/samples/haru/field.webp",
+        "thumb": "assets/samples/haru/field-640.webp",
+        "w": 1440,
+        "h": 796,
+        "anchor": "https://getsite-haru.web.app/#field"
+      },
+      {
+        "ref": "hansakim:studio",
+        "sampleId": "hansakim",
+        "slug": "studio",
+        "file": "assets/samples/hansakim/studio.webp",
+        "thumb": "assets/samples/hansakim/studio-640.webp",
+        "w": 1440,
+        "h": 547,
+        "anchor": "https://hansakim.com/#studio"
+      },
+      {
+        "ref": "artist:studio",
+        "sampleId": "artist",
+        "slug": "studio",
+        "file": "assets/samples/artist/studio.webp",
+        "thumb": "assets/samples/artist/studio-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-artist.web.app/#studio"
+      }
+    ],
+    "services": [
+      {
+        "ref": "portfolio:services",
+        "sampleId": "portfolio",
+        "slug": "services",
+        "file": "assets/samples/portfolio/services.webp",
+        "thumb": "assets/samples/portfolio/services-640.webp",
+        "w": 1440,
+        "h": 902,
+        "anchor": "https://getsite-portfolio.web.app/#services"
+      },
+      {
+        "ref": "portfolio-react:services",
+        "sampleId": "portfolio-react",
+        "slug": "services",
+        "file": "assets/samples/portfolio-react/services.webp",
+        "thumb": "assets/samples/portfolio-react/services-640.webp",
+        "w": 1032,
+        "h": 575,
+        "anchor": "https://getsite-react-portfolio.web.app/#services"
+      },
+      {
+        "ref": "haru:classes",
+        "sampleId": "haru",
+        "slug": "classes",
+        "file": "assets/samples/haru/classes.webp",
+        "thumb": "assets/samples/haru/classes-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-haru.web.app/#classes"
+      },
+      {
+        "ref": "soap:forwhom",
+        "sampleId": "soap",
+        "slug": "forwhom",
+        "file": "assets/samples/soap/forwhom.webp",
+        "thumb": "assets/samples/soap/forwhom-640.webp",
+        "w": 1440,
+        "h": 929,
+        "anchor": "https://getsite-soap.web.app/#forwhom"
+      }
+    ],
+    "trust": [
+      {
+        "ref": "haru:trust",
+        "sampleId": "haru",
+        "slug": "trust",
+        "file": "assets/samples/haru/trust.webp",
+        "thumb": "assets/samples/haru/trust-640.webp",
+        "w": 1440,
+        "h": 613,
+        "anchor": "https://getsite-haru.web.app/#trust"
+      },
+      {
+        "ref": "soap:ingredients",
+        "sampleId": "soap",
+        "slug": "ingredients",
+        "file": "assets/samples/soap/ingredients.webp",
+        "thumb": "assets/samples/soap/ingredients-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-soap.web.app/#ingredients"
+      },
+      {
+        "ref": "hansakim:media",
+        "sampleId": "hansakim",
+        "slug": "media",
+        "file": "assets/samples/hansakim/media.webp",
+        "thumb": "assets/samples/hansakim/media-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://hansakim.com/#media"
+      },
+      {
+        "ref": "artist:collab",
+        "sampleId": "artist",
+        "slug": "collab",
+        "file": "assets/samples/artist/collab.webp",
+        "thumb": "assets/samples/artist/collab-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-artist.web.app/#collab"
+      },
+      {
+        "ref": "portfolio-react:clients",
+        "sampleId": "portfolio-react",
+        "slug": "clients",
+        "file": "assets/samples/portfolio-react/clients.webp",
+        "thumb": "assets/samples/portfolio-react/clients-640.webp",
+        "w": 1032,
+        "h": 174,
+        "anchor": "https://getsite-react-portfolio.web.app/#clients"
+      }
+    ],
+    "faq": [
+      {
+        "ref": "haru:guide",
+        "sampleId": "haru",
+        "slug": "guide",
+        "file": "assets/samples/haru/guide.webp",
+        "thumb": "assets/samples/haru/guide-640.webp",
+        "w": 1440,
+        "h": 745,
+        "anchor": "https://getsite-haru.web.app/#guide"
+      }
+    ],
+    "contact": [
+      {
+        "ref": "portfolio:contact",
+        "sampleId": "portfolio",
+        "slug": "contact",
+        "file": "assets/samples/portfolio/contact.webp",
+        "thumb": "assets/samples/portfolio/contact-640.webp",
+        "w": 1440,
+        "h": 788,
+        "anchor": "https://getsite-portfolio.web.app/#contact"
+      },
+      {
+        "ref": "haru:contact",
+        "sampleId": "haru",
+        "slug": "contact",
+        "file": "assets/samples/haru/contact.webp",
+        "thumb": "assets/samples/haru/contact-640.webp",
+        "w": 1440,
+        "h": 920,
+        "anchor": "https://getsite-haru.web.app/#contact"
+      },
+      {
+        "ref": "artist:contact",
+        "sampleId": "artist",
+        "slug": "contact",
+        "file": "assets/samples/artist/contact.webp",
+        "thumb": "assets/samples/artist/contact-640.webp",
+        "w": 1440,
+        "h": 876,
+        "anchor": "https://getsite-artist.web.app/#contact"
+      },
+      {
+        "ref": "hansakim:contact",
+        "sampleId": "hansakim",
+        "slug": "contact",
+        "file": "assets/samples/hansakim/contact.webp",
+        "thumb": "assets/samples/hansakim/contact-640.webp",
+        "w": 1440,
+        "h": 570,
+        "anchor": "https://hansakim.com/#contact"
+      },
+      {
+        "ref": "cafe:visit",
+        "sampleId": "cafe",
+        "slug": "visit",
+        "file": "assets/samples/cafe/visit.webp",
+        "thumb": "assets/samples/cafe/visit-640.webp",
+        "w": 1440,
+        "h": 603,
+        "anchor": "https://getsite-cafe.web.app/#visit"
+      },
+      {
+        "ref": "soap:inquiry",
+        "sampleId": "soap",
+        "slug": "inquiry",
+        "file": "assets/samples/soap/inquiry.webp",
+        "thumb": "assets/samples/soap/inquiry-640.webp",
+        "w": 1440,
+        "h": 1066,
+        "anchor": "https://getsite-soap.web.app/#inquiry"
+      },
+      {
+        "ref": "nooreemadang:visit",
+        "sampleId": "nooreemadang",
+        "slug": "visit",
+        "file": "assets/samples/nooreemadang/visit.webp",
+        "thumb": "assets/samples/nooreemadang/visit-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#visit"
+      }
+    ],
+    "booking": [
+      {
+        "ref": "soap:buy",
+        "sampleId": "soap",
+        "slug": "buy",
+        "file": "assets/samples/soap/buy.webp",
+        "thumb": "assets/samples/soap/buy-640.webp",
+        "w": 1440,
+        "h": 797,
+        "anchor": "https://getsite-soap.web.app/#buy"
+      },
+      {
+        "ref": "cafe:visit",
+        "sampleId": "cafe",
+        "slug": "visit",
+        "file": "assets/samples/cafe/visit.webp",
+        "thumb": "assets/samples/cafe/visit-640.webp",
+        "w": 1440,
+        "h": 603,
+        "anchor": "https://getsite-cafe.web.app/#visit"
+      },
+      {
+        "ref": "nooreemadang:visit",
+        "sampleId": "nooreemadang",
+        "slug": "visit",
+        "file": "assets/samples/nooreemadang/visit.webp",
+        "thumb": "assets/samples/nooreemadang/visit-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#visit"
+      },
+      {
+        "ref": "haru:guide",
+        "sampleId": "haru",
+        "slug": "guide",
+        "file": "assets/samples/haru/guide.webp",
+        "thumb": "assets/samples/haru/guide-640.webp",
+        "w": 1440,
+        "h": 745,
+        "anchor": "https://getsite-haru.web.app/#guide"
+      }
+    ],
+    "newsletter": []
+  }
+}

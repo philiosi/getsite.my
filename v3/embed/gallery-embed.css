@@ -1,0 +1,33 @@
+/* v3 gallery inside the live order page. Colours follow the page's own tokens, so dark mode follows too. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500&display=swap');
+@import url('../gallery/layouts.css');
+
+.gp-stage.gpx {
+  --c-paper: var(--surface2);
+  --c-paper2: var(--line);
+  --c-ink: var(--ink);
+  --c-muted: var(--ink2);
+  --c-accent: var(--blue);
+  --c-night: var(--ink);
+  --c-onNight: var(--surface2);
+  --c-fontDisplay: "Noto Serif KR", "Apple SD Gothic Neo", serif;
+  --c-weightDisplay: 300;
+  --c-trackDisplay: -0.06em;
+  --font-ui: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px;
+  --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px;
+  --text-xs: 0.75rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: clamp(1.75rem, 4vw, 3rem);
+  --radius-full: 999px;
+  --press: 100ms;
+  position: relative;
+  height: clamp(420px, 64vh, 620px);
+  padding: 0;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  user-select: none;
+  -webkit-user-select: none;
+  word-break: keep-all;
+}
+.gp-stage.gpx:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+.gpx-host, .gpx .g-root { position: absolute; inset: 0; }
+@media (max-width: 560px) { .gp-stage.gpx { height: clamp(440px, 72vh, 600px); } }

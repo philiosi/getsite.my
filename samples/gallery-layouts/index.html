@@ -37,6 +37,7 @@
   button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
   img{ display:block; max-width:100%; }
   :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+  @media (prefers-color-scheme: dark){ body[data-palette="mono"] :focus-visible{ outline-color:var(--ink); } }
 
   .wrap{ max-width:1240px; margin:0 auto; padding:0 clamp(16px,4vw,44px); }
 
@@ -88,6 +89,7 @@
   .card:hover .card-open, .card:focus-within .card-open{ opacity:1; transform:none; }
   @media (hover:none){ .card-open{ opacity:1; transform:none; } }
   .card-body{ padding:14px 16px 16px; }
+  .card-no{display:none}
   .card-top{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
   .card-title{ font-family:"Noto Serif KR",serif; font-weight:700; font-size:17px; margin:0; line-height:1.35; }
   .card-year{ font-size:12.5px; font-weight:900; color:var(--accent); flex:none; letter-spacing:.04em; }
@@ -223,6 +225,11 @@
   .deck-card[data-pos="0"] img{ cursor:zoom-in; }
   .deck-card .dc-body{ padding:14px 18px 17px; }
   .deck-card.fly{ transform:translate(58%,-62%) rotate(14deg) !important; opacity:0 !important; }
+  .deck-card.fly-l{ transform:translate(-158%,-62%) rotate(-14deg) !important; opacity:0 !important; }
+  /* swipe: a sideways drag moves the works, an up-down drag still scrolls the page */
+  .cover-stage, .deck-zone{ touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+  .cover-stage img, .deck-card img{ -webkit-user-drag:none; }
+  .cover-stage.swiping .cov-item, .deck-card.swiping{ transition:none !important; }
   .stack-panel .rc-k{ font-size:11px; font-weight:900; letter-spacing:.13em; color:var(--accent); }
   .stack-panel h3{ font-family:"Noto Serif KR",serif; font-size:26px; margin:8px 0 6px; }
   .stack-panel p{ font-size:13.5px; line-height:1.7; color:var(--ink2); margin:0; }
@@ -233,48 +240,15 @@
   .sp-actions .sp-next{ background:var(--ink); color:var(--bg); border-color:transparent; }
 
   /* 10 ─ MUSEUM (뮤지엄 월) */
-  .layout-museum{ position:relative; display:flex; align-items:flex-end; gap:clamp(10px,2.2vw,28px); padding:46px clamp(14px,3vw,36px) 70px; border:1px solid var(--line); border-radius:20px; background:linear-gradient(to bottom, var(--surface) 0 74%, var(--surface2) 74% 100%); overflow-x:auto; overflow-y:hidden; }
-  .layout-museum::before{ content:""; position:absolute; left:50%; bottom:34px; transform:translateX(-50%); width:min(320px,52%); height:11px; border-radius:3px; background:color-mix(in srgb, var(--ink) 68%, transparent); z-index:1; }
-  .layout-museum::after{ content:""; position:absolute; left:50%; bottom:16px; transform:translateX(-50%); width:min(320px,52%); height:18px; background:linear-gradient(to right, color-mix(in srgb, var(--ink) 68%, transparent) 0 12px, transparent 12px calc(100% - 12px), color-mix(in srgb, var(--ink) 68%, transparent) calc(100% - 12px)); z-index:1; }
-  .layout-museum .card{ flex:1 1 0; min-width:84px; background:transparent; border:0; box-shadow:none; overflow:visible; border-radius:0; position:relative; z-index:2; }
-  .layout-museum .card-media{ background:var(--surface); padding:5px; border:1px solid var(--line); border-radius:3px; box-shadow:0 2px 4px rgba(20,20,30,.08), 0 16px 30px -14px rgba(20,20,30,.35); }
-  .layout-museum .card-media img{ border-radius:1px; }
-  .layout-museum .card:nth-child(1) .card-media{ aspect-ratio:4/5; }
-  .layout-museum .card:nth-child(2) .card-media{ aspect-ratio:1/1; }
-  .layout-museum .card:nth-child(3) .card-media{ aspect-ratio:4/3; }
-  .layout-museum .card:nth-child(4) .card-media{ aspect-ratio:3/4; }
-  .layout-museum .card:nth-child(5) .card-media{ aspect-ratio:1/1; }
-  .layout-museum .card:nth-child(6) .card-media{ aspect-ratio:4/5; }
-  .layout-museum .card:nth-child(7) .card-media{ aspect-ratio:4/3; }
-  .layout-museum .card:nth-child(8) .card-media{ aspect-ratio:3/4; }
-  .layout-museum .card:nth-child(3), .layout-museum .card:nth-child(6){ flex-grow:1.7; }
-  .layout-museum .card:nth-child(1), .layout-museum .card:nth-child(8){ flex-grow:.8; }
-  .layout-museum .card-body{ padding:9px 2px 0; }
-  .layout-museum .card-title{ font-size:12.5px; font-family:"Noto Sans KR",sans-serif; font-weight:800; word-break:keep-all; }
-  .layout-museum .card-top{ flex-wrap:wrap; gap:2px 6px; }
-  .layout-museum .card-meta{ word-break:keep-all; }
-  .layout-museum .card-year{ font-size:11px; }
-  .layout-museum .card-meta{ font-size:10.5px; font-weight:600; }
-  .layout-museum .card-desc, .layout-museum .card-open, .layout-museum .card-num{ display:none; }
-  .layout-museum .card:hover .card-media img{ transform:scale(1.03); }
 
-  /* 11 ─ FILM (가로 필름) */
-  .layout-film{ position:relative; display:flex; gap:18px; overflow-x:auto; overflow-y:hidden; padding:12px 4px 52px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; }
-  .layout-film .card{ flex:0 0 234px; scroll-snap-align:start; box-shadow:var(--shadow); }
-  .layout-film .card-media{ aspect-ratio:3/4; }
-  .layout-film .card:nth-child(even){ margin-top:26px; }
-  .layout-film .card-desc{ display:none; }
-  .layout-film .card-title{ font-size:15.5px; }
-  .film-axis{ position:absolute; left:4px; right:4px; bottom:10px; display:flex; align-items:center; gap:12px; font-size:11.5px; font-weight:900; letter-spacing:.07em; color:var(--ink2); }
-  .film-axis .fa-line{ flex:1; height:2px; border-radius:2px; background:linear-gradient(to right, var(--line), var(--accent), var(--line)); }
-  .film-axis .fa-mid{ font-weight:700; letter-spacing:.02em; }
-
-  /* 12–15 ─ MOTION VIEWS (영상 모션) */
+  /* 11–14 ─ MOTION VIEWS (영상 모션) */
   .extra-view{ display:none; }
   .extra-view.on{ display:block; }
 
   /* 12 ─ PEEK CAROUSEL (피크 캐러셀) */
-  .peek-stage{ position:relative; height:440px; overflow:hidden; }
+  .peek-stage{ position:relative; height:440px; overflow:hidden; touch-action:pan-y; user-select:none; -webkit-user-select:none; }
+  #peekStage.is-spot + .cover-cap{display:none;}
+  @media(pointer:fine){#stage.layout-museum,#stage.layout-museum [data-open]{cursor:grab;}#stage.layout-museum.grabbing,#stage.layout-museum.grabbing [data-open]{cursor:grabbing;}}
   .peek-item{ position:absolute; left:50%; top:10px; width:min(440px,74vw); aspect-ratio:4/3.1; margin-left:calc(min(440px,74vw) / -2); border-radius:20px; overflow:hidden; box-shadow:var(--shadow); cursor:pointer; background:var(--surface2); transition:transform .8s var(--spring), opacity .6s var(--ease), filter .6s var(--ease); will-change:transform; }
   .peek-item img{ width:100%; height:100%; object-fit:cover; }
   .peek-dots{ display:flex; gap:7px; align-items:center; }
@@ -386,11 +360,10 @@
     .cover-stage{ height:300px; }
     .stack-view{ grid-template-columns:1fr; }
     .deck-zone{ height:440px; }
-    .layout-museum{ padding-bottom:64px; }
-    .layout-museum .card{ min-width:76px; }
-    .layout-film .card{ flex-basis:198px; }
     .peek-stage{ height:330px; }
-    .peek-item{ width:80vw; margin-left:-40vw; }
+    .peek-item{ width:min(80vw,calc((100vw - 64px) / 1.15)); margin-left:calc(min(80vw,(100vw - 64px) / 1.15) / -2); }
+    .drag-card{flex-basis:min(80vw,calc((100vw - 64px) / 1.15));}
+    .drag-track{padding-inline:calc(50% - min(40vw,(100vw - 64px) / 2.3));}
     .auto-stage{ min-height:400px; }
     .thumb-btn{ flex-basis:96px; }
     .dlg-grid{ grid-template-columns:1fr; }
@@ -402,6 +375,722 @@
     *, *::before, *::after{ transition-duration:.01ms !important; animation-duration:.01ms !important; }
     html{ scroll-behavior:auto; }
   }
+  /* mobile-fit: nothing sits on the artwork */
+  @media (max-width:720px){
+    .card-no{display:block; font-size:11px; font-weight:900; letter-spacing:.06em; color:var(--ink2); margin-bottom:2px; flex-basis:100%}
+    .card-top{flex-wrap:wrap}
+    .layout-index .card-no, .layout-strip .card:not(.active) .card-no{display:none}
+    .card-media .card-num, .cov-item .card-num, .peek-item .card-num, .drag-media .card-num{display:none}
+    .card-media .card-open, .layout-strip .card.active .card-open{display:none}
+    .focus-stage, .auto-stage{--fit-h:min(80vw, 380px); min-height:0; padding-top:var(--fit-h); background:var(--surface)}
+    .focus-stage > img, .auto-stage > img{top:0; left:0; right:0; bottom:auto; height:var(--fit-h); border-radius:22px 22px 0 0}
+    .focus-stage .focus-caption, .auto-stage .focus-caption{position:static; background:none; color:var(--ink); padding:52px 18px 18px}
+    .focus-stage .focus-caption h3, .auto-stage .focus-caption h3{color:var(--ink)}
+    .focus-stage .focus-caption p, .auto-stage .focus-caption p{color:var(--ink2)}
+    .focus-stage .focus-detail-btn, .auto-stage .focus-detail-btn{background:var(--ink); color:var(--bg)}
+    .focus-stage .focus-count, .auto-stage .focus-count{top:calc(var(--fit-h) + 18px); left:18px; color:var(--ink2); text-shadow:none}
+    .focus-stage .focus-nav, .auto-stage .auto-toggle{top:calc(var(--fit-h) + 8px); right:12px}
+    .focus-stage .focus-nav button, .auto-stage .auto-toggle{border:1px solid var(--line)}
+    .auto-stage .auto-segs{top:calc(var(--fit-h) + 4px); left:18px; right:64px}
+    .auto-stage .auto-seg{background:color-mix(in srgb, var(--ink) 30%, transparent); box-shadow:none}
+    .auto-stage .auto-seg i{background:var(--ink)}
+    .auto-stage .auto-zone{height:var(--fit-h); bottom:auto}
+    .layout-timeline{padding-left:70px}
+    .layout-timeline::before{left:50px}
+    .layout-timeline .card::before{left:-24.5px}
+    .layout-timeline .tl-year{left:-72px; width:40px; font-size:13px; text-align:left}
+  }
+  .layout-museum.grabbing{scroll-snap-type:none; user-select:none; -webkit-user-select:none;}
+  /* spotlight (peek + drag) */
+  .peek-stage, .drag-viewport{transition:height .85s var(--ease), background .85s var(--ease);}
+  .peek-stage.is-spot, .drag-viewport.is-spot{position:relative; height:var(--spot-height); background-color:var(--bg); background-image:radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--surface) 88%, white), color-mix(in srgb, var(--bg) 90%, var(--ink)));}
+  .peek-item, .drag-card{transition:transform .85s var(--ease), opacity .85s var(--ease);}
+  .is-spot .peek-item.is-spot-on, .is-spot .drag-card.is-spot-on{overflow:visible; border-radius:0; background:#fff; box-shadow:0 0 0 14px #fff, 0 18px 40px 14px rgba(0,0,0,.22);}
+  .is-spot .card-num{visibility:hidden;}
+  .is-spot .drag-card .dc2-body{display:none;}
+  .is-spot .drag-card{align-self:flex-start;}
+  .is-spot .drag-media{overflow:hidden;}
+  .spot-cap{position:absolute; z-index:30; top:var(--spot-cap-top); left:50%; width:var(--spot-cap-width); transform:translateX(-50%); visibility:hidden; opacity:0; transition:opacity .85s var(--ease); pointer-events:none;}
+  .is-spot .spot-cap{visibility:visible; opacity:1;}
+  .spot-cap h3{margin:3px 0; font-size:20px;}.spot-cap p{margin:3px 0; font-size:13px;}.spot-no,.spot-meta{color:var(--ink2);}
+  .spot-close{display:none; position:absolute; z-index:40; top:12px; left:12px; padding:8px 12px; border-radius:20px; background:var(--surface); color:var(--ink); box-shadow:var(--shadow);}
+  .is-spot .spot-close{display:block;}
+  @media(max-width:720px){.is-spot .peek-item.is-spot-on,.is-spot .drag-card.is-spot-on{box-shadow:0 0 0 8px #fff, 0 12px 28px 8px rgba(0,0,0,.2);}.spot-close{top:5px; left:5px; transform:translateY(-100%);}.is-spot .spot-close{top:0; transform:none;}}
+  @media(prefers-reduced-motion:reduce){.peek-stage,.drag-viewport,.peek-item,.drag-card,.spot-cap{transition:none !important;}}
+
+/* museum wall v2 — gallery wall, white mats, wall labels */
+
+.layout-museum {
+  --m-wall: color-mix(in srgb, var(--surface2) 72%, #cbb89a);
+  --m-frame: color-mix(in srgb, var(--ink) 92%, #2b2117);
+  --m-frame-ring: transparent;
+  --m-mat: color-mix(in srgb, var(--surface) 84%, #cbba9d);
+  --m-shadow: color-mix(in srgb, var(--ink) 92%, #120e09);
+  --m-sh1: color-mix(in srgb, var(--m-shadow) 26%, transparent);
+  --m-sh2: color-mix(in srgb, var(--m-shadow) 24%, transparent);
+  --m-sh1-h: color-mix(in srgb, var(--m-shadow) 28%, transparent);
+  --m-sh2-h: color-mix(in srgb, var(--m-shadow) 30%, transparent);
+  --m-text: var(--ink);
+  --m-muted: var(--ink2);
+  --m-focus: var(--accent);
+  --m-floor-h: 30px;
+  --m-rail-y: 40px;
+  --m-u: clamp(210px, 24vw, 270px);
+  --m-mat-pad: 14px;
+  --m-frame-w: 5px;
+  --m-label-w: 132px;
+  --m-label-gap: 16px;
+  --m-floor: color-mix(in srgb, var(--m-wall) 84%, var(--m-shadow));
+  --m-skirting: color-mix(in srgb, var(--m-wall) 92%, var(--m-shadow));
+  --m-seam: color-mix(in srgb, var(--m-shadow) 9%, transparent);
+  --m-rail: color-mix(in srgb, var(--m-shadow) 12%, transparent);
+  --m-rail-hi: color-mix(in srgb, #ffffff 24%, transparent);
+  --m-top-glow: color-mix(in srgb, #ffffff 24%, transparent);
+  --m-bottom-shade: color-mix(in srgb, var(--m-shadow) 5%, transparent);
+  --m-edge-shade: color-mix(in srgb, var(--m-shadow) 5%, transparent);
+  --m-spot: color-mix(in srgb, #fff9ee 32%, transparent);
+  --m-bevel-hi: color-mix(in srgb, #ffffff 55%, transparent);
+  --m-bevel-sh: color-mix(in srgb, var(--m-shadow) 14%, transparent);
+  --m-plaster-hi: color-mix(in srgb, #ffffff 13%, transparent);
+  --m-plaster-sh: color-mix(in srgb, var(--m-shadow) 3.2%, transparent);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(44px, 5vw, 72px);
+  padding: 66px clamp(44px, 5vw, 72px) 68px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--m-shadow) 24%, transparent) transparent;
+  background-color: var(--m-wall);
+  background-image:
+    radial-gradient(ellipse 92% 94% at 50% 46%, transparent 62%, var(--m-edge-shade) 100%),
+    linear-gradient(to bottom, var(--m-top-glow) 0%, transparent 34%, transparent 78%, var(--m-bottom-shade) calc(100% - var(--m-floor-h)), transparent calc(100% - var(--m-floor-h))),
+    linear-gradient(to top,
+      var(--m-floor) 0 19px,
+      color-mix(in srgb, var(--m-shadow) 15%, transparent) 19px 20px,
+      var(--m-skirting) 20px calc(var(--m-floor-h) - 1px),
+      color-mix(in srgb, var(--m-shadow) 22%, transparent) calc(var(--m-floor-h) - 1px) var(--m-floor-h),
+      var(--m-rail-hi) var(--m-floor-h) calc(var(--m-floor-h) + 1px),
+      transparent calc(var(--m-floor-h) + 1px)),
+    linear-gradient(to bottom,
+      transparent 0 var(--m-rail-y),
+      var(--m-rail) var(--m-rail-y) calc(var(--m-rail-y) + 1px),
+      var(--m-rail-hi) calc(var(--m-rail-y) + 1px) calc(var(--m-rail-y) + 2px),
+      transparent calc(var(--m-rail-y) + 2px)),
+    linear-gradient(to right, var(--m-seam) 0 1px, transparent 1px),
+    radial-gradient(ellipse 58% 44% at 24% 32%, var(--m-plaster-hi), transparent 72%),
+    radial-gradient(ellipse 54% 48% at 74% 66%, var(--m-plaster-sh), transparent 74%),
+    radial-gradient(ellipse 36% 30% at 48% 54%, var(--m-plaster-hi), transparent 70%),
+    radial-gradient(ellipse 40% 34% at 14% 72%, var(--m-plaster-sh), transparent 72%);
+  background-attachment: scroll, scroll, scroll, scroll, local, local, local, local, local;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x;
+  background-position: 0 0, 0 0, 0 0, 0 0, 220px var(--m-rail-y), 0 0, 0 0, 120px 0, 40px 0;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 480px calc(100% - var(--m-rail-y)), 680px 100%, 680px 100%, 520px 100%, 430px 100%;
+}
+
+.layout-museum .card {
+  position: relative;
+  flex: none;
+  display: grid;
+  grid-template-columns: auto var(--m-label-w);
+  column-gap: var(--m-label-gap);
+  align-items: end;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.layout-museum .card::before {
+  content: "";
+  position: absolute;
+  left: calc((100% - var(--m-label-w) - var(--m-label-gap)) / 2);
+  top: -44px;
+  width: calc((100% - var(--m-label-w) - var(--m-label-gap)) * 1.38);
+  height: 98px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 48% 54% at 50% 36%, var(--m-spot) 0%, transparent 76%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.layout-museum .card-media {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--m-u) * 1.08);
+  aspect-ratio: 1 / 1;
+  padding: var(--m-mat-pad);
+  border: var(--m-frame-w) solid var(--m-frame);
+  border-radius: 0;
+  background: var(--m-mat);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px var(--m-frame-ring),
+    2px 3px 3px var(--m-sh1),
+    12px 20px 26px var(--m-sh2);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+
+.layout-museum .card:nth-child(1) .card-media,
+.layout-museum .card:nth-child(6) .card-media {
+  aspect-ratio: 4 / 5;
+  width: calc(var(--m-u) * 1.02);
+}
+
+.layout-museum .card:nth-child(2) .card-media,
+.layout-museum .card:nth-child(5) .card-media {
+  aspect-ratio: 1 / 1;
+  width: calc(var(--m-u) * 1.12);
+}
+
+.layout-museum .card:nth-child(3) .card-media,
+.layout-museum .card:nth-child(7) .card-media {
+  aspect-ratio: 4 / 3;
+  width: calc(var(--m-u) * 1.28);
+}
+
+.layout-museum .card:nth-child(4) .card-media,
+.layout-museum .card:nth-child(8) .card-media {
+  aspect-ratio: 3 / 4;
+  width: calc(var(--m-u) * 0.99);
+}
+
+.layout-museum .card-media::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--m-mat-pad) - 2px);
+  pointer-events: none;
+  z-index: 0;
+  border: 2px solid color-mix(in srgb, var(--m-mat) 78%, var(--m-shadow));
+  box-shadow:
+    -1px -1px 0 var(--m-bevel-sh),
+    1px 1px 0 var(--m-bevel-hi);
+}
+
+.layout-museum .card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow: inset 2px 3px 5px var(--m-sh1);
+}
+
+.layout-museum .card-media img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform .6s var(--ease);
+}
+
+.layout-museum .card:hover .card-media img {
+  transform: none;
+}
+
+.layout-museum .card-media:focus-visible {
+  outline: 2.5px solid var(--m-focus);
+  outline-offset: 5px;
+  border-radius: 1px;
+}
+
+.layout-museum .card-body,
+.layout-museum[data-content="image"] .card-body {
+  display: block;
+  padding: 0 0 2px;
+  min-width: 0;
+  color: var(--m-text);
+  font-size: 11px;
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+.layout-museum .card-top {
+  display: contents;
+}
+
+.layout-museum .card-no {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.layout-museum .card-title {
+  display: block;
+  margin: 0 0 3px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--m-text);
+  word-break: keep-all;
+}
+
+.layout-museum .card-year {
+  display: inline;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--m-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.layout-museum .card-meta {
+  display: inline;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--m-muted);
+}
+
+.layout-museum .card-meta::before {
+  content: " · ";
+}
+
+.layout-museum[data-content="image"] .card-meta,
+.layout-museum[data-content="image"] .card-desc {
+  display: none;
+}
+
+.layout-museum .card-desc,
+.layout-museum .card-open,
+.layout-museum .card-num,
+.layout-museum .tl-year,
+.layout-museum .idx-year {
+  display: none;
+}
+
+@media (hover: hover) {
+  .layout-museum .card:hover .card-media {
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 0 1px var(--m-frame-ring),
+      3px 5px 5px var(--m-sh1-h),
+      15px 24px 32px var(--m-sh2-h);
+  }
+
+  .layout-museum .card:hover .card-media img {
+    transform: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .layout-museum {
+    --m-wall: color-mix(in srgb, var(--surface2) 86%, #4c4438);
+    --m-frame: color-mix(in srgb, var(--bg) 78%, #070605);
+    --m-frame-ring: color-mix(in srgb, #ffffff 8%, transparent);
+    --m-mat: color-mix(in srgb, var(--ink) 86%, #cfc4ae);
+    --m-shadow: color-mix(in srgb, var(--bg) 92%, #000000);
+    --m-sh1: color-mix(in srgb, #000000 44%, transparent);
+    --m-sh2: color-mix(in srgb, #000000 54%, transparent);
+    --m-sh1-h: color-mix(in srgb, #000000 48%, transparent);
+    --m-sh2-h: color-mix(in srgb, #000000 62%, transparent);
+    --m-focus: color-mix(in srgb, var(--accent) 35%, var(--ink));
+    --m-floor: color-mix(in srgb, var(--m-wall) 78%, #000000);
+    --m-skirting: color-mix(in srgb, var(--m-wall) 86%, #000000);
+    --m-seam: color-mix(in srgb, #000000 22%, transparent);
+    --m-rail: color-mix(in srgb, #000000 26%, transparent);
+    --m-rail-hi: color-mix(in srgb, #ffffff 7%, transparent);
+    --m-top-glow: color-mix(in srgb, #ffeed4 7%, transparent);
+    --m-bottom-shade: color-mix(in srgb, #000000 22%, transparent);
+    --m-edge-shade: color-mix(in srgb, #000000 18%, transparent);
+    --m-spot: color-mix(in srgb, #ffe7c2 11%, transparent);
+    --m-bevel-hi: color-mix(in srgb, #ffffff 22%, transparent);
+    --m-bevel-sh: color-mix(in srgb, #000000 26%, transparent);
+    --m-plaster-hi: color-mix(in srgb, #ffeed4 4%, transparent);
+    --m-plaster-sh: color-mix(in srgb, #000000 8%, transparent);
+    scrollbar-color: color-mix(in srgb, var(--ink) 22%, transparent) transparent;
+  }
+}
+
+@media (max-width: 720px) {
+  .layout-museum {
+    --m-floor-h: 26px;
+    --m-rail-y: 28px;
+    --m-mat-pad: 8px;
+    --m-frame-w: 3px;
+    gap: clamp(20px, 6vw, 32px);
+    padding: 48px max(22px, calc(50% - 31vw)) 112px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background-position: 0 0, 0 0, 0 0, 0 0, 140px var(--m-rail-y), 0 0, 0 0, 90px 0, 30px 0;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 340px calc(100% - var(--m-rail-y)), 480px 100%, 480px 100%, 380px 100%, 310px 100%;
+  }
+
+  .layout-museum::-webkit-scrollbar {
+    display: none;
+  }
+
+  .layout-museum .card {
+    display: block;
+    scroll-snap-align: center;
+  }
+
+  .layout-museum .card::before {
+    left: 50%;
+    top: -36px;
+    width: 136%;
+    height: 86px;
+  }
+
+  .layout-museum .card-media {
+    width: 62vw;
+    box-shadow:
+      0 0 0 1px var(--m-frame-ring),
+      1.5px 2.5px 3px var(--m-sh1),
+      9px 14px 20px var(--m-sh2);
+  }
+
+  .layout-museum .card:nth-child(1) .card-media,
+  .layout-museum .card:nth-child(6) .card-media {
+    width: 60vw;
+  }
+
+  .layout-museum .card:nth-child(2) .card-media,
+  .layout-museum .card:nth-child(5) .card-media {
+    width: 62vw;
+  }
+
+  .layout-museum .card:nth-child(3) .card-media,
+  .layout-museum .card:nth-child(7) .card-media {
+    width: 66vw;
+  }
+
+  .layout-museum .card:nth-child(4) .card-media,
+  .layout-museum .card:nth-child(8) .card-media {
+    width: 58vw;
+  }
+
+  .layout-museum .card-media::after {
+    box-shadow: inset 1.5px 2px 4px var(--m-sh1);
+  }
+
+  .layout-museum .card-body,
+  .layout-museum[data-content="image"] .card-body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 10px);
+    padding: 0;
+  }
+
+  .layout-museum .card-no {
+    margin-bottom: 2px;
+    font-size: 11px;
+  }
+
+  .layout-museum .card-title {
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout-museum,
+  .layout-museum .card,
+  .layout-museum .card-media,
+  .layout-museum .card-media img {
+    transition: none !important;
+  }
+}
+/* museum spotlight: layout */
+.layout-museum .spot-cap,.layout-museum .spot-close,.layout-museum .spot-prev,.layout-museum .spot-next { display:none; }
+.layout-museum.is-spot { overflow:hidden; scroll-snap-type:none; touch-action:pan-y; height:var(--museum-height); }
+.layout-museum .card { transition:transform .55s var(--ease), opacity .45s; }
+.layout-museum.is-spot .card { transform:translateX(var(--museum-away)); opacity:0; pointer-events:none; }
+.layout-museum.is-spot .card.is-spot-on { transform:translate(var(--museum-x),var(--museum-y)); opacity:1; pointer-events:auto; }
+.layout-museum.is-spot .card.is-spot-on .card-media { transform:scale(var(--museum-scale)); transform-origin:top left; }
+.layout-museum.is-spot .card.is-spot-on .card-body { visibility:hidden; }
+.layout-museum.is-spot .spot-cap { display:block; position:absolute; top:var(--museum-cap-top); left:var(--museum-cap-left); width:var(--museum-cap-width); transform:none; z-index:4; }
+.layout-museum.is-spot .spot-close,.layout-museum.is-spot .spot-prev,.layout-museum.is-spot .spot-next { display:block; position:absolute; z-index:5; }
+.layout-museum.is-spot .spot-close { top:16px; left:var(--museum-control-left); }
+.layout-museum.is-spot .spot-prev { top:16px; left:calc(var(--museum-control-right) - 52px); }
+.layout-museum.is-spot .spot-next { top:16px; left:var(--museum-control-right); }
+@media (prefers-reduced-motion:reduce) { .layout-museum.is-spot .card,.layout-museum.is-spot .card-media { transition:none !important; } }
+/* museum spotlight: look */
+
+.layout-museum.is-spot {
+  --m-spot-dim: color-mix(in srgb, var(--m-shadow) 14%, transparent);
+  --m-spot-pool: color-mix(in srgb, #fffaf0 58%, transparent);
+  --m-spot-wash: color-mix(in srgb, #fff7e8 24%, transparent);
+  --m-spot-beam: color-mix(in srgb, #fffdf7 46%, transparent);
+  --m-spot-floor: color-mix(in srgb, var(--m-floor) 90%, var(--m-shadow));
+  --m-spot-skirting: color-mix(in srgb, var(--m-skirting) 90%, var(--m-shadow));
+  --m-spot-sh-ring: var(--m-frame-ring);
+  --m-spot-sh1: color-mix(in srgb, var(--m-shadow) 28%, transparent);
+  --m-spot-sh2: color-mix(in srgb, var(--m-shadow) 34%, transparent);
+  --m-pool-rx: 46%;
+
+  background-color: color-mix(in srgb, var(--m-wall) 90%, var(--m-shadow));
+  background-image:
+    radial-gradient(ellipse 34% 24% at 50% 10%, var(--m-spot-beam) 0%, transparent 74%),
+    radial-gradient(ellipse var(--m-pool-rx) 52% at 50% 36%, var(--m-spot-pool) 0%, var(--m-spot-wash) 44%, transparent 78%),
+    radial-gradient(ellipse 56% 64% at 50% 42%, transparent 36%, var(--m-spot-dim) 100%),
+    linear-gradient(to top,
+      var(--m-spot-floor) 0 19px,
+      color-mix(in srgb, var(--m-shadow) 16%, transparent) 19px 20px,
+      var(--m-spot-skirting) 20px calc(var(--m-floor-h) - 1px),
+      color-mix(in srgb, var(--m-shadow) 24%, transparent) calc(var(--m-floor-h) - 1px) var(--m-floor-h),
+      var(--m-rail-hi) var(--m-floor-h) calc(var(--m-floor-h) + 1px),
+      transparent calc(var(--m-floor-h) + 1px)),
+    linear-gradient(to bottom,
+      transparent 0 var(--m-rail-y),
+      var(--m-rail) var(--m-rail-y) calc(var(--m-rail-y) + 1px),
+      var(--m-rail-hi) calc(var(--m-rail-y) + 1px) calc(var(--m-rail-y) + 2px),
+      transparent calc(var(--m-rail-y) + 2px)),
+    linear-gradient(to right, var(--m-seam) 0 1px, transparent 1px),
+    radial-gradient(ellipse 58% 44% at 24% 32%, var(--m-plaster-hi), transparent 72%),
+    radial-gradient(ellipse 54% 48% at 74% 66%, var(--m-plaster-sh), transparent 74%),
+    radial-gradient(ellipse 36% 30% at 48% 54%, var(--m-plaster-hi), transparent 70%),
+    radial-gradient(ellipse 40% 34% at 14% 72%, var(--m-plaster-sh), transparent 72%);
+  background-attachment: scroll, scroll, scroll, scroll, scroll, local, local, local, local, local;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 220px var(--m-rail-y), 0 0, 0 0, 120px 0, 40px 0;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 480px calc(100% - var(--m-rail-y)), 680px 100%, 680px 100%, 520px 100%, 430px 100%;
+  transition: background-color .8s var(--ease);
+}
+
+.layout-museum.is-spot .card::before {
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+}
+
+.layout-museum.is-spot .card.is-spot-on .card-media,
+.layout-museum.is-spot .card.is-spot-on:hover .card-media {
+  cursor: zoom-out;
+  box-shadow:
+    0 0 0 1px var(--m-spot-sh-ring),
+    3px 5px 6px var(--m-spot-sh1),
+    16px 26px 38px var(--m-spot-sh2);
+}
+
+.layout-museum .spot-cap {
+  --m-spot-cap-muted: color-mix(in srgb, var(--m-text) 50%, var(--m-muted));
+  --m-spot-cap-desc: color-mix(in srgb, var(--m-text) 88%, var(--m-muted));
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-align: left;
+  color: var(--m-text);
+  word-break: keep-all;
+  opacity: 0;
+  transition: opacity .8s var(--ease);
+}
+
+.layout-museum.is-spot .spot-cap {
+  opacity: 1;
+}
+
+.layout-museum .spot-cap .spot-no {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  color: var(--m-spot-cap-muted);
+}
+
+.layout-museum .spot-cap .spot-title {
+  margin: 0 0 5px;
+  font-family: "Noto Serif KR", serif;
+  font-size: clamp(17px, 2.1vw, 22px);
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--m-text);
+}
+
+.layout-museum .spot-cap .spot-meta {
+  margin: 0 0 9px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--m-spot-cap-muted);
+}
+
+.layout-museum .spot-cap .spot-desc {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 13.5px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--m-spot-cap-desc);
+}
+
+.layout-museum .spot-close,
+.layout-museum .spot-prev,
+.layout-museum .spot-next {
+  --m-btn-bg: color-mix(in srgb, var(--m-mat) 80%, var(--m-wall));
+  --m-btn-bg-h: color-mix(in srgb, var(--m-mat) 94%, var(--m-wall));
+  --m-btn-bg-a: color-mix(in srgb, var(--m-mat) 70%, var(--m-wall));
+  --m-btn-bd: color-mix(in srgb, var(--m-shadow) 16%, transparent);
+  --m-btn-bd-h: color-mix(in srgb, var(--m-shadow) 28%, transparent);
+  --m-btn-sh:
+    0 1px 2px color-mix(in srgb, var(--m-shadow) 10%, transparent),
+    0 6px 16px -6px color-mix(in srgb, var(--m-shadow) 18%, transparent);
+  --m-btn-sh-h:
+    0 2px 5px color-mix(in srgb, var(--m-shadow) 14%, transparent),
+    0 10px 22px -6px color-mix(in srgb, var(--m-shadow) 22%, transparent);
+  border: 1px solid var(--m-btn-bd);
+  border-radius: 999px;
+  background: var(--m-btn-bg);
+  color: var(--m-text);
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1;
+  box-shadow: var(--m-btn-sh);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease), color .3s var(--ease), opacity .3s var(--ease);
+}
+
+.layout-museum.is-spot .spot-close,
+.layout-museum.is-spot .spot-prev,
+.layout-museum.is-spot .spot-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.layout-museum .spot-close {
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 15px 0 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.layout-museum .spot-close span[aria-hidden="true"] {
+  font-size: 13.5px;
+  opacity: 0.78;
+}
+
+.layout-museum .spot-prev,
+.layout-museum .spot-next {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@media (hover: hover) {
+  .layout-museum .spot-close:hover,
+  .layout-museum .spot-prev:hover,
+  .layout-museum .spot-next:hover {
+    background: var(--m-btn-bg-h);
+    border-color: var(--m-btn-bd-h);
+    box-shadow: var(--m-btn-sh-h);
+  }
+}
+
+.layout-museum .spot-close:active,
+.layout-museum .spot-prev:active,
+.layout-museum .spot-next:active {
+  background: var(--m-btn-bg-a);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--m-shadow) 16%, transparent);
+}
+
+.layout-museum .spot-close:focus-visible,
+.layout-museum .spot-prev:focus-visible,
+.layout-museum .spot-next:focus-visible {
+  outline: 2.5px solid var(--m-focus);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+.layout-museum .spot-close:disabled,
+.layout-museum .spot-prev:disabled,
+.layout-museum .spot-next:disabled {
+  opacity: 0.38;
+  cursor: default;
+  box-shadow: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .layout-museum.is-spot {
+    --m-spot-dim: color-mix(in srgb, #000000 34%, transparent);
+    --m-spot-pool: color-mix(in srgb, #ffecd2 14%, transparent);
+    --m-spot-wash: color-mix(in srgb, #ffe5c2 6%, transparent);
+    --m-spot-beam: color-mix(in srgb, #fff1da 11%, transparent);
+    --m-spot-floor: color-mix(in srgb, var(--m-floor) 76%, #000000);
+    --m-spot-skirting: color-mix(in srgb, var(--m-skirting) 76%, #000000);
+    --m-spot-sh-ring: color-mix(in srgb, #ffffff 12%, transparent);
+    --m-spot-sh1: color-mix(in srgb, #000000 54%, transparent);
+    --m-spot-sh2: color-mix(in srgb, #000000 68%, transparent);
+    background-color: color-mix(in srgb, var(--m-wall) 76%, #000000);
+  }
+
+  .layout-museum .spot-cap {
+    --m-spot-cap-muted: color-mix(in srgb, var(--m-text) 35%, var(--m-muted));
+    --m-spot-cap-desc: color-mix(in srgb, var(--m-text) 88%, var(--m-muted));
+  }
+
+  .layout-museum .spot-close,
+  .layout-museum .spot-prev,
+  .layout-museum .spot-next {
+    --m-btn-bg: color-mix(in srgb, var(--m-wall) 84%, var(--ink));
+    --m-btn-bg-h: color-mix(in srgb, var(--m-wall) 76%, var(--ink));
+    --m-btn-bg-a: color-mix(in srgb, var(--m-wall) 90%, #000000);
+    --m-btn-bd: color-mix(in srgb, var(--m-text) 16%, transparent);
+    --m-btn-bd-h: color-mix(in srgb, var(--m-text) 28%, transparent);
+    --m-btn-sh:
+      0 1px 3px rgba(0, 0, 0, .38),
+      0 8px 18px -6px rgba(0, 0, 0, .5);
+    --m-btn-sh-h:
+      0 2px 6px rgba(0, 0, 0, .46),
+      0 12px 24px -6px rgba(0, 0, 0, .58);
+  }
+}
+
+@media (max-width: 720px) {
+  .layout-museum.is-spot {
+    --m-pool-rx: 68%;
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 140px var(--m-rail-y), 0 0, 0 0, 90px 0, 30px 0;
+    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 340px calc(100% - var(--m-rail-y)), 480px 100%, 480px 100%, 380px 100%, 310px 100%;
+  }
+
+  .layout-museum.is-spot .card.is-spot-on .card-media,
+  .layout-museum.is-spot .card.is-spot-on:hover .card-media {
+    box-shadow:
+      0 0 0 1px var(--m-spot-sh-ring),
+      2px 4px 5px var(--m-spot-sh1),
+      11px 18px 26px var(--m-spot-sh2);
+  }
+
+  .layout-museum .spot-cap .spot-desc {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layout-museum.is-spot,
+  .layout-museum.is-spot .card::before,
+  .layout-museum .spot-cap,
+  .layout-museum .spot-close,
+  .layout-museum .spot-prev,
+  .layout-museum .spot-next {
+    transition: none !important;
+  }
+}
+
 </style>
 </head>
 <body data-palette="mono" data-content="full">
@@ -410,14 +1099,14 @@
   <header class="hero">
     <div class="hero-row">
       <div>
-        <h1>작품 갤러리,<br><span class="thin">열다섯 가지로 펼치다</span></h1>
-        <p class="lede">같은 작품 8점을 열다섯 가지 UI 레이아웃으로 바꿔 보는 실험 페이지입니다. 보내주신 영상·이미지 레퍼런스의 연출 — 곡면을 도는 3D 커버플로우, 넘기는 카드 스택, 떠서 흐르는 필름, 실제 전시 벽 같은 뮤지엄 월 — 을 각 레이아웃에 그대로 이식했습니다. 여기에 영상의 여섯 가지 모션(커버플로우 · 카드 스택 · 피크 캐러셀 · 오토플레이 · 드래그 스와이프 · 썸네일 네비게이션)을 모두 개별 레이아웃으로 갖췄고, 레이아웃 전환부터 드래그 스냅까지 모든 동작에 Apple 디자인 특유의 스프링 모션을 적용했습니다. 카드 안의 이미지와 텍스트는 그대로, 배열의 문법만 달라집니다.</p>
+        <h1>작품 갤러리,<br><span class="thin">열네 가지로 펼치다</span></h1>
+        <p class="lede">같은 작품 8점을 열네 가지 UI 레이아웃으로 바꿔 보는 실험 페이지입니다. 보내주신 영상·이미지 레퍼런스의 연출 — 곡면을 도는 3D 커버플로우, 넘기는 카드 스택, 실제 전시 벽 같은 뮤지엄 월 — 을 각 레이아웃에 그대로 이식했습니다. 여기에 영상의 여섯 가지 모션(커버플로우 · 카드 스택 · 피크 캐러셀 · 오토플레이 · 드래그 스와이프 · 썸네일 네비게이션)을 모두 개별 레이아웃으로 갖췄고, 레이아웃 전환부터 드래그 스냅까지 모든 동작에 Apple 디자인 특유의 스프링 모션을 적용했습니다. 카드 안의 이미지와 텍스트는 그대로, 배열의 문법만 달라집니다.</p>
         <span class="sample-badge">SAMPLE · 이미지는 레이아웃 확인용 샘플 작품입니다</span>
       </div>
       <div class="hero-meta">
-        <b>8</b> 점의 작품 · <b>15</b> 종 레이아웃<br>
+        <b>8</b> 점의 작품 · <b>14</b> 종 레이아웃<br>
         <b>4</b> 종 팔레트 · <b>3</b> 종 카드 구성<br>
-        조합 <b>180</b> 가지
+        조합 <b>168</b> 가지
       </div>
     </div>
   </header>
@@ -497,14 +1186,13 @@ var LAYOUTS = [
   { id:"focus",   name:"포커스",   en:"LAYOUT 05 — FOCUS STAGE", desc:"무대 하나, 목록 하나. 큰 화면이 선택된 작품을 전면에 세우고 오른쪽 목록으로 이동합니다. 전시의 메인 작품처럼 '이번 시즌 대표작'을 미는 구조입니다.", tags:["<b>추천</b> 대표작 강조","전시 · 신작 발표","화살표 이동"] },
   { id:"timeline",name:"연혁 타임라인", en:"LAYOUT 06 — TIMELINE", desc:"같은 카드를 연도 순으로 세우면 개인 이력·연혁이 됩니다. 연도가 축이 되고 작품은 그해의 증거가 됩니다. 전시 이력, 수상, 경력 페이지에 그대로 옮길 수 있는 구조입니다.", tags:["<b>추천</b> 이력 · 연혁","연도 = 작품 연도","전시·수상 이력"] },
   { id:"index",   name:"인덱스",   en:"LAYOUT 07 — INDEX LIST", desc:"텍스트가 먼저인 목록형. 썸네일은 작게, 제목과 연도가 주인공이라 빠르게 찾고 스캔하기 좋습니다. 레퍼런스 영상처럼 행에 커서를 올리면 작품 미리보기가 커서를 따라 떠오릅니다.", tags:["<b>추천</b> 전체 목록 · 아카이브","호버 미리보기","텍스트 중심"] },
-  { id:"coverflow", name:"커버플로우", en:"LAYOUT 08 — 3D COVER FLOW", desc:"영상 레퍼런스의 몰입형 3D 갤러리처럼, 작품들이 곡면을 따라 돌며 중앙에 온 한 점만 커지는 커버플로우. 양옆 카드를 눌러 돌려 보세요. 가만히 두면 스스로 다음 작품으로 넘어갑니다.", tags:["<b>추천</b> 몰입형 전시","영상 모션 1번","3D 회전","자동 넘김"] },
-  { id:"stack",   name:"카드 스택", en:"LAYOUT 09 — CARD STACK", desc:"스와이프 카드 영상처럼 겹쳐 쌓인 덱. '다음 카드 넘기기'를 누를 때마다 맨 위 카드가 날아가고 다음 작품이 드러납니다. 한 점씩 천천히 공개하는 신작 티저, 연재형 공개에 어울립니다.", tags:["<b>추천</b> 한 점씩 공개","영상 모션 2번","카드 덱","넘기기 인터랙션"] },
-  { id:"museum",  name:"뮤지엄 월", en:"LAYOUT 10 — MUSEUM WALL", desc:"뮤지엄 사진 레퍼런스처럼 실제 전시 벽을 재현했습니다. 크기가 제각각인 액자, 그 아래 작품명·연도 캡션, 벽 아래 벤치까지. 공간감이 필요한 작가 포트폴리오의 정석 구도입니다.", tags:["<b>추천</b> 전시 공간감","액자 + 캡션","hansakim.com 심화"] },
-  { id:"film",    name:"가로 필름", en:"LAYOUT 11 — FLOATING FILM", desc:"떠 있는 카드 벽 영상과 반 고흐 갤러리 이미지에서 가져온 가로 필름. 세로로 긴 카드가 천천히 스스로 흐르고, 아래 연도 축이 시기의 흐름을 잡아 줍니다. 잡아 끌면 직접 넘길 수도 있습니다.", tags:["<b>추천</b> 시기별 작품 흐름","자동 드리프트","드래그 가능"] },
-  { id:"peek",    name:"피크 캐러셀", en:"LAYOUT 12 — PEEK CAROUSEL", desc:"가운데 카드가 주인공이 되고 양옆 카드가 살짝 엿보이는 캐러셀. 커버플로우보다 회전이 얕고 평면적이라 작품의 색이 왜곡 없이 드러나고, 옆 카드가 '다음이 있다'는 신호를 줍니다. 옆 카드를 누르거나 옆으로 밀어 가운데로 가져와 보세요.", tags:["<b>추천</b> 대표작 캐러셀","영상 모션 3번","옆 카드 엿보기"] },
-  { id:"autoplay", name:"오토플레이", en:"LAYOUT 13 — AUTOPLAY + PROGRESS", desc:"가만히 두면 스스로 넘어가는 무대. 위쪽 구간 프로그레스 바가 차오르는 동안 한 작품을 보여 주고, 다 차면 다음 작품으로 넘어갑니다. 화면을 누르고 있으면 잠시 멈추고, 좌우를 누르면 직접 넘길 수 있습니다.", tags:["<b>추천</b> 전시 DID · 대기 화면","영상 모션 4번","구간 프로그레스 바"] },
-  { id:"drag",    name:"드래그 캐러셀", en:"LAYOUT 14 — DRAG & SWIPE", desc:"손가락이나 마우스로 잡아 끌어서 넘기는 캐러셀. 끌리는 동안 손을 그대로 따라오고, 놓으면 속도를 이어받아 스프링처럼 착지합니다. 모바일에서 가장 익숙한 넘김 방식 그대로입니다.", tags:["<b>추천</b> 모바일 우선","영상 모션 5번","모멘텀 + 스프링 스냅"] },
-  { id:"thumbnav", name:"썸네일 무대", en:"LAYOUT 15 — THUMBNAIL STAGE", desc:"큰 무대 아래에 작은 썸네일 줄을 두는 고전적인 갤러리 내비게이션. 전체 작품을 한눈에 보면서 원하는 작품으로 바로 점프할 수 있어, 작품 수가 많아도 길을 잃지 않습니다.", tags:["<b>추천</b> 작품이 많을 때","영상 모션 6번","썸네일 점프"] }
+  { id:"coverflow", name:"커버플로우", en:"LAYOUT 08 — 3D COVER FLOW", desc:"영상 레퍼런스의 몰입형 3D 갤러리처럼, 작품들이 곡면을 따라 돌며 중앙에 온 한 점만 커지는 커버플로우. 양옆 카드를 누르거나 옆으로 밀어 돌려 보세요. 가만히 두면 스스로 다음 작품으로 넘어갑니다.", tags:["<b>추천</b> 몰입형 전시","영상 모션 1번","3D 회전","자동 넘김"] },
+  { id:"stack",   name:"카드 스택", en:"LAYOUT 09 — CARD STACK", desc:"스와이프 카드 영상처럼 겹쳐 쌓인 덱. '다음 카드 넘기기'를 누르거나 카드를 옆으로 밀 때마다 맨 위 카드가 날아가고 다음 작품이 드러납니다. 한 점씩 천천히 공개하는 신작 티저, 연재형 공개에 어울립니다.", tags:["<b>추천</b> 한 점씩 공개","영상 모션 2번","카드 덱","넘기기 인터랙션"] },
+  { id:"museum",  name:"뮤지엄 월", en:"LAYOUT 10 — MUSEUM WALL", desc:"따뜻한 벽에 매트를 두른 어두운 액자와 작품 라벨이 걸려 있습니다. 벽을 드래그하거나 스와이프하며 작품을 둘러보세요.", tags:["<b>추천</b> 전시 공간감","액자 + 캡션","벽을 끌며 둘러보기"] },
+  { id:"peek",    name:"피크 캐러셀", en:"LAYOUT 11 — PEEK CAROUSEL", desc:"가운데 카드가 주인공이 되고 양옆 카드가 살짝 엿보이는 캐러셀. 커버플로우보다 회전이 얕고 평면적이라 작품의 색이 왜곡 없이 드러나고, 옆 카드가 '다음이 있다'는 신호를 줍니다. 작품을 누르면 제자리에서 크게 감상할 수 있습니다.", tags:["<b>추천</b> 대표작 캐러셀","영상 모션 3번","옆 카드 엿보기"] },
+  { id:"autoplay", name:"오토플레이", en:"LAYOUT 12 — AUTOPLAY + PROGRESS", desc:"가만히 두면 스스로 넘어가는 무대. 위쪽 구간 프로그레스 바가 차오르는 동안 한 작품을 보여 주고, 다 차면 다음 작품으로 넘어갑니다. 화면을 누르고 있으면 잠시 멈추고, 좌우를 누르면 직접 넘길 수 있습니다.", tags:["<b>추천</b> 전시 DID · 대기 화면","영상 모션 4번","구간 프로그레스 바"] },
+  { id:"drag",    name:"드래그 캐러셀", en:"LAYOUT 13 — DRAG & SWIPE", desc:"손가락이나 마우스로 잡아 끌어서 넘기는 캐러셀. 끌리는 동안 손을 그대로 따라오고, 놓으면 속도를 이어받아 스프링처럼 착지합니다. 작품을 누르면 제자리에서 크게 감상할 수 있습니다.", tags:["<b>추천</b> 모바일 우선","영상 모션 5번","모멘텀 + 스프링 스냅"] },
+  { id:"thumbnav", name:"썸네일 무대", en:"LAYOUT 14 — THUMBNAIL STAGE", desc:"큰 무대 아래에 작은 썸네일 줄을 두는 고전적인 갤러리 내비게이션. 전체 작품을 한눈에 보면서 원하는 작품으로 바로 점프할 수 있어, 작품 수가 많아도 길을 잃지 않습니다.", tags:["<b>추천</b> 작품이 많을 때","영상 모션 6번","썸네일 점프"] }
 ];
 
 var PALETTES = [
@@ -526,7 +1214,7 @@ var focusView = document.getElementById("focusView");
 var coverView = document.getElementById("coverView");
 var stackView = document.getElementById("stackView");
 var extraView = document.getElementById("extraView");
-var coverTimer = null, filmTimer = null, coverDir = 1, coverHover = false;
+var coverTimer = null, coverDir = 1, coverHover = false;
 var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- controls ---------- */
@@ -579,23 +1267,28 @@ PALETTES.forEach(function(p){
 function cardHTML(w, i){
   return '<article class="card" data-i="'+i+'">' +
     '<div class="card-media" data-open="'+i+'" role="button" tabindex="0" aria-label="'+w.title+' 크게 보기">' +
-      '<img src="'+w.img+'" alt="'+w.alt+'" loading="'+(i<4?'eager':'lazy')+'">' +
+      '<img src="'+w.img+'" alt="'+w.alt+'" draggable="false" loading="'+(i<4?'eager':'lazy')+'">' +
       '<span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span>' +
       '<button class="card-open" data-open="'+i+'" aria-label="'+w.title+' 상세 보기">+</button>' +
     '</div>' +
     '<span class="tl-year" aria-hidden="true">'+w.year+'</span>' +
     '<div class="card-body">' +
-      '<div class="card-top"><h3 class="card-title">'+w.title+'</h3><span class="card-year">'+w.year+'</span><span class="idx-year" style="display:none;">'+w.year+'</span></div>' +
+      '<div class="card-top"><span class="card-no" aria-hidden="true">No.'+String(i+1).padStart(2,"0")+'</span><h3 class="card-title">'+w.title+'</h3><span class="card-year">'+w.year+'</span><span class="idx-year" style="display:none;">'+w.year+'</span></div>' +
       '<p class="card-meta">'+w.cat+' · '+w.medium+'</p>' +
       '<p class="card-desc">'+w.desc+'</p>' +
     '</div></article>';
 }
 
+var stageListeners;
 function renderStage(){
+  if (stageListeners) stageListeners.abort();
+  stageListeners = new AbortController();
   var sorted = WORKS.map(function(w,i){ return i; });
   if (state.layout === "timeline") sorted.sort(function(a,b){ return WORKS[b].year - WORKS[a].year; });
   stage.innerHTML = sorted.map(function(i){ return cardHTML(WORKS[i], i); }).join("");
   stage.className = "stage layout-" + state.layout;
+  stage.removeAttribute("data-spot");
+  stage.style.removeProperty("--museum-height");
   stage.setAttribute("data-content", state.content);
   if (state.layout === "index"){
     stage.querySelectorAll(".card").forEach(function(c){
@@ -621,12 +1314,13 @@ function renderStage(){
       });
     });
     stage.addEventListener("mousemove", function(e){
+      if (state.layout !== "index") return;
       var r = stage.getBoundingClientRect();
       var x = e.clientX - r.left, y = e.clientY - r.top;
       prev.style.left = Math.max(0, Math.min(x + 22, r.width - 222)) + "px";
       prev.style.top = Math.max(2, Math.min(y - 54, r.height - 168)) + "px";
-    });
-    stage.addEventListener("mouseleave", function(){ prev.classList.remove("on"); });
+    }, {signal: stageListeners.signal});
+    stage.addEventListener("mouseleave", function(){ if (state.layout === "index") prev.classList.remove("on"); }, {signal: stageListeners.signal});
   }
   if (state.layout === "strip"){
     var prog = document.createElement("div");
@@ -642,18 +1336,41 @@ function renderStage(){
     });
     setStripActive(state.active);
   }
-  if (state.layout === "film"){
-    var axis = document.createElement("div");
-    axis.className = "film-axis";
-    axis.innerHTML = '<span>2021</span><span class="fa-line"></span><span class="fa-mid">작품 시기 →</span><span class="fa-line"></span><span>2026</span>';
-    stage.appendChild(axis);
-    if (!reduced){
-      filmTimer = setInterval(function(){
-        if (stage.scrollWidth - stage.clientWidth - stage.scrollLeft < 4) stage.scrollLeft = 0;
-        else stage.scrollLeft += 1.1;
-      }, 40);
-      stage.addEventListener("pointerdown", function(){ if (filmTimer){ clearInterval(filmTimer); filmTimer = null; } }, { once:true });
+  if (state.layout === "museum") {
+    stage.insertAdjacentHTML("beforeend", spotMarkup() + '<button class="spot-prev" aria-label="이전 작품">←</button><button class="spot-next" aria-label="다음 작품">→</button>');
+    var wallDown = false, wallX = 0, wallScroll = 0, wallMoved = false, wallSuppress = false;
+    stage.querySelector(".spot-close").addEventListener("click", function(){ museumToggle(Number(stage.getAttribute("data-spot")), false); }, {signal:stageListeners.signal});
+    stage.querySelector(".spot-prev").addEventListener("click", function(){ museumStep(-1); }, {signal:stageListeners.signal});
+    stage.querySelector(".spot-next").addEventListener("click", function(){ museumStep(1); }, {signal:stageListeners.signal});
+    stage.addEventListener("click", function(e){ if (stage.classList.contains("is-spot") && (e.target === stage || (e.target.closest(".card.is-spot-on") && !e.target.closest(".card-media")))) museumToggle(Number(stage.getAttribute("data-spot")), false); }, {signal:stageListeners.signal});
+    stage.addEventListener("pointerdown", function(e){
+      if (state.layout !== "museum" || (e.pointerType === "mouse" && e.button !== 0) || (!stage.classList.contains("is-spot") && e.pointerType !== "mouse") || e.target.closest(".spot-close,.spot-prev,.spot-next")) return;
+      wallDown = true; wallMoved = false; wallSuppress = false;
+      wallX = e.clientX; wallScroll = stage.scrollLeft;
+    }, {signal: stageListeners.signal});
+    stage.addEventListener("pointermove", function(e){
+      if (state.layout !== "museum" || !wallDown) return;
+      var dx = e.clientX - wallX;
+      if (Math.abs(dx) > 6) {
+        wallMoved = true; stage.classList.add("grabbing");
+        if (!stage.hasPointerCapture(e.pointerId)) stage.setPointerCapture(e.pointerId);
+      }
+      if (wallMoved) { e.preventDefault(); if (!stage.classList.contains("is-spot")) stage.scrollLeft = wallScroll - dx; }
+    }, {signal: stageListeners.signal});
+    function endWall(e){
+      if (state.layout !== "museum" || !wallDown) return;
+      wallDown = false; wallSuppress = wallMoved; stage.classList.remove("grabbing");
+      if (stage.classList.contains("is-spot") && Math.abs(e.clientX - wallX) > 40) museumStep(e.clientX < wallX ? 1 : -1);
+      if (stage.hasPointerCapture(e.pointerId)) stage.releasePointerCapture(e.pointerId);
+      if (wallSuppress) setTimeout(function(){ wallSuppress = false; }, 150);
     }
+    stage.addEventListener("pointerup", endWall, {signal: stageListeners.signal});
+    stage.addEventListener("pointercancel", endWall, {signal: stageListeners.signal});
+    stage.addEventListener("pointerleave", function(e){ if (state.layout === "museum" && !wallMoved) endWall(e); }, {signal: stageListeners.signal});
+    stage.addEventListener("dragstart", function(e){ if (state.layout === "museum") e.preventDefault(); }, {signal: stageListeners.signal});
+    stage.addEventListener("click", function(e){
+      if (state.layout === "museum" && wallSuppress) { e.preventDefault(); e.stopImmediatePropagation(); wallSuppress = false; }
+    }, {capture:true, signal: stageListeners.signal});
   }
   bindOpen(stage);
   stagger(stage);
@@ -715,11 +1432,47 @@ function setFocus(i){
   focusView.querySelectorAll(".focus-item").forEach(function(b){ b.setAttribute("aria-pressed", Number(b.getAttribute("data-f")) === i ? "true" : "false"); });
 }
 
+/* ---------- sideways swipe (touch, pen or mouse) ----------
+   h.start(), h.move(dx), h.end(dx, vx px/ms), h.cancel(). A drag that starts vertical is left to the
+   page scroll. el.swiped() is true right after a swipe so the click it ends with does not open a work. */
+function hSwipe(el, h){
+  var id = null, x0 = 0, y0 = 0, dx = 0, lx = 0, lt = 0, vx = 0, on = false, justSwiped = 0;
+  el.swiped = function(){ return Date.now() - justSwiped < 350; };
+  el.addEventListener("pointerdown", function(e){
+    if (e.button > 0 || (id !== null && on)) return; // a press that never moved and ended elsewhere is dropped
+    id = e.pointerId; x0 = lx = e.clientX; y0 = e.clientY; lt = e.timeStamp; dx = 0; vx = 0; on = false;
+  });
+  el.addEventListener("pointermove", function(e){
+    if (e.pointerId !== id) return;
+    var mx = e.clientX - x0, my = e.clientY - y0;
+    if (!on){
+      if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+      if (Math.abs(my) >= Math.abs(mx) || (h.can && !h.can())){ id = null; return; }
+      on = true; try { el.setPointerCapture(id); } catch (_) {}
+      h.start();
+    }
+    var dt = e.timeStamp - lt;
+    if (dt > 0) vx = 0.7 * ((e.clientX - lx) / dt) + 0.3 * vx;
+    lx = e.clientX; lt = e.timeStamp; dx = mx;
+    h.move(dx);
+  });
+  function finish(e, cancelled){
+    if (e.pointerId !== id) return;
+    id = null;
+    if (!on) return;
+    on = false; justSwiped = Date.now();
+    if (e.timeStamp - lt > 90) vx = 0;
+    if (cancelled) h.cancel(); else h.end(dx, vx);
+  }
+  el.addEventListener("pointerup", function(e){ finish(e, false); });
+  el.addEventListener("pointercancel", function(e){ finish(e, true); });
+}
+
 /* ---------- coverflow ---------- */
 function renderCover(){
   coverView.innerHTML =
     '<div class="cover-stage">' +
-      WORKS.map(function(x, i){ return '<div class="cov-item" data-cov="'+i+'"><img src="'+x.img+'" alt="'+x.alt+'"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>'; }).join("") +
+      WORKS.map(function(x, i){ return '<div class="cov-item" data-cov="'+i+'"><img src="'+x.img+'" alt="'+x.alt+'" draggable="false"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>'; }).join("") +
     '</div>' +
     '<div class="cover-cap"><h3 id="covTitle"></h3><p class="cov-meta" id="covMeta"></p><p class="cov-desc" id="covDesc"></p>' +
     '<button class="focus-detail-btn" id="covOpen">자세히 보기</button></div>' +
@@ -728,6 +1481,7 @@ function renderCover(){
     '<button class="cov-btn" id="covNext" aria-label="다음 작품">→</button></div>';
   coverView.querySelectorAll(".cov-item").forEach(function(el){
     el.addEventListener("click", function(){
+      if (covStage.swiped()) return;
       var i = Number(el.getAttribute("data-cov"));
       if (i === state.cover) openDetail(i);
       else { state.cover = i; updateCover(); startCoverTimer(); }
@@ -736,21 +1490,61 @@ function renderCover(){
   document.getElementById("covPrev").addEventListener("click", function(){ stepCover(-1); startCoverTimer(); });
   document.getElementById("covNext").addEventListener("click", function(){ stepCover(1); startCoverTimer(); });
   document.getElementById("covOpen").addEventListener("click", function(){ openDetail(state.cover); });
+  var covStage = coverView.querySelector(".cover-stage");
+  var covStep = function(){ var c = covStage.querySelector(".cov-item"); return c ? c.offsetWidth * 0.63 : 200; };
+  /* The swipe owns the position until the cards come to rest: covBase is where the drag started (mid-settle
+     too), and on release a critically damped spring carries on from the finger's own speed to the work. */
+  var covBase = state.cover, covRaf = 0, covNow = state.cover;
+  var covPos = function(dx){ return Math.max(-0.35, Math.min(WORKS.length - 0.65, covBase - dx / covStep())); };
+  var covStop = function(){ if (covRaf){ cancelAnimationFrame(covRaf); covRaf = 0; } };
+  covSpringStop = function(){ covStop(); covStage.classList.remove("swiping"); };
+  var covSettle = function(from, v0, to){ // v0: works per ms
+    covStop();
+    if (reduced){ covStage.classList.remove("swiping"); updateCover(); return; }
+    var w = 0.0062, x0 = from - to, t0 = performance.now(); // ω 6.2/s: settles in about 0.9s with a soft tail
+    var tick = function(now){
+      var t = now - t0, e = Math.exp(-w * t), x = (x0 + (v0 + w * x0) * t) * e;
+      covNow = to + x;
+      if (Math.abs(x) < 0.0015 && t > 120){ covRaf = 0; covNow = to; covStage.classList.remove("swiping"); updateCover(); startCoverTimer(); return; }
+      updateCover(covNow); covRaf = requestAnimationFrame(tick);
+    };
+    covRaf = requestAnimationFrame(tick);
+  };
+  hSwipe(covStage, {
+    start: function(){
+      if (coverTimer){ clearInterval(coverTimer); coverTimer = null; }
+      covBase = covRaf ? covNow : state.cover; covStop();
+      covStage.classList.add("swiping");
+    },
+    move: function(dx){ covNow = covPos(dx); updateCover(covNow); },
+    end: function(dx, vx){
+      var from = covPos(dx), step = covStep();
+      var fling = Math.max(-1, Math.min(1, Math.round(-(vx * 80) / step))); // a quick flick adds one work at most
+      var t = Math.round(from) + fling;
+      if (t === Math.round(covBase) && Math.abs(dx) > 40) t += dx < 0 ? 1 : -1;
+      state.cover = Math.max(0, Math.min(WORKS.length - 1, t));
+      covSettle(from, Math.max(-0.006, Math.min(0.006, -vx / step)), state.cover);
+    },
+    cancel: function(){ covSettle(covNow, 0, state.cover); }
+  });
   coverView.addEventListener("pointerenter", function(){ coverHover = true; });
   coverView.addEventListener("pointerleave", function(){ coverHover = false; });
   updateCover();
   startCoverTimer();
 }
-function updateCover(){
+var covSpringStop = null;
+function updateCover(pos){
+  if (typeof pos !== "number"){ pos = state.cover; if (covSpringStop) covSpringStop(); } // a button, key or the timer takes over from a settling swipe
+  // a fractional pos follows the finger mid-swipe
   coverView.querySelectorAll(".cov-item").forEach(function(el){
     var i = Number(el.getAttribute("data-cov"));
-    var off = i - state.cover, ao = Math.abs(off);
+    var off = i - pos, ao = Math.abs(off);
     el.style.transform = "translateX(" + (off * 63) + "%) translateZ(" + (-ao * 150) + "px) rotateY(" + (-off * 36) + "deg) scale(" + (1 - Math.min(ao * 0.07, 0.21)) + ")";
     el.style.opacity = ao > 3 ? "0" : String(1 - ao * 0.16);
-    el.style.zIndex = String(20 - ao);
+    el.style.zIndex = String(20 - Math.round(ao));
     el.style.pointerEvents = ao > 3 ? "none" : "auto";
   });
-  var w = WORKS[state.cover];
+  var w = WORKS[Math.max(0, Math.min(WORKS.length - 1, Math.round(pos)))];
   document.getElementById("covTitle").textContent = w.title;
   document.getElementById("covMeta").textContent = w.year + " · " + w.cat + " · " + w.medium;
   document.getElementById("covDesc").textContent = w.desc;
@@ -767,6 +1561,8 @@ function stepCover(d){
 }
 function startCoverTimer(){
   if (coverTimer) clearInterval(coverTimer);
+  coverTimer = null;
+  if (coverView.querySelector(".cover-stage.swiping")) return; // the swipe restarts it once the cards rest
   coverTimer = null;
   if (reduced) return;
   coverTimer = setInterval(function(){
@@ -794,7 +1590,7 @@ function renderStack(){
       state.deck.slice(0, 4).map(function(wi, pos){
         var x = WORKS[wi];
         return '<div class="deck-card" data-pos="'+pos+'" style="z-index:'+(10 - pos)+'; transform:'+deckTransform(pos)+'; opacity:'+(pos === 3 ? .5 : 1)+'">' +
-          '<img src="'+x.img+'" alt="'+x.alt+'"'+(pos === 0 ? ' data-topimg="1"' : '')+'>' +
+          '<img src="'+x.img+'" alt="'+x.alt+'" draggable="false"'+(pos === 0 ? ' data-topimg="1"' : '')+'>' +
           '<div class="dc-body"><div class="card-top"><h3 class="card-title">'+x.title+'</h3><span class="card-year">'+x.year+'</span></div>' +
           '<p class="card-meta">'+x.cat+' · '+x.medium+'</p></div></div>';
       }).join("") +
@@ -803,29 +1599,91 @@ function renderStack(){
     '<p class="sp-count">덱의 맨 위 카드 · No.'+String(top + 1).padStart(2, "0")+' / 전체 '+WORKS.length+'점</p>' +
     '<div class="sp-actions"><button class="sp-next" id="stkNext">다음 카드 넘기기 →</button><button id="stkOpen">자세히 보기</button></div></div>';
   var timg = stackView.querySelector("[data-topimg]");
-  if (timg) timg.addEventListener("click", function(){ openDetail(top); });
-  document.getElementById("stkNext").addEventListener("click", nextStack);
+  var zone = stackView.querySelector(".deck-zone");
+  if (timg) timg.addEventListener("click", function(){ if (!zone.swiped()) openDetail(top); });
+  document.getElementById("stkNext").addEventListener("click", function(){ nextStack(); });
+  var topCard = function(){ return stackView.querySelector('[data-pos="0"]'); };
+  hSwipe(zone, {
+    can: function(){ return !stackBusy; },
+    start: function(){ var c = topCard(); if (c) c.classList.add("swiping"); },
+    move: function(dx){ var c = topCard(); if (c) c.style.transform = deckTransform(0) + " translateX(" + dx + "px) rotate(" + (dx / 22) + "deg)"; },
+    end: function(dx, vx){
+      var c = topCard(); if (!c) return;
+      c.classList.remove("swiping");
+      if (Math.abs(dx) > 70 || Math.abs(vx) > 0.45) nextStack(dx + vx * 120 < 0 ? 1 : -1);
+      else c.style.transform = deckTransform(0);
+    },
+    cancel: function(){ var c = topCard(); if (c){ c.classList.remove("swiping"); c.style.transform = deckTransform(0); } }
+  });
   document.getElementById("stkOpen").addEventListener("click", function(){ openDetail(top); });
 }
 var stackBusy = false;
-function nextStack(){
+/* dir 1: the next work (button, →, swipe left); -1: the previous one back on top (←, swipe right). */
+function nextStack(dir){
   if (stackBusy || state.layout !== "stack") return;
   stackBusy = true;
   var card = stackView.querySelector('[data-pos="0"]');
-  if (card) card.classList.add("fly");
+  if (card) card.classList.add(dir === 1 ? "fly-l" : "fly");
   setTimeout(function(){
-    state.deck.push(state.deck.shift());
+    if (dir === -1) state.deck.unshift(state.deck.pop()); else state.deck.push(state.deck.shift());
     stackBusy = false;
     renderStack();
   }, reduced ? 40 : 440);
 }
 
 /* ---------- 12 peek carousel (영상 모션 3번) ---------- */
+function spotMarkup(){
+  return '<button class="spot-close" ><span aria-hidden="true">←</span> 목록으로</button><div class="spot-cap" aria-live="polite" aria-atomic="true"><span class="spot-no"></span><h3 class="spot-title"></h3><p class="spot-meta"></p><p class="spot-desc"></p></div>';
+}
+function spotShift(){ return matchMedia("(max-width:720px)").matches ? 78 : 55; }
+function spotScale(stage, item){
+  var mat = matchMedia("(max-width:720px)").matches ? 8 : 14;
+  return Math.min(1.15, (stage.clientWidth - mat * 2 - 12) / item.offsetWidth);
+}
+function spotUpdate(stage, kind, index){
+  if (!stage) return;
+  var on = stage.classList.contains("is-spot"), items = stage.querySelectorAll(kind === "peek" ? ".peek-item" : ".drag-card");
+  items.forEach(function(el, i){ el.classList.toggle("is-spot-on", on && i === index); el.inert = on && i !== index; });
+  if (kind === "peek") stage.nextElementSibling.setAttribute("aria-hidden", String(on));
+  if (!on){ stage.removeAttribute("data-spot"); return; }
+  stage.setAttribute("data-spot", index);
+  var w = WORKS[index], item = items[index], img = item.querySelector("img"), cap = stage.querySelector(".spot-cap");
+  cap.querySelector(".spot-no").textContent = "No." + String(index + 1).padStart(2,"0");
+  cap.querySelector(".spot-title").textContent = w.title;
+  cap.querySelector(".spot-meta").textContent = w.year + " · " + w.cat + " · " + w.medium;
+  cap.querySelector(".spot-desc").textContent = w.desc;
+  var scale = spotScale(stage, item);
+  var imageHeight = img.offsetHeight * scale;
+  var itemTop = kind === "peek" ? item.offsetTop : stage.querySelector(".drag-track").offsetTop;
+  var imageOffset = kind === "peek" ? 0 : item.clientTop + item.querySelector(".drag-media").offsetTop;
+  var imageTop = itemTop + spotShift() - item.offsetHeight * (scale - 1) / 2 + imageOffset * scale;
+  stage.style.setProperty("--spot-cap-top", Math.round(imageTop + imageHeight + 24) + "px");
+  stage.style.setProperty("--spot-cap-width", Math.floor(img.offsetWidth * scale) + "px");
+  stage.style.setProperty("--spot-height", Math.ceil(imageTop + imageHeight + 40 + cap.offsetHeight + 24) + "px");
+}
+function spotToggle(stage, kind, index, open){
+  if (!stage) return;
+  stage.classList.toggle("is-spot", open);
+  if (kind === "peek"){ state.peek = index; updatePeek(); } else { dragGo(index); }
+  if (open){
+    var closeBtn = stage.querySelector(".spot-close");
+    closeBtn.focus({preventScroll:true});
+    // Once the stage has grown, bring the caption up, but never push the stage top (and its close button) under the sticky panel.
+    setTimeout(function(){
+      if (!stage.isConnected || !stage.classList.contains("is-spot")) return;
+      var deck = document.querySelector(".deck"), limit = (deck ? deck.getBoundingClientRect().bottom : 0) + 8;
+      var top = stage.getBoundingClientRect().top, capB = stage.querySelector(".spot-cap").getBoundingClientRect().bottom;
+      var dy = top < limit ? top - limit : Math.min(Math.max(0, capB - innerHeight + 16), top - limit);
+      if (Math.abs(dy) > 1) window.scrollBy({ top: dy, behavior: reduced ? "auto" : "smooth" });
+    }, reduced ? 0 : 880);
+  }
+  else { var item = stage.querySelector((kind === "peek" ? '[data-pk="' : '[data-dg="') + index + '"]'); if (item) item.focus({preventScroll:true}); }
+}
 var peekSwiped = false;
 function renderPeek(){
   extraView.innerHTML =
-    '<div class="peek-stage" id="peekStage">' +
-      WORKS.map(function(x, i){ return '<div class="peek-item" data-pk="'+i+'"><img src="'+x.img+'" alt="'+x.alt+'" draggable="false"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>'; }).join("") +
+    '<div class="peek-stage" id="peekStage">' + spotMarkup() +
+      WORKS.map(function(x, i){ return '<div class="peek-item" data-pk="'+i+'" tabindex="0" role="button" aria-label="'+x.title+' 크게 보기"><img src="'+x.img+'" alt="'+x.alt+'" draggable="false"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>'; }).join("") +
     '</div>' +
     '<div class="cover-cap"><h3 id="pkTitle"></h3><p class="cov-meta" id="pkMeta"></p><p class="cov-desc" id="pkDesc"></p>' +
     '<button class="focus-detail-btn" id="pkOpen">자세히 보기</button></div>' +
@@ -836,13 +1694,16 @@ function renderPeek(){
     el.addEventListener("click", function(){
       if (peekSwiped) return;
       var i = Number(el.getAttribute("data-pk"));
-      if (i === state.peek) openDetail(i);
-      else { state.peek = i; updatePeek(); }
+      var stage = document.getElementById("peekStage");
+      spotToggle(stage, "peek", i, !(stage.classList.contains("is-spot") && i === state.peek));
     });
   });
+  extraView.querySelectorAll(".peek-item").forEach(function(el){ el.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); spotToggle(document.getElementById("peekStage"), "peek", Number(el.getAttribute("data-pk")), true); } }); });
+  document.getElementById("peekStage").querySelector(".spot-close").addEventListener("click", function(){ spotToggle(document.getElementById("peekStage"), "peek", state.peek, false); });
+  document.getElementById("peekStage").addEventListener("click", function(e){ if (e.target === this && !peekSwiped && this.classList.contains("is-spot")) spotToggle(this, "peek", state.peek, false); });
   document.getElementById("pkPrev").addEventListener("click", function(){ stepPeek(-1); });
   document.getElementById("pkNext").addEventListener("click", function(){ stepPeek(1); });
-  document.getElementById("pkOpen").addEventListener("click", function(){ openDetail(state.peek); });
+  document.getElementById("pkOpen").addEventListener("click", function(){ spotToggle(document.getElementById("peekStage"), "peek", state.peek, true); });
   extraView.querySelectorAll("[data-pd]").forEach(function(b){
     b.addEventListener("click", function(){ state.peek = Number(b.getAttribute("data-pd")); updatePeek(); });
   });
@@ -851,9 +1712,9 @@ function renderPeek(){
   pst.addEventListener("pointerup", function(e){
     if (pkX === null) return;
     var dx = e.clientX - pkX; pkX = null;
-    if (Math.abs(dx) > 48){
+    if (Math.abs(dx) > 8){
       peekSwiped = true;
-      stepPeek(dx < 0 ? 1 : -1);
+      if (Math.abs(dx) > 48) stepPeek(dx < 0 ? 1 : -1);
       setTimeout(function(){ peekSwiped = false; }, 120);
     }
   });
@@ -867,21 +1728,28 @@ function stepPeek(d){
   updatePeek();
 }
 function updatePeek(){
+  var stage = document.getElementById("peekStage");
+  if (!stage) return;
+  var spot = stage.classList.contains("is-spot");
+  if (spot) stage.scrollLeft = 0;
   extraView.querySelectorAll(".peek-item").forEach(function(el){
     var i = Number(el.getAttribute("data-pk"));
     var off = i - state.peek, ao = Math.abs(off);
-    el.style.transform = "translateX(" + (off * 76) + "%) scale(" + (off === 0 ? 1 : 0.84) + ")";
-    el.style.opacity = ao > 2 ? "0" : String(1 - ao * 0.18);
+    el.style.transform = "translateX(" + (off * (spot ? 150 : 76)) + "%) translateY(" + (spot && off === 0 ? spotShift() : 0) + "px) scale(" + (off === 0 ? (spot ? spotScale(stage, el) : 1) : 0.84) + ")";
+    el.style.opacity = spot && off !== 0 ? "0" : (ao > 2 ? "0" : String(1 - ao * 0.18));
     el.style.filter = off === 0 ? "none" : "brightness(.7) saturate(.92)";
     el.style.zIndex = String(20 - ao);
     el.style.pointerEvents = ao > 2 ? "none" : "auto";
   });
+  spotUpdate(stage, "peek", state.peek);
   var w = WORKS[state.peek];
   document.getElementById("pkTitle").textContent = w.title;
   document.getElementById("pkMeta").textContent = w.year + " · " + w.cat + " · " + w.medium;
   document.getElementById("pkDesc").textContent = w.desc;
   extraView.querySelectorAll("[data-pd]").forEach(function(b){
-    b.classList.toggle("on", Number(b.getAttribute("data-pd")) === state.peek);
+    var current = Number(b.getAttribute("data-pd")) === state.peek;
+    b.classList.toggle("on", current);
+    if (current) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current");
   });
   document.getElementById("pkPrev").disabled = state.peek === 0;
   document.getElementById("pkNext").disabled = state.peek === WORKS.length - 1;
@@ -971,17 +1839,17 @@ function stopAuto(){
 var dragGo = null, dragSuppress = false;
 function renderDrag(){
   extraView.innerHTML =
-    '<div class="drag-viewport" id="dragVp"><div class="drag-track" id="dragTrack">' +
+    '<div class="drag-viewport" id="dragVp">' + spotMarkup() + '<div class="drag-track" id="dragTrack">' +
       WORKS.map(function(x, i){
-        return '<div class="drag-card" data-dg="'+i+'"><div class="drag-media"><img src="'+x.img+'" alt="'+x.alt+'" draggable="false"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>' +
-        '<div class="dc2-body"><div class="card-top"><h3 class="card-title">'+x.title+'</h3><span class="card-year">'+x.year+'</span></div>' +
+        return '<div class="drag-card" data-dg="'+i+'" tabindex="0" role="button" aria-label="'+x.title+' 크게 보기"><div class="drag-media"><img src="'+x.img+'" alt="'+x.alt+'" draggable="false"><span class="card-num">No.'+String(i+1).padStart(2,"0")+'</span></div>' +
+        '<div class="dc2-body"><div class="card-top"><span class="card-no" aria-hidden="true">No.'+String(i+1).padStart(2,"0")+'</span><h3 class="card-title">'+x.title+'</h3><span class="card-year">'+x.year+'</span></div>' +
         '<p class="card-meta">'+x.cat+' · '+x.medium+'</p></div></div>';
       }).join("") +
     '</div></div>' +
     '<div class="cover-ui"><button class="cov-btn" id="dgPrev" aria-label="이전 작품">←</button>' +
     '<div class="peek-dots" id="dgDots">' + WORKS.map(function(x, i){ return '<button data-dd="'+i+'" aria-label="'+(i+1)+'번 작품으로 이동"></button>'; }).join("") + '</div>' +
     '<button class="cov-btn" id="dgNext" aria-label="다음 작품">→</button></div>' +
-    '<p class="drag-hint">잡아 끌어서 넘기기 · 카드를 누르면 크게 보기</p>';
+    '<p class="drag-hint">잡아 끌어서 넘기기 · 작품을 누르면 제자리에서 크게 보기</p>';
   var vp = document.getElementById("dragVp"), track = document.getElementById("dragTrack");
   var stepW = function(){ var c = track.querySelector(".drag-card"); return c ? c.offsetWidth + 16 : 0; };
   var cur = -state.drag * stepW();
@@ -992,7 +1860,9 @@ function renderDrag(){
   }
   function paintDragUI(){
     extraView.querySelectorAll("[data-dd]").forEach(function(b){
-      b.classList.toggle("on", Number(b.getAttribute("data-dd")) === state.drag);
+      var current = Number(b.getAttribute("data-dd")) === state.drag;
+      b.classList.toggle("on", current);
+      if (current) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current");
     });
     document.getElementById("dgPrev").disabled = state.drag === 0;
     document.getElementById("dgNext").disabled = state.drag === WORKS.length - 1;
@@ -1001,6 +1871,9 @@ function renderDrag(){
     state.drag = Math.max(0, Math.min(WORKS.length - 1, i));
     setX(-state.drag * stepW(), true);
     paintDragUI();
+    var spot = vp.classList.contains("is-spot");
+    track.querySelectorAll(".drag-card").forEach(function(c, j){ var off = j - state.drag; c.style.transform = spot ? (off === 0 ? "translateY(" + spotShift() + "px) scale(" + spotScale(vp, c) + ")" : "translateX(" + (off < 0 ? "-100%" : "100%") + ")") : ""; c.style.opacity = spot && off !== 0 ? "0" : "1"; });
+    spotUpdate(vp, "drag", state.drag);
   };
   document.getElementById("dgPrev").addEventListener("click", function(){ dragGo(state.drag - 1); });
   document.getElementById("dgNext").addEventListener("click", function(){ dragGo(state.drag + 1); });
@@ -1008,13 +1881,17 @@ function renderDrag(){
     b.addEventListener("click", function(){ dragGo(Number(b.getAttribute("data-dd"))); });
   });
   track.querySelectorAll(".drag-card").forEach(function(c){
-    c.addEventListener("click", function(){ if (!dragSuppress) openDetail(Number(c.getAttribute("data-dg"))); });
+    c.addEventListener("click", function(){ if (!dragSuppress){ var i = Number(c.getAttribute("data-dg")); spotToggle(vp, "drag", i, !(vp.classList.contains("is-spot") && i === state.drag)); } });
+    c.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); spotToggle(vp, "drag", Number(c.getAttribute("data-dg")), true); } });
   });
+  vp.querySelector(".spot-close").addEventListener("click", function(){ spotToggle(vp, "drag", state.drag, false); });
+  vp.addEventListener("click", function(e){ if ((e.target === vp || e.target === track) && !dragSuppress && vp.classList.contains("is-spot")) spotToggle(vp, "drag", state.drag, false); });
   var dragging = false, startX = 0, startCur = 0, moved = 0, lastX = 0, lastT = 0, vel = 0;
   function onMove(e){
     if (!dragging) return;
     var dx = e.clientX - startX;
     moved = Math.max(moved, Math.abs(dx));
+    if (vp.classList.contains("is-spot")){ lastX = e.clientX; return; }
     var x = startCur + dx;
     var min = -(WORKS.length - 1) * stepW();
     if (x > 0) x = x * 0.35;
@@ -1029,15 +1906,20 @@ function renderDrag(){
     dragging = false;
     vp.classList.remove("grabbing");
     var w = stepW();
-    if (w){
+    if (vp.classList.contains("is-spot")){
+      var dx = lastX - startX;
+      if (Math.abs(dx) > 40) dragGo(state.drag + (dx < 0 ? 1 : -1));
+      else if (w) setX(-state.drag * w, true); // a tap or a small nudge: settle back and keep the slide animation
+    } else if (w){
       var idx = Math.round(-(cur + vel * 160) / w);
       state.drag = Math.max(0, Math.min(WORKS.length - 1, idx));
       setX(-state.drag * w, true);
-      paintDragUI();
+      dragGo(state.drag);
     }
     if (moved > 8){ dragSuppress = true; setTimeout(function(){ dragSuppress = false; }, 80); }
   }
   vp.addEventListener("pointerdown", function(e){
+    if (e.target.closest(".spot-close")) return;
     dragging = true; moved = 0; vel = 0;
     startX = e.clientX; startCur = cur; lastX = e.clientX; lastT = performance.now();
     vp.classList.add("grabbing");
@@ -1104,15 +1986,61 @@ function openDetail(i){
   document.getElementById("dlgMedium").textContent = w.medium;
   if (!dlg.open) dlg.showModal();
 }
+function museumUpdate(index){
+  var cards = stage.querySelectorAll(".card"), card = cards[index], media = card.querySelector(".card-media"), cap = stage.querySelector(".spot-cap"), w = WORKS[index];
+  stage.setAttribute("data-spot", index);
+  cards.forEach(function(c, i){ c.classList.toggle("is-spot-on", i === index); c.inert = i !== index; c.style.setProperty("--museum-away", (i < index ? -1 : 1) * (stage.scrollWidth + stage.clientWidth) + "px"); });
+  cap.querySelector(".spot-no").textContent = "No." + String(index + 1).padStart(2,"0");
+  cap.querySelector(".spot-title").textContent = w.title;
+  cap.querySelector(".spot-meta").textContent = w.year + " · " + w.cat + " · " + w.medium;
+  cap.querySelector(".spot-desc").textContent = w.desc;
+  var width = stage.clientWidth, scale = Math.min(1.25, (width - 28) / media.offsetWidth), frame = media.offsetWidth * scale;
+  var left = stage.scrollLeft + (width - frame) / 2, top = 68;
+  stage.style.setProperty("--museum-scale", scale);
+  stage.style.setProperty("--museum-x", (left - card.offsetLeft - media.offsetLeft) + "px");
+  stage.style.setProperty("--museum-y", (top - card.offsetTop - media.offsetTop) + "px");
+  // Image box inside the frame, measured in untransformed px (works mid-transition too).
+  var image = media.querySelector("img"), mr = media.getBoundingClientRect(), ir = image.getBoundingClientRect(), cs = mr.width / media.offsetWidth || 1;
+  var imgL = (ir.left - mr.left) / cs, imgW = ir.width / cs;
+  stage.style.setProperty("--museum-cap-top", (top + media.offsetHeight * scale + 18) + "px");
+  stage.style.setProperty("--museum-cap-left", (left + imgL * scale) + "px");
+  stage.style.setProperty("--museum-cap-width", Math.max(200, imgW * scale) + "px");
+  stage.style.setProperty("--museum-control-left", (stage.scrollLeft + 12) + "px");
+  stage.style.setProperty("--museum-control-right", (stage.scrollLeft + width - 48) + "px");
+  stage.style.setProperty("--museum-nav-top", (top + media.offsetHeight * scale + 16) + "px");
+  stage.style.setProperty("--museum-height", Math.ceil(top + media.offsetHeight * scale + 40 + cap.offsetHeight + 70) + "px");
+  // The new height changes flex alignment, so measure again after layout.
+  stage.style.setProperty("--museum-y", (top - card.offsetTop - media.offsetTop) + "px");
+}
+function museumToggle(index, open){
+  stage.classList.toggle("is-spot", open);
+  if (open){
+    museumUpdate(index); stage.querySelector(".spot-close").focus({preventScroll:true});
+    var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTimeout(function(){
+      if (!stage.classList.contains("is-spot")) return;
+      var cap = stage.querySelector(".spot-cap").getBoundingClientRect(), st = stage.getBoundingClientRect(), deck = document.querySelector(".deck");
+      var floor = deck ? deck.getBoundingClientRect().bottom + 8 : 8;
+      var dy = Math.min(cap.bottom + 24 - innerHeight, st.top - floor);
+      if (dy > 0) scrollBy({top:dy, behavior: reduced ? "auto" : "smooth"});
+    }, reduced ? 0 : 600);
+  }
+  else { stage.removeAttribute("data-spot"); stage.querySelectorAll(".card").forEach(function(c){ c.inert = false; c.classList.remove("is-spot-on"); }); stage.style.removeProperty("--museum-height"); var media = stage.querySelector('.card[data-i="' + index + '"] .card-media'); if (media) media.focus({preventScroll:true}); }
+}
+function museumStep(dir){ museumUpdate((Number(stage.getAttribute("data-spot")) + dir + WORKS.length) % WORKS.length); }
 function bindOpen(root){
+  // Only the stage's listeners belong to its controller: other views (focus) render after it is aborted.
+  var opts = root === stage ? {signal:stageListeners.signal} : undefined;
   root.querySelectorAll("[data-open]").forEach(function(el){
     el.addEventListener("click", function(e){
-      if (state.layout === "strip" && el.closest(".card") && !el.classList.contains("card-open")) return;
+      if (state.layout === "museum"){ e.stopPropagation(); museumToggle(Number(el.getAttribute("data-open")), !stage.classList.contains("is-spot")); return; }
+      // Strip: a folded card unfolds; the open card's image opens the detail (phones hide the "+").
+      if (state.layout === "strip" && el.closest(".card") && !el.classList.contains("card-open") && !el.closest(".card").classList.contains("active")) return;
       e.stopPropagation();
       openDetail(Number(el.getAttribute("data-open")));
-    });
+    }, opts);
     if (el.classList.contains("card-media")){
-      el.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); openDetail(Number(el.getAttribute("data-open"))); } });
+      el.addEventListener("keydown", function(e){ if (e.key === "Enter" || e.key === " "){ e.preventDefault(); if (state.layout === "museum"){ museumToggle(Number(el.getAttribute("data-open")), true); return; } var card = el.closest(".card"); if (state.layout === "strip" && card && !card.classList.contains("active")) { setStripActive(Number(card.getAttribute("data-i"))); return; } openDetail(Number(el.getAttribute("data-open"))); } }, {signal:stageListeners.signal});
     }
   });
 }
@@ -1131,12 +2059,12 @@ function apply(){
   document.getElementById("infoTags").innerHTML = meta.tags.map(function(t){ return '<span class="tag">'+t+'</span>'; }).join("");
 
   if (coverTimer){ clearInterval(coverTimer); coverTimer = null; }
-  if (filmTimer){ clearInterval(filmTimer); filmTimer = null; }
   stopAuto();
   dragGo = null;
   var extraIds = ["peek", "autoplay", "drag", "thumbnav"];
   var view = state.layout === "focus" ? "focus" : state.layout === "coverflow" ? "cover" : state.layout === "stack" ? "stack" : extraIds.indexOf(state.layout) >= 0 ? "extra" : "stage";
   var swap = function(){
+    if (view !== "stage" && stageListeners){ stageListeners.abort(); stage.classList.remove("is-spot"); stage.removeAttribute("data-spot"); stage.querySelectorAll(".card").forEach(function(c){ c.inert = false; c.classList.remove("is-spot-on"); }); }
     stage.style.display = view === "stage" ? "" : "none";
     focusView.classList.toggle("on", view === "focus");
     coverView.classList.toggle("on", view === "cover");
@@ -1159,9 +2087,21 @@ function apply(){
   setTimeout(swap, 240);
 }
 
+var spotResizeTimer;
+window.addEventListener("resize", function(){
+  clearTimeout(spotResizeTimer);
+  spotResizeTimer = setTimeout(function(){
+    if (state.layout === "museum" && stage.classList.contains("is-spot")) museumUpdate(Number(stage.getAttribute("data-spot")));
+    if (state.layout === "peek" && document.getElementById("peekStage")?.classList.contains("is-spot")) updatePeek();
+    if (state.layout === "drag" && document.getElementById("dragVp")?.classList.contains("is-spot") && dragGo) dragGo(state.drag);
+  }, 100);
+});
 document.addEventListener("keydown", function(e){
   if (dlg.open) return;
-  if (state.layout === "focus"){
+  if (state.layout === "museum" && stage.classList.contains("is-spot")){
+    if (e.key === "Escape") museumToggle(Number(stage.getAttribute("data-spot")), false);
+    else if (e.key === "ArrowRight" || e.key === "ArrowLeft"){ e.preventDefault(); museumStep(e.key === "ArrowRight" ? 1 : -1); }
+  } else if (state.layout === "focus"){
     if (e.key === "ArrowRight") setFocus((state.focus + 1) % WORKS.length);
     if (e.key === "ArrowLeft") setFocus((state.focus + WORKS.length - 1) % WORKS.length);
   } else if (state.layout === "coverflow"){
@@ -1169,16 +2109,19 @@ document.addEventListener("keydown", function(e){
     if (e.key === "ArrowLeft"){ stepCover(-1); startCoverTimer(); }
   } else if (state.layout === "stack"){
     if (e.key === "ArrowRight") nextStack();
+    else if (e.key === "ArrowLeft") nextStack(-1);
     else if (e.key === " " && e.target === document.body){ e.preventDefault(); nextStack(); }
   } else if (state.layout === "peek"){
+    if (e.key === "Escape" && document.getElementById("peekStage")?.classList.contains("is-spot")) spotToggle(document.getElementById("peekStage"), "peek", state.peek, false);
     if (e.key === "ArrowRight") stepPeek(1);
     if (e.key === "ArrowLeft") stepPeek(-1);
   } else if (state.layout === "autoplay"){
     if (e.key === "ArrowRight") setAuto((state.auto + 1) % WORKS.length);
     if (e.key === "ArrowLeft") setAuto((state.auto + WORKS.length - 1) % WORKS.length);
   } else if (state.layout === "drag"){
-    if (e.key === "ArrowRight" && dragGo) dragGo(state.drag + 1);
-    if (e.key === "ArrowLeft" && dragGo) dragGo(state.drag - 1);
+    if (e.key === "Escape" && document.getElementById("dragVp")?.classList.contains("is-spot")) spotToggle(document.getElementById("dragVp"), "drag", state.drag, false);
+    if (e.key === "ArrowRight" && document.getElementById("dragVp") && dragGo) dragGo(state.drag + 1);
+    if (e.key === "ArrowLeft" && document.getElementById("dragVp") && dragGo) dragGo(state.drag - 1);
   } else if (state.layout === "thumbnav"){
     if (e.key === "ArrowRight") setThumb((state.thumb + 1) % WORKS.length);
     if (e.key === "ArrowLeft") setThumb((state.thumb + WORKS.length - 1) % WORKS.length);
