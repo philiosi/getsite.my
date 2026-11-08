@@ -319,3 +319,35 @@ Firestore 규칙: **보류(사용자 결정)**. 운영 규칙은 orders 생성·
   - `tests/samples/gallery-spotlight.mjs` passes 300+ checks: museum at 1280/375/320, light and dark, reduced motion. The two new regression tests failed before the fix.
   - `tests/samples/gallery-layouts.mjs`: all PASS.
 - **Deploy:** preview `mobile-fit` and live https://getsite-gallery-lab.web.app (deployed with the user's approval, "다 끝나면 배포까지 해줘").
+
+## 14. v5 운영 전환 (2026-11-09)
+
+- **Real upload test:**
+  - Created a minimal test order (`WO-2026-9999-…`, only `createdAt` and `brief.references.files`) in production through the Firestore REST API.
+  - Uploaded from a real browser with `api().uploadRefFile`, which follows the Apps Script redirect and checks CORS:
+    - First upload: ok. Saved as Drive `getsite-order-refs/<key>/ref-1.jpg`.
+    - Same file again: ok (`exists`).
+    - Unlisted name: `not-listed`.
+  - Afterwards the test order was deleted (GET 404) and the Drive folder was moved to trash.
+  - The deployed Apps Script files are identical to `deploy/apps-script/`, checked with `clasp pull`.
+- **Switch:**
+  - Ran `node scripts/v4-build.mjs --root=v5` (new option). The root and `/p/**` now redirect to `/v5/`.
+  - Ran `firebase deploy --only firestore:rules,hosting`. `firebase.json` now points to `v3/backend/firestore.rules` and `storage.rules`. Storage was not deployed.
+- **Before the switch:**
+  - Live was the v2 single page. Its rules let anyone create and read orders, including the list.
+  - Both were saved in `backups/live-2026-11-09/`, which git ignores: `firestore.rules.live` and the hosting version id.
+- **Checks:**
+  - Before deploy:
+    - Rules emulator: 13/13.
+    - v5 unit and ref-upload: 11/11.
+    - v5 e2e: 55/55.
+    - Preview channel `v5-switch` smoke test passed.
+  - After deploy:
+    - `/`, `/p/1234`, `/v5/`, `/v3/order.html` and `/motion/…?embed=1` load with no errors and no 4xx.
+    - Anonymous order list: 403. Legacy 4-digit create: 403.
+- **Rollback:**
+  - Hosting: Firebase console → Hosting → release history → restore version `de684950c383da4b`.
+  - Rules: redeploy `backups/live-2026-11-09/firestore.rules.live`.
+- **Consequences:**
+  - The v2 order page and old `/p/<number>` previews no longer work; they redirect to `/v5/`.
+  - The `getsite.my` custom domain does not answer. Only `getsite-my.web.app` serves.

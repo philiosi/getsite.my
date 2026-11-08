@@ -1,1 +1,25 @@
-{"firestore":{"rules":"firestore.rules"},"hosting":{"ignore":["firebase.json","firestore.rules","storage.rules","**/.*","**/node_modules/**"],"public":"public","rewrites":[{"destination":"/index.html","source":"/p/**"}],"site":"getsite-my"},"storage":{"rules":"storage.rules"}}
+{
+  "firestore": {
+    "rules": "v3/backend/firestore.rules"
+  },
+  "hosting": {
+    "ignore": [
+      "firebase.json",
+      "firestore.rules",
+      "storage.rules",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "public": "public",
+    "rewrites": [
+      {
+        "destination": "/index.html",
+        "source": "/p/**"
+      }
+    ],
+    "site": "getsite-my"
+  },
+  "storage": {
+    "rules": "v3/backend/storage.rules"
+  }
+}
