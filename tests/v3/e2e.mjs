@@ -164,7 +164,7 @@ for (const width of [320, 375, 414, 768, 1440]) {
   await page.waitForSelector('#f-siteName');
   await wait(page, 500);
   const recap = await page.textContent('.recap');
-  check('sheet recap names the selection', recap.includes('브랜드') && recap.includes('유리 닦기') && recap.includes('돌려 넘기기'), recap);
+  check('sheet recap names the selection', recap.includes('브랜드') && recap.includes('유리 닦기') && recap.includes('커버플로우'), recap);
   const stageInert = await page.evaluate(() => document.getElementById('stage').inert);
   check('site behind the sheet is inert', stageInert === true);
   await page.click('.send');

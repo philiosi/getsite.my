@@ -141,9 +141,7 @@ export function openMotionPicker({ parts, startRef = null, returnFocus = null })
   return { dialog: dlg, close: closeFn };
 }
 
-/* The gallery lab's own names for the layouts the order also knows by another name. */
-const LAB_NAMES = { grid: '그리드', masonry: '메이슨리', strip: '가로 확장', flow: '세로 플로우', focus: '포커스', timeline: '연혁 타임라인', index: '인덱스', coverflow: '커버플로우', stack: '카드 스택', museum: '뮤지엄 월' };
-const labLabel = (id) => (LAB_NAMES[id] && LAB_NAMES[id] !== layoutName(id) ? `${LAB_NAMES[id]} (${layoutName(id)})` : layoutName(id));
+const labLabel = (id) => layoutName(id);
 
 /** The gallery layouts, large and live: the gallery lab (14 layouts) in pick mode, in a same-origin
     iframe loaded only while the dialog is open. The lab posts the layout it shows; "이 구도로 선택"

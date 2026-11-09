@@ -224,18 +224,19 @@ const G = (id, name, core, hint, needs) => ({
   spec: { needs, fallback: '자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다.' },
 });
 
+/* Names follow the gallery lab (samples/gallery-layouts), so the order shows what the customer saw there. */
 export const GALLERIES = [
-  G('focus', '한 점씩 크게', true, '한 점씩 크게, 옆으로 넘기기', '이미지, 작품명, 연도'),
+  G('focus', '포커스', true, '한 점씩 크게, 옆으로 넘기기', '이미지, 작품명, 연도'),
   G('film', '옆으로 흘려 보기', true, '끌어서 흘려 보기', '이미지, 작품명'),
-  G('masonry', '벽돌처럼 쌓기', true, '크기가 다른 벽돌 쌓기', '비율이 다양한 이미지'),
-  G('index', '이름 목록', true, '이름 목록, 올리면 이미지', '작품명, 연도, 분류'),
-  G('grid', '고른 격자', false, '고른 격자', '이미지'),
-  G('strip', '눌러서 펼치기', false, '누른 칸이 넓어짐', '세로로 잘려도 되는 이미지'),
-  G('flow', '이어서 읽기', false, '세로로 이어 읽기', '이미지, 짧은 글'),
-  G('timeline', '연도 따라가기', false, '연도를 따라 이동', '연도가 있는 작품·이력'),
-  G('coverflow', '돌려 넘기기', false, '다이얼을 돌려 입체로 넘기기', '이미지 5점 이상'),
-  G('stack', '던져 넘기기', false, '맨 위 카드를 던지기', '이미지 3점 이상'),
-  G('museum', '벽 둘러보기', false, '벽을 끌며 둘러보기', '작품 크기 정보(없으면 비율로 대체)'),
+  G('masonry', '메이슨리', true, '크기가 다른 벽돌 쌓기', '비율이 다양한 이미지'),
+  G('index', '인덱스', true, '이름 목록, 올리면 이미지', '작품명, 연도, 분류'),
+  G('grid', '그리드', false, '고른 격자', '이미지'),
+  G('strip', '가로 확장', false, '누른 칸이 넓어짐', '세로로 잘려도 되는 이미지'),
+  G('flow', '세로 플로우', false, '세로로 이어 읽기', '이미지, 짧은 글'),
+  G('timeline', '연혁 타임라인', false, '연도를 따라 이동', '연도가 있는 작품·이력'),
+  G('coverflow', '커버플로우', false, '다이얼을 돌려 입체로 넘기기', '이미지 5점 이상'),
+  G('stack', '카드 스택', false, '맨 위 카드를 던지기', '이미지 3점 이상'),
+  G('museum', '뮤지엄 월', false, '벽을 끌며 둘러보기', '작품 크기 정보(없으면 비율로 대체)'),
 ];
 
 /* Layouts that exist only in the gallery lab (samples/gallery-layouts, served at /gallery-lab/).

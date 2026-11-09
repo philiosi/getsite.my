@@ -130,7 +130,7 @@ var CATALOG = {
   },
   "galleries": {
     "focus": {
-      "name": "한 점씩 크게",
+      "name": "포커스",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "이미지, 작품명, 연도",
@@ -146,7 +146,7 @@ var CATALOG = {
       }
     },
     "masonry": {
-      "name": "벽돌처럼 쌓기",
+      "name": "메이슨리",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "비율이 다양한 이미지",
@@ -154,7 +154,7 @@ var CATALOG = {
       }
     },
     "index": {
-      "name": "이름 목록",
+      "name": "인덱스",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "작품명, 연도, 분류",
@@ -162,7 +162,7 @@ var CATALOG = {
       }
     },
     "grid": {
-      "name": "고른 격자",
+      "name": "그리드",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "이미지",
@@ -170,7 +170,7 @@ var CATALOG = {
       }
     },
     "strip": {
-      "name": "눌러서 펼치기",
+      "name": "가로 확장",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "세로로 잘려도 되는 이미지",
@@ -178,7 +178,7 @@ var CATALOG = {
       }
     },
     "flow": {
-      "name": "이어서 읽기",
+      "name": "세로 플로우",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "이미지, 짧은 글",
@@ -186,7 +186,7 @@ var CATALOG = {
       }
     },
     "timeline": {
-      "name": "연도 따라가기",
+      "name": "연혁 타임라인",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "연도가 있는 작품·이력",
@@ -194,7 +194,7 @@ var CATALOG = {
       }
     },
     "coverflow": {
-      "name": "돌려 넘기기",
+      "name": "커버플로우",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "이미지 5점 이상",
@@ -202,7 +202,7 @@ var CATALOG = {
       }
     },
     "stack": {
-      "name": "던져 넘기기",
+      "name": "카드 스택",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "이미지 3점 이상",
@@ -210,7 +210,7 @@ var CATALOG = {
       }
     },
     "museum": {
-      "name": "벽 둘러보기",
+      "name": "뮤지엄 월",
       "impl": "v3/gallery/layouts.js",
       "spec": {
         "needs": "작품 크기 정보(없으면 비율로 대체)",
