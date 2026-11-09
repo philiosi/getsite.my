@@ -409,17 +409,20 @@ function shareFolder_(folder) {
   }
 }
 
-/* Run once from the editor: applies the same sharing to order folders made before shareFolder_ existed. */
+/* Run once from the editor: applies the same sharing to order folders made before shareFolder_ existed.
+   Searches the whole Drive by name, so folders moved out of getsite-orders are found too. Reference-upload
+   folders (getsite-order-refs/WO-…) are left private: customers never get those links. */
 function shareOrderFolders() {
-  var roots = DriveApp.getFoldersByName(ROOT_FOLDER_NAME);
-  if (!roots.hasNext()) { console.log('no ' + ROOT_FOLDER_NAME + ' folder'); return; }
-  var subs = roots.next().getFolders(), ok = 0, failed = [];
-  while (subs.hasNext()) {
-    var f = subs.next();
+  var found = DriveApp.searchFolders("title contains 'WO-' and trashed = false"), ok = [], failed = [], skipped = 0;
+  while (found.hasNext()) {
+    var f = found.next();
     if (!/^WO-\d{4}-\d{4}-[A-Za-z0-9]{20}$/.test(f.getName())) continue;
-    if (shareFolder_(f)) ok++; else failed.push(f.getName());
+    var parents = f.getParents(), inRefs = false;
+    while (parents.hasNext()) if (parents.next().getName() === REFS_FOLDER_NAME) inRefs = true;
+    if (inRefs) { skipped++; continue; }
+    if (shareFolder_(f)) ok.push(f.getName().slice(0, 12)); else failed.push(f.getName());
   }
-  console.log('shared ' + ok + ' order folders' + (failed.length ? '; failed: ' + failed.join(', ') : ''));
+  console.log('shared ' + ok.length + ' order folders: ' + ok.join(', ') + (failed.length ? '; failed: ' + failed.join(', ') : '') + '; reference folders left private: ' + skipped);
 }
 
 function childFolder_(parent, name) {
