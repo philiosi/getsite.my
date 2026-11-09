@@ -1,5 +1,5 @@
 import { validForm, formOk, doneSteps, total } from './store.js';
-import { GALLERIES, CONCEPTS } from '../v3/catalog.js';
+import { ALL_GALLERIES, CONCEPTS } from '../v3/catalog.js';
 import { api, DRIVE_URL_RE } from '../v3/order/api.js';
 import { summaryText, submitOrder, parseLookup, orderPageLink, uploadRefFiles, refsOut } from './order.js';
 import { getFile } from './ref-files.js';
@@ -13,7 +13,7 @@ const button = (text, fn, cls = 'btn btn-line') => { const b = h('button', cls, 
 // The order guide page (v5/order-guide/index.html), served at the site root.
 const GUIDE_URL = '/order-guide/';
 const link = (text, href) => { const a = h('a', '', text); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
-const gallery = (s) => s.gallery === 'auto' ? '제작자에게 맡기기' : GALLERIES.find((g) => g.id === s.gallery)?.name || '';
+const gallery = (s) => s.gallery === 'auto' ? '제작자에게 맡기기' : ALL_GALLERIES.find((g) => g.id === s.gallery)?.name || '';
 const workSet = (sample) => CONCEPTS.find((c) => c.id === (sample?.concept || 'atelier'))?.name || '';
 async function copy(text, toast) { try { await navigator.clipboard.writeText(text); toast('복사했습니다.'); } catch { toast('복사하지 못했습니다.'); } }
 

@@ -5,6 +5,7 @@
      public/v5/         = v4 with a simpler step 3
      public/motion/     = the hero motion samples (already live; embedded by the step 3 motion picker)
      public/admin-demo/ = the admin page sample (samples/admin-demo), linked from the FAQ
+     public/gallery-lab/ = the gallery lab (samples/gallery-layouts), the step 3 gallery viewer
    --root=v4|v5: the root only redirects to /<v>/.
    --main=v5: v5 itself is served at the root (its files copied there too; /v5/ stays for old links).
      Its ../v3/ paths resolve to /v3/ from the root, so nothing in v5 changes.
@@ -35,6 +36,9 @@ if (existsSync(resolve(repo, 'v5'))) cpSync(resolve(repo, 'v5'), resolve(out, 'v
 cpSync(resolve(repo, 'motion'), resolve(out, 'motion'), { recursive: true, filter: (src) => !skip(src) && !src.endsWith('README.md') });
 // The admin page sample the FAQ links to (/admin-demo/): static, its data stays in the visitor's browser.
 cpSync(resolve(repo, 'samples/admin-demo'), resolve(out, 'admin-demo'), { recursive: true, filter: (src) => !skip(src) });
+// The gallery lab (14 layouts): step 3's "크게 보며 고르기" opens it in pick mode, same origin, so it can post the layout.
+mkdirSync(resolve(out, 'gallery-lab'), { recursive: true });
+copyFileSync(resolve(repo, 'samples/gallery-layouts/index.html'), resolve(out, 'gallery-lab/index.html'));
 if (mainArg) {
   // v5 at the root: its index.html, scripts, styles, assets/ and data/ sit beside v3/ v4/ v5/ motion/.
   cpSync(resolve(repo, 'v5'), out, { recursive: true, filter: (src) => !skip(src) });
@@ -48,5 +52,6 @@ if (mainArg) {
   copyFileSync(resolve(repo, 'index.html'), resolve(out, 'index.html'));
 }
 if (!existsSync(resolve(out, 'v4/index.html'))) throw new Error('v4/index.html missing');
+if (!existsSync(resolve(out, 'gallery-lab/index.html'))) throw new Error('gallery lab missing');
 if (!existsSync(resolve(out, 'motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html'))) throw new Error('motion sample missing');
 console.log(`public/ assembled (${mainArg ? 'root = v5 itself' : rootIsV4 ? `root redirects to /${rootArg}/` : 'root = current live page'}). v3 backend files were not copied.`);

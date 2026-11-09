@@ -62,7 +62,7 @@ service cloud.firestore {
         && pk(picks,'history') && pk(picks,'process') && pk(picks,'services') && pk(picks,'trust')
         && pk(picks,'faq') && pk(picks,'contact') && pk(picks,'booking') && pk(picks,'newsletter')
         && s(d.galleryNote,300) && s(d.partsVersion,20)
-        && d.galleryLayout in ['auto','focus','film','masonry','index','grid','strip','flow','timeline','coverflow','stack','museum']
+        && d.galleryLayout in ['auto','focus','film','masonry','index','grid','strip','flow','timeline','coverflow','stack','museum','peek','autoplay','drag','thumbnav']
         && ref(d.ref1) && ref(d.ref2) && ref(d.ref3) && d.materials in ['have','none']
         && d.estimate is map && d.estimate.keys().hasAll(['pages','video','revisions','total']) && d.estimate.keys().hasOnly(['pages','video','revisions','total'])
         && d.estimate.pages is int && d.estimate.pages >= 0 && d.estimate.pages <= 20

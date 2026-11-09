@@ -114,13 +114,56 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   check('motion: looking at examples changes nothing in the order', s1.picks.hero.ref === 'new' && s1.extras.video === false, JSON.stringify({ hero: s1.picks.hero, video: s1.extras.video }));
   check('motion: focus returns to the button that opened it', await page.evaluate(() => document.activeElement?.dataset?.motionOpen === ''));
 
-  // Gallery: picked in the large viewer.
+  // Gallery: picked in the large viewer, which is the gallery lab (14 layouts) in pick mode.
   await page.click('.tile[data-section="gallery"] [data-gallery-open]');
   await page.waitForSelector('dialog.picker[data-picker="gallery"][open]');
-  await page.click('dialog.picker [data-value="museum"]');
+  const lab = page.frameLocator('dialog.picker iframe.picker-frame');
+  await lab.locator('#layoutSeg button').first().waitFor({ timeout: 60000 });
+  const labInfo = await page.$eval('dialog.picker iframe.picker-frame', (f) => ({ src: f.getAttribute('src'), hero: getComputedStyle(f.contentDocument.querySelector('.hero')).display, chips: f.contentDocument.querySelectorAll('#layoutSeg button').length }));
+  check('gallery: the viewer is the lab in pick mode, 14 layouts, no lab hero', /^\/gallery-lab\/index\.html\?pick=1/.test(labInfo.src) && labInfo.hero === 'none' && labInfo.chips === 14, JSON.stringify(labInfo));
+  await page.waitForFunction(() => /그리드/.test(document.querySelector('dialog.picker .picker-info-name')?.textContent || ''), null, { timeout: 10000 }).catch(() => {});
+  check('gallery: the viewer reports the layout the lab shows', /지금 보는 구도: 그리드/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
+  await lab.locator('#layoutSeg button', { hasText: '피크 캐러셀' }).click();
+  await page.waitForFunction(() => /피크 캐러셀/.test(document.querySelector('dialog.picker .picker-info-name')?.textContent || ''), null, { timeout: 5000 }).catch(() => {});
+  check('gallery: switching in the lab updates the viewer', /지금 보는 구도: 피크 캐러셀/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
+  check('gallery: looking changes nothing yet', (await st(page)).gallery !== 'peek');
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-gallery-lab.png` });
   await page.click('dialog.picker [data-picker-choose]');
   await wait(page, 300);
-  check('gallery: the large viewer sets the layout', (await st(page)).gallery === 'museum');
+  check('gallery: "이 구도로 선택" stores the lab layout (peek)', (await st(page)).gallery === 'peek');
+  const chosenLine = await page.$eval('.tile[data-section="gallery"] [data-gallery-chosen]', (n) => ({ hidden: n.hidden, text: n.textContent }));
+  check('gallery: the tile names a lab-only layout', !chosenLine.hidden && /피크 캐러셀/.test(chosenLine.text), JSON.stringify(chosenLine));
+  check('gallery: focus returns to the button', await page.evaluate(() => document.activeElement?.dataset?.galleryOpen === ''));
+  // Reopen: the lab starts on the stored layout; a message from another window is ignored.
+  await page.click('.tile[data-section="gallery"] [data-gallery-open]');
+  await page.waitForSelector('dialog.picker[data-picker="gallery"][open]');
+  await lab.locator('#layoutSeg button[aria-pressed="true"]').waitFor({ timeout: 60000 });
+  const startOn = await lab.locator('#layoutSeg button[aria-pressed="true"]').textContent();
+  check('gallery: reopening starts the lab on the stored layout', /피크 캐러셀/.test(startOn), startOn);
+  await page.evaluate(() => window.postMessage({ type: 'getsite:gallery-layout', id: 'museum' }, location.origin));
+  await wait(page, 200);
+  check('gallery: a message not from the lab frame is ignored', !/뮤지엄/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
+  // A quick choose right after switching stores the layout the chips show, not the one still animating out.
+  await lab.locator('#layoutSeg button', { hasText: '썸네일 무대' }).click();
+  await page.click('dialog.picker [data-picker-choose]');
+  await wait(page, 300);
+  check('gallery: choosing right after a switch stores the new layout (thumbnav)', (await st(page)).gallery === 'thumbnav', (await st(page)).gallery);
+  await page.click('.tile[data-section="gallery"] [data-gallery-open]');
+  await page.waitForSelector('dialog.picker[data-picker="gallery"][open]');
+  await page.click('dialog.picker [data-picker-auto]');
+  await wait(page, 300);
+  check('gallery: "제작자에게 맡기기" stores auto', (await st(page)).gallery === 'auto');
+  // The lab page failing to load says so and leaves "제작자에게 맡기기" usable.
+  await page.route('**/gallery-lab/index.html*', (r) => r.fulfill({ status: 404, contentType: 'text/html', body: 'not found' }));
+  await page.click('.tile[data-section="gallery"] [data-gallery-open]');
+  await page.waitForSelector('dialog.picker[data-picker="gallery"] .picker-loading[data-failed]', { timeout: 10000 }).catch(() => {});
+  const fail = await page.$eval('dialog.picker[data-picker="gallery"]', (d) => ({ text: d.querySelector('.picker-loading').textContent, shown: !d.querySelector('.picker-loading').hidden, choose: d.querySelector('[data-picker-choose]').disabled, auto: !d.querySelector('[data-picker-auto]').disabled }));
+  check('gallery: a failed lab load is explained; choose stays off, auto stays on', fail.shown && /불러오지 못했습니다/.test(fail.text) && fail.choose && fail.auto, JSON.stringify(fail));
+  await page.click('dialog.picker .picker-close');
+  await page.unroute('**/gallery-lab/index.html*');
+  await wait(page, 200);
+  check('gallery: the closed viewer leaves no frame behind', await page.$$eval('dialog.picker', (d) => d.length) === 0);
+  await page.evaluate(() => window.__getsite4.store.setGallery('peek'));
   if (SHOTS) await page.locator('#panel-3').screenshot({ path: `${SHOTS}/v5-step3.png` });
 
   // Step 4 and the order.
@@ -143,7 +186,7 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   check('receipt: one guide link, to #code-guide', post.length === 1 && post[0] === '/order-guide/#code-guide', JSON.stringify(post));
   const doc = (await page.evaluate(() => window.__calls))[0]?.doc || {};
   check('order: schema v4 doc, every pick "new" and passing the rules regex', doc.schema === 'v4' && Object.values(doc.picks || {}).length > 0 && Object.values(doc.picks).every((v) => v.startsWith('new|') && PICK_RULE.test(v)), JSON.stringify(doc.picks));
-  check('order: the note and the gallery layout are sent', /작업실 사진 크게$/.test(doc.picks?.about || '') && doc.galleryLayout === 'museum', `${doc.picks?.about} ${doc.galleryLayout}`);
+  check('order: the note and the gallery layout are sent', /작업실 사진 크게$/.test(doc.picks?.about || '') && doc.galleryLayout === 'peek' && doc.brief?.gallery?.name === '피크 캐러셀', `${doc.picks?.about} ${doc.galleryLayout} ${doc.brief?.gallery?.name}`);
   check('order: the estimate has no video unless chosen', doc.estimate?.video === false);
   check('no page errors, no Firebase traffic', errors.length === 0 && forbidden.length === 0, [...errors, ...forbidden].join('|').slice(0, 200));
   await context.close();
@@ -305,6 +348,21 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   const note = await page.$eval('dialog.picker[open]', (d) => { const p = d.querySelector('.picker-desc'); const r = p?.getBoundingClientRect(); return { text: p?.textContent || '', described: d.getAttribute('aria-describedby') === p?.id, inside: !!r && r.right <= innerWidth && r.left >= 0, closeOneLine: (() => { const c = d.querySelector('.picker-close'); return c.getBoundingClientRect().height < parseFloat(getComputedStyle(c).lineHeight || '20') * 1.8 + 16; })(), over: document.documentElement.scrollWidth > innerWidth }; });
   check('375: the motion viewer explains it is an example (references decide the real work)', /모션그래픽을 설명하기 위한 예시/.test(note.text) && /레퍼런스/.test(note.text) && /한붓 그리기, 픽셀 아트, 타이포그래피/.test(note.text) && note.described && note.inside && note.closeOneLine && !note.over, JSON.stringify(note));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-m375.png` });
+  await page.click('dialog.picker .picker-close');
+  await wait(page, 300);
+  await page.click('.tile[data-section="gallery"] [data-gallery-open]');
+  await page.waitForSelector('dialog.picker[data-picker="gallery"][open]');
+  await page.frameLocator('dialog.picker iframe.picker-frame').locator('#stage').waitFor({ timeout: 60000 });
+  await wait(page, 600);
+  const gm = await page.$eval('dialog.picker[open]', (d) => {
+    const r = d.getBoundingClientRect(); const f = d.querySelector('iframe').getBoundingClientRect();
+    const btns = [...d.querySelectorAll('.picker-actions .btn')].map((b) => { const q = b.getBoundingClientRect(); return { h: Math.round(q.height), bottom: Math.round(q.bottom), w: b.scrollWidth <= b.clientWidth + 1 }; });
+    const doc = d.querySelector('iframe').contentDocument;
+    return { w: Math.round(r.width), h: Math.round(r.height), frameH: Math.round(f.height), btns, labOver: doc.documentElement.scrollWidth - doc.documentElement.clientWidth };
+  });
+  check('375: the gallery viewer fills the screen, the lab gets most of it, both buttons fit on one line', gm.w === 375 && gm.h === 812 && gm.frameH >= 560 && gm.btns.length === 2 && gm.btns.every((b) => b.bottom <= 812 && b.h <= 52 && b.w), JSON.stringify(gm));
+  check('375: the lab has no sideways scroll inside the viewer', gm.labOver <= 0, String(gm.labOver));
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-gallery-lab-375.png` });
   check('375: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
   await context.close();
 }

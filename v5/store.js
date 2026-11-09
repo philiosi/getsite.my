@@ -79,7 +79,7 @@ export function doneSteps(s) {
 }
 
 export const SECTION_IDS = ['hero', 'about', 'story', 'gallery', 'featured', 'history', 'process', 'services', 'trust', 'faq', 'contact', 'booking', 'newsletter'];
-export const GALLERY_IDS = ['auto', 'focus', 'film', 'masonry', 'index', 'grid', 'strip', 'flow', 'timeline', 'coverflow', 'stack', 'museum'];
+export const GALLERY_IDS = ['auto', 'focus', 'film', 'masonry', 'index', 'grid', 'strip', 'flow', 'timeline', 'coverflow', 'stack', 'museum', 'peek', 'autoplay', 'drag', 'thumbnav'];
 export const ORDER_KEY_RE = /^WO-[0-9]{4}-[0-9]{4}-[A-Za-z0-9]{20}$/;
 const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
 const int = (v, max) => (Number.isInteger(v) && v >= 0 && v <= max ? v : 0);

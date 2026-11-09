@@ -39,7 +39,8 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
       chips.append(b);
     }
     galleryStage = h('div', '');
-    body.append(chips, galleryStage);
+    const chosenLine = h('p', 'g-chosen'); chosenLine.dataset.galleryChosen = '';
+    body.append(chips, chosenLine, galleryStage);
     tile.append(head, body);
     const concept = data.samples.find((s) => s.id === state.sampleId)?.concept || 'atelier';
     gallery = mountGallery(galleryStage, { conceptId: concept, layoutId: state.gallery === 'auto' ? 'focus' : state.gallery });
@@ -48,9 +49,16 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
   }
 
   function paintChips(state) {
-    galleryStage?.parentElement?.querySelectorAll('[data-layout]').forEach((b) => {
+    const body = galleryStage?.parentElement;
+    body?.querySelectorAll('[data-layout]').forEach((b) => {
       b.setAttribute('aria-pressed', String(b.dataset.layout === state.gallery));
     });
+    // A layout picked in the gallery lab that has no chip here: say so, and that the preview is a stand-in.
+    const line = body?.querySelector('[data-gallery-chosen]');
+    if (!line) return;
+    const labOnly = !['auto', ...LAYOUT_IDS].includes(state.gallery);
+    line.hidden = !labOnly;
+    line.textContent = labOnly ? `선택한 구도: ${layoutName(state.gallery)} · "크게 보며 고르기"에서 움직임을 볼 수 있습니다. 아래는 한 점씩 크게 보기 예시입니다.` : '';
   }
 
   const motions = () => partsFor(parts, 'hero').filter((p) => p.kind === 'motion');

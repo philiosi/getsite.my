@@ -2,9 +2,9 @@ import { total, validRef, cleanText, SECTION_IDS, REF_NOTE_MAX, REF_FILE_NOTE_MA
 import { normalizePick, cleanNote, cleanKeep, pickLabel, motionPart, encodePick, decodePick, KEEP_LABELS, NOTE_MAX } from './parts.js';
 import { api, newOrderIdentity, ORDER_KEY_RE, DRIVE_URL_RE } from '../v3/order/api.js';
 import { sanitizeText } from '../v3/order/brief.js';
-import { CATALOG_VERSION, GALLERIES } from '../v3/catalog.js';
+import { CATALOG_VERSION, ALL_GALLERIES } from '../v3/catalog.js';
 
-const galleryName = (id) => id === 'auto' ? '제작자에게 맡기기' : GALLERIES.find((x) => x.id === id)?.name || '';
+const galleryName = (id) => id === 'auto' ? '제작자에게 맡기기' : ALL_GALLERIES.find((x) => x.id === id)?.name || '';
 const sampleOf = (state, data) => data.samples.find((x) => x.id === state.sampleId);
 /** The picks that go out: one per chosen section (gallery excluded), each a (section, ref) pair from the
     catalog, else the automatic one; notes cleaned. Without the catalog every section reads "새로 구성". */

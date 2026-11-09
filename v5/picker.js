@@ -3,11 +3,14 @@
    - the hero motion scenes (v5: examples only, nothing is chosen here): the motion sample page in its
      embed mode, in a same-origin iframe, loaded only while the dialog is open; scenes are switched by
      a same-origin postMessage;
-   - the gallery layouts: the live v3 gallery engine, large.
+   - the gallery layouts: the gallery lab (14 layouts) in its pick mode, in a same-origin iframe.
    Looking never changes the order; only the gallery's "이 구도로 선택" does, through the store. */
 import { partsFor } from './parts.js';
-import { mountGallery, LAYOUT_IDS, layoutName } from './gallery-mount.js';
-import { GALLERIES } from '../v3/catalog.js';
+import { layoutName } from './gallery-mount.js';
+
+/** Where the gallery lab is served (scripts/v4-build.mjs copies samples/gallery-layouts there) and its layouts. */
+export const GALLERY_LAB_URL = '/gallery-lab/index.html';
+export const LAB_IDS = ['grid', 'masonry', 'strip', 'flow', 'focus', 'timeline', 'index', 'coverflow', 'stack', 'museum', 'peek', 'autoplay', 'drag', 'thumbnav'];
 
 const h = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
 const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -138,32 +141,58 @@ export function openMotionPicker({ parts, startRef = null, returnFocus = null })
   return { dialog: dlg, close: closeFn };
 }
 
-/** The gallery layouts, large and live. */
-export function openGalleryPicker({ store, data, toast = () => {}, returnFocus = null }) {
+/* The gallery lab's own names for the layouts the order also knows by another name. */
+const LAB_NAMES = { grid: '그리드', masonry: '메이슨리', strip: '가로 확장', flow: '세로 플로우', focus: '포커스', timeline: '연혁 타임라인', index: '인덱스', coverflow: '커버플로우', stack: '카드 스택', museum: '뮤지엄 월' };
+const labLabel = (id) => (LAB_NAMES[id] && LAB_NAMES[id] !== layoutName(id) ? `${LAB_NAMES[id]} (${layoutName(id)})` : layoutName(id));
+
+/** The gallery layouts, large and live: the gallery lab (14 layouts) in pick mode, in a same-origin
+    iframe loaded only while the dialog is open. The lab posts the layout it shows; "이 구도로 선택"
+    stores that one. */
+export function openGalleryPicker({ store, toast = () => {}, returnFocus = null, labUrl = GALLERY_LAB_URL }) {
   const state = store.get();
-  const concept = data.samples.find((s) => s.id === state.sampleId)?.concept || 'atelier';
-  let look = state.gallery;
-  const { dlg, close, stage, list, info, actions } = shell('갤러리 구도 고르기');
+  let look = null;
+  const { dlg, close, stage, list, info, actions } = shell('갤러리 구도 고르기', '위쪽 레이아웃 버튼으로 구도를 바꿔 보고, 작품을 눌러 크게 보세요. 마음에 드는 구도에서 "이 구도로 선택"을 누르면 주문에 담깁니다. 색과 카드 구성 버튼은 보기용입니다.');
   dlg.dataset.picker = 'gallery';
-  list.setAttribute('aria-label', '갤러리 구도');
-  const host = h('div', 'picker-gallery');
-  stage.append(host);
-  const gallery = mountGallery(host, { conceptId: concept, layoutId: look === 'auto' ? 'focus' : look });
+  dlg.classList.add('picker-lab');
+  list.remove();
+  const frame = h('iframe', 'picker-frame');
+  frame.title = '갤러리 구도 미리보기';
+  const loading = h('p', 'picker-loading', '갤러리 샘플을 불러오는 중입니다… (처음 한 번, 약 6MB)');
+  stage.append(frame, loading);
+  // A page that is not the lab (404, a cut-off load) never posts: say so instead of "불러오는 중" forever.
+  frame.addEventListener('load', () => {
+    if (frame.src === 'about:blank') return;
+    let ok = false;
+    try { ok = !!frame.contentDocument?.getElementById('layoutSeg'); } catch { ok = false; }
+    loading.hidden = ok;
+    if (!ok) { loading.textContent = '갤러리 샘플을 불러오지 못했습니다. 잠시 뒤 다시 열어 주세요. "제작자에게 맡기기"는 지금도 고를 수 있습니다.'; loading.dataset.failed = ''; }
+  });
+  const start = LAB_IDS.includes(state.gallery) ? state.gallery : '';
+  frame.src = `${labUrl}?pick=1${start ? `&layout=${start}` : ''}`;
+
   const choose = h('button', 'btn btn-ink', '이 구도로 선택'); choose.type = 'button'; choose.dataset.pickerChoose = '';
-  actions.append(choose);
+  const auto = h('button', 'btn btn-line', '제작자에게 맡기기'); auto.type = 'button'; auto.dataset.pickerAuto = '';
+  actions.append(choose, auto);
   function show(id) {
     look = id;
-    mark(list, id);
-    gallery.setLayout(id === 'auto' ? 'focus' : id);
+    choose.disabled = !id;
     info.textContent = '';
-    info.append(h('b', 'picker-info-name', layoutName(id)));
-    info.append(h('p', '', id === 'auto' ? '주제와 자료에 맞춰 저희가 고릅니다. 미리보기는 집중형 예시입니다.' : GALLERIES.find((g) => g.id === id)?.hint || ''));
-    info.append(h('p', 'picker-muted', '작품을 누르면 크게 보입니다. 옆으로 밀거나 화살표 키로 넘겨 보세요.'));
+    const now = id ? labLabel(id) : '불러오는 중…';
+    info.append(h('b', 'picker-info-name', `지금 보는 구도: ${now}`));
+    info.append(h('p', 'picker-muted', state.gallery && state.gallery !== id ? `주문에 담긴 구도: ${labLabel(state.gallery)}` : (id && id === state.gallery ? '이미 주문에 담긴 구도입니다.' : '')));
   }
-  radios(list, ['auto', ...LAYOUT_IDS].map((id) => ({ value: id, label: layoutName(id) })), state.gallery, show);
-  choose.addEventListener('click', () => { store.setGallery(look); toast(`갤러리 구도를 ${layoutName(look)}(으)로 골랐습니다.`); dlg.close(); });
-  show(look);
-  const closeFn = open(dlg, close, () => gallery.destroy(), returnFocus);
-  list.querySelector('[aria-checked="true"]')?.focus();
+  const onMessage = (e) => {
+    if (e.source !== frame.contentWindow || e.origin !== location.origin) return;
+    const d = e.data;
+    if (!d || d.type !== 'getsite:gallery-layout' || !LAB_IDS.includes(d.id)) return;
+    show(d.id);
+  };
+  window.addEventListener('message', onMessage);
+  const pick = (id) => { store.setGallery(id); toast(`갤러리 구도를 ${labLabel(id)}(으)로 골랐습니다.`); dlg.close(); };
+  choose.addEventListener('click', () => { if (look) pick(look); });
+  auto.addEventListener('click', () => pick('auto'));
+  show(null);
+  const closeFn = open(dlg, close, () => { window.removeEventListener('message', onMessage); frame.src = 'about:blank'; }, returnFocus);
+  close.focus();
   return { dialog: dlg, close: closeFn };
 }

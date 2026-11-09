@@ -2,7 +2,7 @@
    Everything from the document is rendered as text; links pass an allowlist. */
 
 import { DRIVE_URL_RE, ORDER_KEY_RE, api } from './api.js';
-import { GALLERIES } from '../catalog.js';
+import { ALL_GALLERIES } from '../catalog.js';
 
 export const SECTION_LIMIT = 2000;
 const PAID_STATUSES = new Set(['결제 완료', '제작 중', '수정 중', '납품 완료']);
@@ -86,7 +86,7 @@ function picksRecap(order, catalog) {
       const layoutId = typeof order.galleryLayout === 'string'
         ? order.galleryLayout
         : (typeof order.brief?.gallery?.layoutId === 'string' ? order.brief.gallery.layoutId : 'auto');
-      const layoutLabel = layoutId === 'auto' ? '제작자에게 맡기기' : (GALLERIES.find((g) => g.id === layoutId)?.name || layoutId);
+      const layoutLabel = layoutId === 'auto' ? '제작자에게 맡기기' : (ALL_GALLERIES.find((g) => g.id === layoutId)?.name || layoutId);
       body.append(el('p', { class: 'o-pick-src', text: `구도: ${layoutLabel}` }));
       const gNote = typeof order.galleryNote === 'string' ? order.galleryNote.trim() : '';
       if (gNote) body.append(el('p', { class: 'o-pick-note', text: gNote }));

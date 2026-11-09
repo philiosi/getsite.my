@@ -216,6 +216,38 @@ var CATALOG = {
         "needs": "작품 크기 정보(없으면 비율로 대체)",
         "fallback": "자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다."
       }
+    },
+    "peek": {
+      "name": "피크 캐러셀",
+      "impl": "samples/gallery-layouts/index.html",
+      "spec": {
+        "needs": "이미지 5점 이상",
+        "fallback": "자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다."
+      }
+    },
+    "autoplay": {
+      "name": "오토플레이",
+      "impl": "samples/gallery-layouts/index.html",
+      "spec": {
+        "needs": "이미지 4점 이상",
+        "fallback": "자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다."
+      }
+    },
+    "drag": {
+      "name": "드래그 캐러셀",
+      "impl": "samples/gallery-layouts/index.html",
+      "spec": {
+        "needs": "이미지 5점 이상",
+        "fallback": "자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다."
+      }
+    },
+    "thumbnav": {
+      "name": "썸네일 무대",
+      "impl": "samples/gallery-layouts/index.html",
+      "spec": {
+        "needs": "이미지 6점 이상",
+        "fallback": "자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다."
+      }
     }
   }
 };

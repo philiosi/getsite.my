@@ -238,6 +238,27 @@ export const GALLERIES = [
   G('museum', '벽 둘러보기', false, '벽을 끌며 둘러보기', '작품 크기 정보(없으면 비율로 대체)'),
 ];
 
+/* Layouts that exist only in the gallery lab (samples/gallery-layouts, served at /gallery-lab/).
+   The v5 order picks them in the lab viewer; the v3 engine has no renderer for them. */
+const L = (id, name, hint, needs) => ({
+  id,
+  name,
+  core: false,
+  hint,
+  impl: 'samples/gallery-layouts/index.html',
+  spec: { needs, fallback: '자료가 부족하면 작품명만 표시하고 없는 정보는 지어내지 않는다.' },
+});
+
+export const LAB_GALLERIES = [
+  L('peek', '피크 캐러셀', '가운데 작품 양옆이 살짝 엿보이는 캐러셀', '이미지 5점 이상'),
+  L('autoplay', '오토플레이', '진행 막대와 함께 스스로 넘어가는 무대', '이미지 4점 이상'),
+  L('drag', '드래그 캐러셀', '끌어서 넘기는 캐러셀, 모바일 우선', '이미지 5점 이상'),
+  L('thumbnav', '썸네일 무대', '큰 무대 아래 썸네일 줄로 바로 이동', '이미지 6점 이상'),
+];
+
+/** Every layout an order may name: the v3 engine's and the lab-only ones. */
+export const ALL_GALLERIES = [...GALLERIES, ...LAB_GALLERIES];
+
 export const SECTION_LABELS = {
   hero: '첫 장면',
   about: '소개',

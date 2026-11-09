@@ -222,6 +222,8 @@ section.block > .wrap > .head .sub { color: var(--ink-2); font-size: 16.5px; }
 .g-chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .g-chips button { border: 1px solid var(--line-2); background: var(--paper); border-radius: 999px; padding: 6px 11px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
 .g-chips button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.g-chosen { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.g-chosen[hidden] { display: none; }
 .g-stage {
   /* The v3 engine's own tokens, bound to the monochrome page. */
   --c-paper: var(--paper-2); --c-paper2: var(--paper-3); --c-ink: var(--ink); --c-muted: var(--ink-2);
@@ -350,3 +352,20 @@ footer.site { margin-top: 96px; border-top: 1px solid var(--line); padding: 28px
 .guide-link { margin: 14px 0 0; font-size: 14px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
 .guide-link a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 .guide-link[hidden] { display: none; }
+
+/* Gallery viewer: the lab page fills the dialog; its own chips pick the layout. The side becomes one bar. */
+.picker-lab .picker-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+.picker-lab .picker-stage { background: var(--paper); }
+.picker-lab .picker-side { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) auto; align-items: center; border-left: 0; border-top: 1px solid var(--line); }
+.picker-lab .picker-info p:empty { display: none; }
+.picker-lab .picker-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 720px) {
+  .picker-lab .picker-body { grid-template-rows: minmax(0, 1fr) auto; }
+  .picker-lab .picker-side { grid-template-columns: minmax(0, 1fr); overflow: visible; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); gap: 8px; }
+  .picker-lab .picker-actions { justify-content: stretch; }
+  .picker-lab .picker-actions .btn { flex: 1 1 0; white-space: nowrap; }
+  .picker-lab .picker-desc { display: none; }
+}
+.picker-lab .picker-loading { color: var(--ink-2); }
+.picker-lab .picker-actions [data-picker-choose] { flex: none; }
+@media (max-width: 720px) { .picker-lab .picker-actions [data-picker-choose] { flex: 1 1 0; } }

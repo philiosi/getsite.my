@@ -425,3 +425,23 @@ Firestore 규칙: **보류(사용자 결정)**. 운영 규칙은 orders 생성·
 
 - **Reviewers:** Codex, Gemini, the ECC TypeScript reviewer, silent-failure-hunter and a11y-architect returned findings (table above). Argon's review failed with a network error (`AGY_ERROR` retryable) and produced nothing.
 - **What is left:** the demo is not a real admin. A real one needs Google sign-in, Firestore rules and storage per customer site.
+
+## 13. Step 3 gallery viewer = the gallery lab (2026-11-10)
+
+- "크게 보며 고르기" opens `/gallery-lab/index.html?pick=1[&layout=]` (build copies `samples/gallery-layouts`) in a same-origin iframe.
+  The lab hides its hero in pick mode and posts `{type:'getsite:gallery-layout', id}` at the start of each `apply()`;
+  the dialog accepts it only from its frame, same origin, known id. "이 구도로 선택" / "제작자에게 맡기기" store the layout.
+- New order values `peek`, `autoplay`, `drag`, `thumbnav` (`LAB_GALLERIES` / `ALL_GALLERIES` in v3/catalog.js, v5 store,
+  firestore.rules, Apps Script catalog snapshot, order lookup page). The v3 engine's 11 layouts are unchanged.
+- Tests: v5 e2e 111/113 locally (the 2 `/p/` checks need Firebase rewrites); rules 4/4; backend 12/12; v3/v4/v5 unit pass.
+  Regression tests fail without their fix: rules list, catalog snapshot, quick choose after a switch.
+- Reviewers: ECC typescript-reviewer, Codex, Gemini (no defects); Argon produced no output (failed).
+
+| Finding | Source | Verdict | Action |
+|---|---|---|---|
+| Choose right after a switch stores the old layout (post after 240ms) | ECC, Codex | CONFIRMED | post at start of `apply()`; test |
+| Order lookup page shows raw id for new layouts | ECC | CONFIRMED | `ALL_GALLERIES` in v3/order/page.js |
+| Lab load failure leaves "불러오는 중" forever | ECC | CONFIRMED | load check + message; test |
+| Apps Script must be updated before rules/site, else brief null | ECC | CONFIRMED (deploy order) | deploy Apps Script first |
+| Rapid switches can briefly show a stale view | Codex | DEFERRED | pre-existing lab transition; the last swap renders right |
+| `?layout=` applies without `pick=1` | Codex | REJECTED | intended by the contract; default unchanged |

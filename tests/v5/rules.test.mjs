@@ -35,4 +35,9 @@ test('firestore: the reference fields are refused at the top level (the key set 
   for (const extra of [{ refNotes: ['a', '', ''] }, { refFiles: 'ref-1.jpg' }, { refFileNote: 'x' }]) await assertFails(create(v4(extra)));
 });
 
+test('firestore: the gallery lab layouts are accepted, with all 13 sections; an unknown layout is refused', async () => {
+  for (const id of ['peek', 'autoplay', 'drag', 'thumbnav', 'museum']) { const o = withRefs(REFS, ALL); o.data.galleryLayout = id; await assertSucceeds(create(o)); }
+  await assertFails(create(v4({ galleryLayout: 'carousel' })));
+});
+
 test.after(() => env.cleanup());

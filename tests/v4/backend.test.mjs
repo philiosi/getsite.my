@@ -64,3 +64,10 @@ test('v5 reference notes are defanged and a list over 10 names reads as no files
  d.brief.references.files='ref-1.jpg,ref-1.jpg';assert.deepEqual(Array.from(c.renderBrief_(key,d,c.CATALOG).json.customerData.refFiles),['ref-1.jpg']);
 });
 test('storage.rules stays deny-all (reference files go to Drive)',()=>{const r=read('../../v3/backend/storage.rules');assert.match(r,/allow read, write: if false/);assert.doesNotMatch(r,/allow create/);});
+test('a gallery lab layout (peek) is named in the brief and the customer mail',()=>{
+ const c=context();const o=order();o.galleryLayout='peek';
+ const out=c.renderBrief_(key,o,c.CATALOG);
+ assert.equal(out.json.gallery.layoutId,'peek');assert.equal(out.json.gallery.name,'피크 캐러셀');
+ assert.match(out.md,/피크 캐러셀/);
+ assert.match(c.mailBodyV4_(key,o,c.CATALOG),/피크 캐러셀/);
+});

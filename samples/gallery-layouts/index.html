@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;700;900&display=swap" rel="stylesheet">
+<script>if (new URLSearchParams(location.search).get("pick") === "1") document.documentElement.setAttribute("data-pick", "1");</script>
 <style>
   :root{
     --ease: cubic-bezier(.32,.72,0,1);
@@ -50,6 +51,9 @@
   .hero-meta{ text-align:right; color:var(--ink2); font-size:13px; line-height:1.9; white-space:nowrap; }
   .hero-meta b{ color:var(--ink); font-size:22px; font-family:"Noto Serif KR",serif; }
   .sample-badge{ display:inline-block; margin-top:10px; padding:4px 10px; border:1px solid var(--line); border-radius:999px; font-size:11.5px; font-weight:700; letter-spacing:.04em; color:var(--ink2); background:var(--surface); }
+
+  html[data-pick] .hero{display:none}
+  html[data-pick] .deck{margin-top:0}
 
   /* ---------- control deck ---------- */
   .deck{ position:sticky; top:10px; z-index:40; margin-top:26px; background:color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter:blur(14px) saturate(1.4); -webkit-backdrop-filter:blur(14px) saturate(1.4); border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:14px 16px; display:flex; flex-direction:column; gap:12px; }
@@ -1209,6 +1213,9 @@ var CONTENTS = [
 ];
 
 var state = { layout:"grid", palette:"mono", content:"full", active:0, focus:0, detail:0, cover:0, peek:0, auto:0, drag:0, thumb:0, deck:[0,1,2,3,4,5,6,7] };
+var requestedLayout = new URLSearchParams(location.search).get("layout");
+if (LAYOUTS.some(function(l){ return l.id === requestedLayout; })) state.layout = requestedLayout;
+var lastPostedLayout = null;
 var stage = document.getElementById("stage");
 var focusView = document.getElementById("focusView");
 var coverView = document.getElementById("coverView");
@@ -2053,6 +2060,13 @@ dlg.addEventListener("click", function(e){ if (e.target === dlg) dlg.close(); })
 function apply(){
   document.body.setAttribute("data-content", state.content);
   var meta = LAYOUTS.find(function(l){ return l.id === state.layout; });
+  /* pick mode: tell the order page at once (not after the 240ms switch), so a quick "이 구도로 선택" stores what the chips show */
+  if (document.documentElement.getAttribute("data-pick") === "1" && window.parent !== window && lastPostedLayout !== state.layout){
+    try {
+      window.parent.postMessage({ type: "getsite:gallery-layout", id: state.layout }, location.origin);
+      lastPostedLayout = state.layout;
+    } catch (e) {}
+  }
   document.getElementById("infoEn").textContent = meta.en;
   document.getElementById("infoTitle").textContent = meta.name;
   document.getElementById("infoDesc").textContent = meta.desc;

@@ -3,10 +3,10 @@
    The stage never takes the vertical wheel from the page unless a work is open large. */
 import { createGallery } from '../v3/gallery/engine.js';
 import { layouts } from '../v3/gallery/layouts.js';
-import { CONCEPTS, GALLERIES } from '../v3/catalog.js';
+import { CONCEPTS, GALLERIES, ALL_GALLERIES } from '../v3/catalog.js';
 
 export const LAYOUT_IDS = GALLERIES.map((g) => g.id);
-export const layoutName = (id) => (id === 'auto' ? '제작자에게 맡기기' : GALLERIES.find((g) => g.id === id)?.name || id);
+export const layoutName = (id) => (id === 'auto' ? '제작자에게 맡기기' : ALL_GALLERIES.find((g) => g.id === id)?.name || id);
 const conceptOf = (id) => CONCEPTS.find((c) => c.id === id) || CONCEPTS[0];
 const real = (id) => (layouts[id] ? id : 'focus');
 
