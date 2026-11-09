@@ -346,6 +346,34 @@ footer.site { margin-top: 96px; border-top: 1px solid var(--line); padding: 28px
   .picker-opt { flex-direction: column; align-items: stretch; }
   .picker-opt img { width: 100%; height: 72px; }
 }
+/* motion viewer: tabs (scenes | reference sites) on top of the side */
+.picker-side.picker-side-tabs { grid-template-rows: auto minmax(0, 1fr) auto; }
+.picker-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-2); }
+.picker-tab { border: 0; border-radius: 999px; background: transparent; color: var(--ink-2); padding: 7px 10px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.picker-tab:hover { color: var(--ink); }
+.picker-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+.picker-tab:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.picker-panel { min-height: 0; min-width: 0; }
+.picker-panel[hidden] { display: none; }
+.picker-panel-scenes { display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 12px; }
+.picker-panel-refs { overflow: auto; overscroll-behavior: contain; padding: 2px; }
+.ref-sites { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ref-site { border: 1px solid var(--line); border-radius: 10px; background: var(--paper); transition: border-color .15s; }
+.ref-site:hover { border-color: var(--ink-3); }
+.ref-site-main { display: grid; gap: 3px; padding: 10px 12px; color: var(--ink); text-decoration: none; border-radius: 10px; }
+.ref-site-main:focus-visible, .ref-site-more a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.ref-site-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 14px; }
+.ref-site-host { margin-left: auto; color: var(--ink-3); font-size: 12px; }
+.ref-site-desc { color: var(--ink-2); font-size: 12.5px; line-height: 1.5; word-break: keep-all; }
+.ref-site-more { margin: -4px 12px 0; padding: 0 0 10px; font-size: 12.5px; color: var(--ink-3); }
+.ref-site-more a { color: var(--ink); font-weight: 600; text-underline-offset: 2px; }
+.ref-sites-note { margin: 10px 0 0; line-height: 1.5; word-break: keep-all; }
+@media (max-width: 720px) {
+  .picker-side.picker-side-tabs { grid-template-rows: auto auto auto; }
+  .picker-panel-scenes { grid-template-rows: auto auto; }
+  .picker-panel { min-height: auto; }
+  .picker-panel-refs { overflow: visible; }
+}
 @media (prefers-reduced-motion: reduce) { .motion-play, .picker-opt { transition: none; } .motion-play:hover { transform: none; } }
 
 /* Link to the order guide page (step 5 form and receipt). */

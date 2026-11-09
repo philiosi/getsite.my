@@ -20,6 +20,79 @@ let seq = 0;
 // Shown beside the motion viewer title: these scenes explain motion graphics; real work follows the customer's references.
 const MOTION_NOTE = '모션그래픽을 설명하기 위한 예시 화면입니다. 실제 제작은 보내 주신 레퍼런스(사이트, 핀터레스트 등) 링크와 상세 설명에 맞춰 진행됩니다. (예: 한붓 그리기, 픽셀 아트, 타이포그래피 등)';
 
+/** Sites to browse for motion references, shown in the motion viewer's second tab. Edit here. */
+export const MOTION_REFS = [
+  { name: 'Vimeo', url: 'https://vimeo.com/', host: 'vimeo.com', desc: '전 세계 모션 디자이너·스튜디오의 하이엔드 영상이 모이는 곳.',
+    more: [['Staff Picks', 'https://vimeo.com/channels/staffpicks'], ['Wine after Coffee', 'https://vimeo.com/channels/wineaftercoffee']] },
+  { name: 'Motionographer', url: 'https://motionographer.com/', host: 'motionographer.com', desc: '업계 트렌드, 우수 스튜디오 작품, 인터뷰를 큐레이션하는 모션그래픽 매거진.' },
+  { name: 'Behance', url: 'https://www.behance.net/galleries/motion', host: 'behance.net', desc: '어도비 포트폴리오. 모션 분야에서 기획·스타일프레임·최종 영상까지 한눈에.' },
+  { name: 'Dribbble', url: 'https://dribbble.com/shots/popular/animation', host: 'dribbble.com', desc: 'UI 인터랙션, 로고 애니메이션 등 짧은 루프 모션 모음.' },
+  { name: '노트폴리오', url: 'https://notefolio.net/', host: 'notefolio.net', desc: '국내 디자이너·영상 스튜디오의 모션그래픽 포트폴리오.', badge: '국내' },
+];
+
+function refSites() {
+  const ul = h('ul', 'ref-sites');
+  for (const s of MOTION_REFS) {
+    const li = h('li', 'ref-site');
+    const a = h('a', 'ref-site-main'); a.href = s.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    const top = h('span', 'ref-site-top');
+    top.append(h('b', '', s.name));
+    if (s.badge) top.append(h('span', 'picker-badge', s.badge));
+    top.append(h('span', 'ref-site-host', `${s.host} ↗`));
+    a.append(top, h('span', 'ref-site-desc', s.desc));
+    a.setAttribute('aria-label', `${s.name} 새 탭에서 열기`);
+    li.append(a);
+    if (s.more) {
+      const more = h('p', 'ref-site-more', '추천 채널: ');
+      s.more.forEach(([t, u], i) => {
+        const m = h('a', '', `${t} ↗`); m.href = u; m.target = '_blank'; m.rel = 'noopener noreferrer';
+        m.setAttribute('aria-label', `${s.name} ${t} 새 탭에서 열기`);
+        if (i) more.append(document.createTextNode(' · '));
+        more.append(m);
+      });
+      li.append(more);
+    }
+    ul.append(li);
+  }
+  return ul;
+}
+
+/** Two tabs in the motion viewer's side: the scenes (list + detail) and the reference sites. */
+function motionTabs(side, list, info, count) {
+  const id = `picker-${++seq}`;
+  const tabs = h('div', 'picker-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', '모션 예시와 참고 사이트');
+  const scenesPanel = h('div', 'picker-panel picker-panel-scenes');
+  const refsPanel = h('div', 'picker-panel picker-panel-refs');
+  scenesPanel.append(list, info);
+  refsPanel.append(refSites(), h('p', 'picker-muted ref-sites-note', '마음에 드는 영상 주소를 구성 화면 아래 「참고하고 싶은 사이트·이미지」 칸에 붙여 주시면 제작에 반영합니다.'));
+  const defs = [['scenes', `모션 예시 ${count}`, scenesPanel], ['refs', `참고 사이트 ${MOTION_REFS.length}`, refsPanel]];
+  const btns = defs.map(([key, label, panel]) => {
+    const b = h('button', 'picker-tab', label); b.type = 'button'; b.setAttribute('role', 'tab');
+    b.id = `${id}-tab-${key}`; b.dataset.pickerTab = key;
+    panel.id = `${id}-panel-${key}`; panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', b.id);
+    b.setAttribute('aria-controls', panel.id);
+    tabs.append(b);
+    return b;
+  });
+  const select = (key) => defs.forEach(([k], i) => {
+    const on = k === key;
+    btns[i].setAttribute('aria-selected', String(on)); btns[i].tabIndex = on ? 0 : -1;
+    defs[i][2].hidden = !on;
+  });
+  btns.forEach((b, i) => b.addEventListener('click', () => select(defs[i][0])));
+  tabs.addEventListener('keydown', (e) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    const i = btns.indexOf(document.activeElement);
+    if (!step || i < 0) return;
+    e.preventDefault();
+    const next = btns[(i + step + btns.length) % btns.length];
+    next.focus(); next.click();
+  });
+  side.prepend(tabs, scenesPanel, refsPanel);
+  side.classList.add('picker-side-tabs');
+  select('scenes');
+}
+
 function shell(title, desc = '') {
   const id = `picker-${++seq}`;
   const dlg = h('dialog', 'picker');
@@ -52,7 +125,7 @@ function shell(title, desc = '') {
     const next = radios[(i + step + radios.length) % radios.length];
     next.focus(); next.click();
   });
-  return { dlg, close, stage, list, info, actions };
+  return { dlg, close, stage, list, info, actions, side };
 }
 
 function open(dlg, close, onClose, returnFocus) {
@@ -97,9 +170,10 @@ export function openMotionPicker({ parts, startRef = null, returnFocus = null })
   if (!scenes.length || !page) return null;
   const sceneOf = (ref) => scenes.find((p) => p.ref === ref);
   let look = sceneOf(startRef)?.ref || scenes[0].ref;
-  const { dlg, close, stage, list, info, actions } = shell('첫 장면 모션 예시', MOTION_NOTE);
+  const { dlg, close, stage, list, info, actions, side } = shell('첫 장면 모션 예시', MOTION_NOTE);
   dlg.dataset.picker = 'motion';
   list.setAttribute('aria-label', '첫 장면 모션');
+  motionTabs(side, list, info, scenes.length);
 
   const frame = h('iframe', 'picker-frame');
   frame.title = '첫 장면 모션 미리보기';
