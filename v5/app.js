@@ -18,6 +18,24 @@ export function toast(msg) {
   toastT = setTimeout(() => toastEl.classList.remove('show'), 2600);
 }
 
+// White and black versions: the saved choice wins, otherwise the device setting (set early in index.html).
+const themeBtn = $('themeBtn');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+const isDark = () => (document.documentElement.dataset.theme || (darkQuery.matches ? 'dark' : 'light')) === 'dark';
+const syncTheme = () => {
+  const label = isDark() ? '화이트 버전으로 보기' : '블랙 버전으로 보기';
+  themeBtn.setAttribute('aria-label', label); themeBtn.title = label;
+  if (themeMeta) themeMeta.content = isDark() ? '#0f1013' : '#fbfbfc';
+};
+themeBtn?.addEventListener('click', () => {
+  const next = isDark() ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('getsite-theme', next); } catch { /* private mode: the switch still works for this visit */ }
+  syncTheme();
+});
+if (themeBtn) { darkQuery.addEventListener('change', syncTheme); syncTheme(); }
+
 mountHero();
 
 const json = async (url, required) => {

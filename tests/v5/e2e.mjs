@@ -303,6 +303,41 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   await context.close();
 }
 
+// White / black switch: one button, remembered, follows the device until chosen.
+for (const scheme of ['light', 'dark']) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, colorScheme: scheme });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.route(FORBIDDEN, (route) => route.abort());
+  await page.addInitScript(FAKE);
+  await page.goto(BASE, { waitUntil: 'load' });
+  await page.waitForFunction(() => !!window.__getsite4);
+  const look = () => page.evaluate(() => ({ theme: document.documentElement.dataset.theme || '', bg: getComputedStyle(document.body).backgroundColor, label: document.getElementById('themeBtn').getAttribute('aria-label'), meta: document.querySelector('meta[name="theme-color"]').content }));
+  const lum = (c) => { const m = c.match(/[\d.]+/g).map(Number); return c.startsWith('oklch') ? m[0] * (m[0] > 1 ? 1 : 100) : (m[0] + m[1] + m[2]) / 7.65; };
+  const a = await look();
+  check(`theme (${scheme} device): starts on the device setting`, a.theme === '' && (scheme === 'dark' ? lum(a.bg) < 40 : lum(a.bg) > 80), JSON.stringify(a));
+  check(`theme (${scheme} device): button offers the other version`, a.label === (scheme === 'dark' ? '화이트 버전으로 보기' : '블랙 버전으로 보기'), a.label);
+  await page.click('#themeBtn');
+  const b = await look();
+  const want = scheme === 'dark' ? 'light' : 'dark';
+  check(`theme (${scheme} device): one click switches to ${want}`, b.theme === want && (want === 'dark' ? lum(b.bg) < 40 : lum(b.bg) > 80) && b.meta === (want === 'dark' ? '#0f1013' : '#fbfbfc'), JSON.stringify(b));
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForFunction(() => !!window.__getsite4);
+  const c = await look();
+  check(`theme (${scheme} device): the choice is kept after reload`, c.theme === want && c.label === b.label, JSON.stringify(c));
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-theme-${want}.png` });
+  await page.click('#themeBtn');
+  check(`theme (${scheme} device): clicking again goes back`, (await look()).theme === scheme);
+  await page.setViewportSize({ width: 320, height: 700 });
+  const vis = await page.$eval('#themeBtn', (x) => { const r = x.getBoundingClientRect(); return r.width >= 24 && r.height >= 24 && r.right <= innerWidth && getComputedStyle(x).display !== 'none'; });
+  const over = await page.evaluate(() => document.documentElement.scrollWidth > innerWidth);
+  check(`theme (${scheme} device): button shows at 320 with no sideways scroll`, vis && !over);
+  if (SHOTS && scheme === 'light') await page.locator('.topbar').screenshot({ path: `${SHOTS}/v5-theme-bar-320.png` });
+  check(`theme (${scheme} device): no page errors`, errors.length === 0, errors.join('|').slice(0, 200));
+  await context.close();
+}
+
 await browser.close();
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length}/${results.length} passed`);

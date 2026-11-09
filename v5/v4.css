@@ -77,6 +77,13 @@ p { margin: 0; }
 .nav a.cta { background: var(--ink); color: var(--paper); margin-left: 6px; }
 .nav a.cta:hover { background: var(--ink-2); }
 @media (max-width: 640px) { .nav a:not(.cta) { display: none; } }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+/* Theme switch: white and black versions of the same monochrome page. */
+.theme-btn { flex: none; width: 34px; height: 34px; margin-left: 4px; display: inline-grid; place-items: center; padding: 0; border: 1px solid var(--line-2); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; transition: background .2s var(--ease), transform .12s var(--ease); }
+.theme-btn span { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid currentColor; background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.theme-btn:hover { background: var(--paper-2); }
+.theme-btn:active { transform: scale(.94); }
 
 /* ---------- sections ---------- */
 section.block { padding: 72px 0 0; }
