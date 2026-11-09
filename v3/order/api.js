@@ -38,7 +38,7 @@ export const DRIVE_URL_RE = /^https:\/\/drive\.google\.com\/drive\/folders\/[A-Z
 
 /** The /exec URL of the ref-upload.gs web app deployment. Empty until it is deployed: uploads then fail
     and the receipt points the customer to the Drive folder instead. */
-export const REF_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbzITy-QX1z81kOfphkSQBDS_ozverzlJhSFEuy7sdVkGDP4RcC8rYcRpZpV4UjvO0j-Cw/exec';
+export const REF_UPLOAD_URL = 'https://script.google.com/macros/s/AKfycbyXS5oxi5YXZ_WZlTtYpH0PT1U61S8-qPx_XXpA9pBJTOMu7ad2pmcEEh_J8rq8rObs/exec'; // getsite.yours (getsite-operator)
 
 /** File → base64 without the data: prefix. */
 function fileBase64(file) {
