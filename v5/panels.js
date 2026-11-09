@@ -10,6 +10,8 @@ import { findPart, pickLabel, clip, KEEP_IDS, KEEP_LABELS, NOTE_MAX } from './pa
 
 const h = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
 const button = (text, fn, cls = 'btn btn-line') => { const b = h('button', cls, text); b.type = 'button'; b.addEventListener('click', fn); return b; };
+// The order guide page (v5/order-guide/index.html), served at the site root.
+const GUIDE_URL = '/order-guide/';
 const link = (text, href) => { const a = h('a', '', text); a.href = href; a.target = '_blank'; a.rel = 'noopener noreferrer'; return a; };
 const gallery = (s) => s.gallery === 'auto' ? '제작자에게 맡기기' : GALLERIES.find((g) => g.id === s.gallery)?.name || '';
 const workSet = (sample) => CONCEPTS.find((c) => c.id === (sample?.concept || 'atelier'))?.name || '';
@@ -345,11 +347,12 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
       if (cur?.key === order.key) { const uploads = cur.uploads.map((item) => updated.find((u) => u.name === item.name) || item); notice = outcome(uploads); store.setOrder({ ...cur, uploads }); }
     } finally { retrying = false; paint(store.get()); }
   }
-  const foot = h('div', 'panel-foot'); const submit = button('이대로 샘플 제작 요청', send, 'btn btn-ink'); submit.dataset.submit = ''; const again = button('새 요청 시작', () => { error = ''; notice = ''; store.reset(); }, 'btn btn-line'); again.hidden = true; foot.append(button('이전', () => go(4)), again, submit); el.append(head, consent, status, result, foot);
+  const foot = h('div', 'panel-foot'); const submit = button('이대로 샘플 제작 요청', send, 'btn btn-ink'); submit.dataset.submit = ''; const again = button('새 요청 시작', () => { error = ''; notice = ''; store.reset(); }, 'btn btn-line'); again.hidden = true; foot.append(button('이전', () => go(4)), again, submit); const guide = h('p', 'guide-link'); guide.append(link('주문 후 진행 과정 보기 ↗', GUIDE_URL), h('span', '', '접수부터 샘플 확인, 결제와 최종 제작까지 7단계로 안내합니다.'));
+  el.append(head, consent, guide, status, result, foot);
   function paint(s) {
     const sample = data.samples.find((x) => x.id === s.sampleId); recap.textContent = `${sample?.title || '샘플 미선택'} · ${s.form.siteName || '사이트 이름 미입력'} · ${total(s.extras).toLocaleString('ko-KR')}원 (VAT 별도)`; check.checked = s.consent; const done = doneSteps(s);
     const saved = !!s.order?.saved;
-    submit.hidden = saved; again.hidden = !saved; again.disabled = busy || retrying; submit.disabled = busy || !done[1] || !done[2] || !done[3] || !s.consent; consent.hidden = saved;
+    submit.hidden = saved; again.hidden = !saved; again.disabled = busy || retrying; submit.disabled = busy || !done[1] || !done[2] || !done[3] || !s.consent; consent.hidden = saved; guide.hidden = saved;
     const text = busy ? (uploadStatus || '서버에 저장 중입니다…') : error || (saved ? notice || '접수되었습니다.' : '');
     status.style.cssText = text ? '' : SR_ONLY; status.className = `status ${busy || retrying ? 'ing' : error ? 'err' : 'ok'}`;
     if (text !== lastStatus) { status.textContent = text; if (error && !busy) status.append(' ', button('다시 시도', send, 'btn btn-line btn-sm')); lastStatus = text; }
@@ -364,7 +367,7 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
     const summary = order.summary || `${summaryText(s, data, sections, parts)}\n의뢰 코드: ${order.key}`;
     const mailBody = `${summaryText(s, data, sections, parts, { notes: false })}\n의뢰 코드: ${order.key}`.slice(0, 1500).replace(/[\uD800-\uDBFF]$/, '');
     const mail = h('a', 'btn btn-line', '운영자에게 메일로 보내기'); mail.href = `mailto:getsite.yours@gmail.com?subject=${encodeURIComponent(`제작 요청 ${order.displayNo}`)}&body=${encodeURIComponent(mailBody)}`;
-    result.append(h('h4', '', '접수 완료'), no, codeLine, link('내 주문 페이지 열기', orderPageLink(order.key)), drive, h('p', '', '접수되었습니다. 안내 메일은 서버에서 곧 발송됩니다. 메일이 오지 않으면 의뢰 코드로 진행 조회를 이용하세요. 이 코드와 링크는 꼭 보관하세요.'), button('접수 요약 복사', () => copy(summary, toast)), mail);
+    result.append(h('h4', '', '접수 완료'), no, codeLine, link('내 주문 페이지 열기', orderPageLink(order.key)), drive, h('p', '', '접수되었습니다. 안내 메일은 서버에서 곧 발송됩니다. 메일이 오지 않으면 의뢰 코드로 진행 조회를 이용하세요. 이 코드와 링크는 꼭 보관하세요.'), (() => { const g = h('p', 'guide-link'); g.append(link('주문 후 진행 과정 보기 ↗', `${GUIDE_URL}#code-guide`), h('span', '', '전체 의뢰 코드 사용법과 접수부터 최종 제작까지 7단계를 안내합니다.')); return g; })(), button('접수 요약 복사', () => copy(summary, toast)), mail);
     let focusAfter = null;
     if (order.uploads?.length) {
       const uploads = h('div', 'uploads'); const list = h('ul'); const title = h('h5', '', '참고 이미지'); title.tabIndex = -1;

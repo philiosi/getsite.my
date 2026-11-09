@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>주문 진행 조회 · getsite.my</title>
+<script>
+/* /p/<전체 의뢰 코드> (접수 안내 메일의 "내 주문 진행 조회하기") → 주문 페이지. 다른 /p/ 주소(예전 v2 주소)는 메인으로. */
+(function () {
+  var m = location.pathname.match(/^\/p\/(WO-[0-9]{4}-[0-9]{4}-[A-Za-z0-9]{20})\/?$/);
+  location.replace(m ? '/v3/order.html#t=' + m[1] : '/');
+})();
+</script>
+</head>
+<body>
+<p><a href="/">getsite.my로 이동</a></p>
+</body>
+</html>

@@ -135,8 +135,12 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   if (SHOTS) await page.locator('#panel-4').screenshot({ path: `${SHOTS}/v5-step4.png` });
   await page.evaluate(() => { const s = window.__getsite4.store; s.setConsent(true); s.setStep(5); });
   await wait(page, 300);
+  const pre = await page.$eval('#panel-5 .guide-link', (g) => ({ shown: !!g.offsetParent, href: g.querySelector('a').getAttribute('href'), target: g.querySelector('a').target, text: g.textContent }));
+  check('step 5: guide link before submit opens /order-guide/ in a new tab', pre.shown && pre.href === '/order-guide/' && pre.target === '_blank' && /주문 후 진행 과정 보기/.test(pre.text) && /7단계/.test(pre.text), JSON.stringify(pre));
   await page.click('#panel-5 [data-submit]');
   await wait(page, 800);
+  const post = await page.$$eval('#panel-5 .guide-link', (gs) => gs.filter((g) => g.offsetParent).map((g) => g.querySelector('a').getAttribute('href')));
+  check('receipt: one guide link, to #code-guide', post.length === 1 && post[0] === '/order-guide/#code-guide', JSON.stringify(post));
   const doc = (await page.evaluate(() => window.__calls))[0]?.doc || {};
   check('order: schema v4 doc, every pick "new" and passing the rules regex', doc.schema === 'v4' && Object.values(doc.picks || {}).length > 0 && Object.values(doc.picks).every((v) => v.startsWith('new|') && PICK_RULE.test(v)), JSON.stringify(doc.picks));
   check('order: the note and the gallery layout are sent', /작업실 사진 크게$/.test(doc.picks?.about || '') && doc.galleryLayout === 'museum', `${doc.picks?.about} ${doc.galleryLayout}`);
@@ -300,6 +304,84 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   check('375: the motion viewer fills the screen', box.w === 375 && box.h === 812, JSON.stringify(box));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-m375.png` });
   check('375: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
+  await context.close();
+}
+
+// Order guide page: served from the build root, every anchor present and reachable, readable on a phone.
+if (process.env.GUIDE_URL) for (const width of [1280, 375]) {
+  const context = await browser.newContext({ viewport: { width, height: 800 } });
+  const page = await context.newPage();
+  const errors = []; page.on('pageerror', (e) => errors.push(e.message));
+  const res = await page.goto(process.env.GUIDE_URL + '#code-guide', { waitUntil: 'load' });
+  // The page scrolls smoothly: wait until the scroll position stops moving.
+  const settle = () => page.evaluate(() => new Promise((r) => { let last = -1, same = 0; const t = setInterval(() => { if (scrollY === last) { if (++same > 4) { clearInterval(t); r(); } } else { same = 0; last = scrollY; } }, 100); }));
+  await settle();
+  const ids = ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'code-guide', 'upload-guide', 'payment-guide'];
+  const found = await page.evaluate((ids) => ids.filter((id) => document.getElementById(id)), ids);
+  check(`guide ${width}: page loads with all 10 anchors`, res.status() === 200 && found.length === 10, `${res.status()} ${found.join(',')}`);
+  const top = await page.$eval('#code-guide', (x) => Math.round(x.getBoundingClientRect().top));
+  check(`guide ${width}: #code-guide link lands on the code block`, top >= -2 && top < 200, String(top));
+  let jumps = 0;
+  for (const n of [1, 2, 3, 4, 5, 6, 7]) { await page.click(`a[href="#step${n}"]`); await wait(page, 150); await settle(); const t = await page.$eval(`#step${n}`, (x) => x.getBoundingClientRect().top); if (t > -2 && t < 300) jumps++; }
+  check(`guide ${width}: summary bar jumps to each of the 7 steps`, jumps === 7, String(jumps));
+  check(`guide ${width}: no sideways scroll, no errors`, !(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)) && errors.length === 0, errors.join('|'));
+  if (SHOTS) await page.screenshot({ path: `${SHOTS}/guide-${width}.png` });
+  // Mail samples: a button and a chip in step 2 and step 5 open only that mail in a popup on the same page.
+  for (const [step, n, word] of [[2, 1, '주문이 접수되었습니다'], [5, 2, '샘플이 완성되었습니다']]) {
+    const links = await page.$$eval(`#step${step} a[data-mail]`, (as) => as.map((a) => ({ href: a.getAttribute('href'), mail: a.dataset.mail, shown: !!a.offsetParent })));
+    check(`guide ${width}: step ${step} has a button and a chip for mail ${n}`, links.length === 2 && links.every((l) => l.href === `/order-guide/mail-${n}.html` && l.mail === String(n) && l.shown), JSON.stringify(links));
+    const pages = context.pages().length;
+    await page.click(`#step${step} .mail-sample a.btn`);
+    await page.waitForFunction(() => document.getElementById('mailPop').open);
+    await page.waitForFunction(() => { const d = document.getElementById('mailPopFrame').contentDocument; return d && d.readyState === 'complete' && d.body && d.body.innerText.length > 200; });
+    const pop = await page.evaluate(() => { const d = document.getElementById('mailPop'); const r = d.getBoundingClientRect(); const doc = document.getElementById('mailPopFrame').contentDocument; return { w: Math.round(r.width), h: Math.round(r.height), text: doc.body.innerText, wholePage: /주문 메일 템플릿 2종|메일 HTML 코드 보기/.test(doc.body.innerText), focus: document.activeElement.id, iw: innerWidth }; });
+    check(`guide ${width}: step ${step} opens only mail ${n} in a popup, no new tab`, context.pages().length === pages && pop.text.includes(word) && !pop.wholePage && pop.focus === 'mailPopClose' && (width > 640 ? pop.w <= 680 : pop.w === pop.iw), JSON.stringify({ ...pop, text: pop.text.slice(0, 60) }));
+    if (SHOTS) await page.screenshot({ path: `${SHOTS}/guide-pop${n}-${width}.png` });
+    if (n === 1) await page.click('#mailPopClose'); else await page.keyboard.press('Escape');
+    await wait(page, 200);
+    const after = await page.evaluate(() => ({ open: document.getElementById('mailPop').open, focus: document.activeElement.classList.contains('btn') && !!document.activeElement.dataset.mail, scroll: document.body.style.overflow }));
+    check(`guide ${width}: popup ${n} closes (${n === 1 ? 'close button' : 'Esc'}) and focus goes back`, !after.open && after.focus && after.scroll === '', JSON.stringify(after));
+  }
+  await context.close();
+}
+if (process.env.GUIDE_URL) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  const page = await context.newPage();
+  const errors = []; page.on('pageerror', (e) => errors.push(e.message));
+  // The example order's sample and tracking links are shown on purpose (owner's request); its Drive folder and e-mail never are.
+  const SECRET = ['17x2ZoxvEkEt1TGUeJb-MlAp7tjECl_nU', 'getsite.yours+daol'];
+  for (const f of ['', 'mail-1.html', 'mail-2.html']) {
+    const src = await (await fetch(process.env.GUIDE_URL + f)).text();
+    check(`mail samples: no Drive folder or customer e-mail in ${f || 'index'}`, src.length > 1000 && SECRET.every((x) => !src.includes(x)), SECRET.filter((x) => src.includes(x)).join(','));
+  }
+  for (const n of [1, 2]) {
+    await page.goto(`${process.env.GUIDE_URL}mail-${n}.html`, { waitUntil: 'load' });
+    const m = await page.evaluate(() => ({ hrefs: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')), ex: document.body.innerText.includes('WO-2026-1234-a1B2c3D4e5F6g7H8i9J0 (예시)'), base: document.querySelector('base')?.target }));
+    const TRACK = 'https://getsite-my.web.app/p/WO-2026-6934-7BT4hRNFbp2HdccmeVAj', SAMPLE = 'https://getsite-samples.web.app/WO-2026-6934/';
+    const ok = ['https://getsite-portfolio.web.app/', 'https://www.behance.net/', 'mailto:getsite.yours@gmail.com', TRACK, SAMPLE];
+    const want = n === 1 ? [TRACK] : [TRACK, SAMPLE];
+    check(`mail ${n}: tracking${n === 2 ? ' and sample' : ''} links set, other links public only, open outside the popup`, m.ex && m.base === '_blank' && m.hrefs.every((h) => ok.includes(h)) && want.every((w) => m.hrefs.includes(w)), m.hrefs.join(' '));
+  }
+  await page.goto(process.env.GUIDE_URL, { waitUntil: 'load' });
+  await page.click('#copyMail');
+  await page.waitForFunction(() => document.getElementById('toast').classList.contains('show'));
+  const copied = await page.evaluate(async () => ({ clip: await navigator.clipboard.readText(), toast: document.getElementById('toast').textContent, tag: document.getElementById('copyMail').tagName }));
+  check('guide: the bottom e-mail address copies on click', copied.clip === 'getsite.yours@gmail.com' && copied.toast.includes('복사했습니다') && copied.tag === 'BUTTON', JSON.stringify(copied));
+  // /p/<full code> (the link in the receipt mail) opens the order page; any other /p/ path goes home. Needs Firebase rewrites.
+  if (process.env.SITE_URL) {
+    const key = 'WO-2026-6934-7BT4hRNFbp2HdccmeVAj';
+    await page.goto(`${process.env.SITE_URL}p/${key}`, { waitUntil: 'load' });
+    await page.waitForURL(/order\.html/, { timeout: 15000 }).catch(() => {});
+    await page.waitForTimeout(4000);
+    const at = await page.evaluate(() => ({ url: location.pathname + location.hash, text: document.body.innerText.slice(0, 400) }));
+    check('/p/<full code> opens that order\'s page', at.url === `/v3/order.html#t=${key}` && at.text.includes('WO-2026-6934'), JSON.stringify(at).slice(0, 300));
+    await page.goto(`${process.env.SITE_URL}p/1234`, { waitUntil: 'load' });
+    await page.waitForURL((u) => u.pathname === '/', { timeout: 15000 }).catch(() => {});
+    check('/p/<anything else> goes to the home page', new URL(page.url()).pathname === '/', page.url());
+  }
+  check('guide: no page errors', errors.length === 0, errors.join('|'));
+  if (SHOTS) await page.locator('.contact').screenshot({ path: `${SHOTS}/guide-contact.png` });
   await context.close();
 }
 

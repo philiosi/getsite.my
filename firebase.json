@@ -11,14 +11,13 @@
       "**/node_modules/**"
     ],
     "public": "public",
-    "redirects": [
+    "site": "getsite-my",
+    "rewrites": [
       {
         "source": "/p/**",
-        "destination": "/",
-        "type": 301
+        "destination": "/p.html"
       }
-    ],
-    "site": "getsite-my"
+    ]
   },
   "storage": {
     "rules": "v3/backend/storage.rules"

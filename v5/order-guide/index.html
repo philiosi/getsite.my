@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>getsite 주문 진행 안내</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<style>
+  :root{
+    --bg:#f6f7f9;
+    --surface:#ffffff;
+    --surface-2:#eef1f6;
+    --ink:#141a24;
+    --ink-2:#3d4756;
+    --muted:#6b7686;
+    --line:#dde2ea;
+    --accent:#1f4bdb;
+    --accent-ink:#ffffff;
+    --accent-soft:#e7edfd;
+    --mail:#0e7a5f;
+    --mail-soft:#e2f3ee;
+    --warn-bg:#fdf6e3;
+    --warn-line:#ecd9a0;
+    --warn-ink:#6b5410;
+    --radius:14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1218;
+      --surface:#171b23;
+      --surface-2:#1e242f;
+      --ink:#eef1f6;
+      --ink-2:#c3ccd9;
+      --muted:#8d99ab;
+      --line:#2a313e;
+      --accent:#6d93ff;
+      --accent-ink:#0d1526;
+      --accent-soft:#1d2a4a;
+      --mail:#4cc9a6;
+      --mail-soft:#17352c;
+      --warn-bg:#2b2413;
+      --warn-line:#57491d;
+      --warn-ink:#e8cf8a;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.6;
+  }
+  a{color:var(--accent)}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 72px}
+
+  /* ---------- intro ---------- */
+  .intro{padding:52px 0 8px}
+  .brandline{display:flex;align-items:baseline;gap:10px;margin-bottom:20px}
+  .brandline .logo{font-weight:800;font-size:19px;letter-spacing:-.02em}
+  .brandline .logo em{font-style:normal;color:var(--accent)}
+  .brandline .tag{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--surface)}
+  h1{font-size:clamp(28px,5.4vw,40px);line-height:1.22;letter-spacing:-.03em;margin:0 0 14px;font-weight:800}
+  .lede{font-size:16.5px;color:var(--ink-2);margin:0;max-width:640px}
+  .lede strong{color:var(--ink)}
+
+  /* ---------- flow strip ---------- */
+  .flow{
+    display:flex;gap:0;margin:30px 0 8px;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  }
+  .flow a{
+    flex:1;text-decoration:none;color:var(--ink-2);text-align:center;
+    padding:12px 4px 10px;font-size:12.5px;font-weight:600;line-height:1.35;
+    border-right:1px solid var(--line);transition:background .15s ease;
+  }
+  .flow a:last-child{border-right:none}
+  .flow a:hover{background:var(--surface-2)}
+  .flow a .n{display:block;font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.08em;margin-bottom:2px}
+  @media (max-width:640px){
+    .flow{flex-wrap:wrap}
+    .flow a{flex:1 1 25%;border-bottom:1px solid var(--line)}
+    .flow a:nth-child(4){border-right:none}
+  }
+
+  .mail-note{
+    display:flex;gap:12px;align-items:flex-start;margin:18px 0 40px;
+    background:var(--mail-soft);border-radius:var(--radius);padding:16px 18px;
+  }
+  .mail-note svg{flex:none;margin-top:2px}
+  .mail-note p{margin:0;font-size:14.5px;color:var(--ink-2)}
+  .mail-note p strong{color:var(--ink)}
+
+  /* ---------- timeline ---------- */
+  .timeline{position:relative;margin:0;padding:0;list-style:none}
+  .timeline::before{
+    content:"";position:absolute;left:23px;top:12px;bottom:12px;width:2px;
+    background:var(--line);
+  }
+  .step{position:relative;padding:0 0 22px 64px;scroll-margin-top:24px}
+  .step:last-child{padding-bottom:6px}
+  .dot{
+    position:absolute;left:0;top:2px;width:48px;height:48px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--accent);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:17px;z-index:1;
+  }
+  .step.mail-step .dot{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px 20px;
+  }
+  .step-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:6px}
+  .step-head h2{font-size:20px;letter-spacing:-.02em;margin:0;font-weight:800}
+  .badge{
+    font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 10px;letter-spacing:.01em;
+  }
+  .badge.mail{background:var(--mail-soft);color:var(--mail)}
+  .badge.plain{background:var(--surface-2);color:var(--ink-2)}
+  .desc{margin:0 0 16px;color:var(--ink-2);font-size:15px}
+  .desc strong{color:var(--ink)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;list-style:none}
+  .chips li{
+    display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;
+    background:var(--surface-2);color:var(--ink-2);border-radius:8px;padding:5px 10px;
+  }
+  .chips svg{flex:none;opacity:.75}
+
+  .roles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:640px){.roles{grid-template-columns:1fr}}
+  .role{border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .role h3{
+    margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.06em;
+    display:flex;align-items:center;gap:7px;
+  }
+  .role.customer h3{color:var(--accent)}
+  .role.operator h3{color:var(--muted)}
+  .role ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2)}
+  .role li{margin:3px 0}
+  .role li::marker{color:var(--muted)}
+  .role .none{font-size:14px;color:var(--muted);margin:0}
+
+  .detail{
+    margin:16px 0 0;background:var(--surface-2);border-radius:10px;padding:14px 16px;
+  }
+  .detail h3{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--muted)}
+  .detail ul{margin:0;padding-left:18px;font-size:14px;color:var(--ink-2);columns:2;column-gap:28px}
+  .detail li{margin:3px 0;break-inside:avoid}
+  @media (max-width:640px){.detail ul{columns:1}}
+
+  /* ---------- help / footer ---------- */
+  .help{
+    margin-top:44px;background:var(--warn-bg);border:1px solid var(--warn-line);
+    border-radius:var(--radius);padding:20px 24px;
+  }
+  .help h2{margin:0 0 8px;font-size:17px;letter-spacing:-.01em;color:var(--warn-ink)}
+  .help p{margin:0;font-size:14.5px;color:var(--warn-ink)}
+  .contact{
+    margin-top:18px;background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 24px;display:flex;flex-wrap:wrap;
+    align-items:center;gap:10px 20px;justify-content:space-between;
+  }
+  .contact .t{font-size:16px;font-weight:700;letter-spacing:-.01em}
+  .contact .s{font-size:13.5px;color:var(--muted);margin-top:2px}
+  .contact .btn{border:0;cursor:pointer;font-family:inherit;
+    background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;
+    font-size:14.5px;border-radius:10px;padding:11px 18px;white-space:nowrap;
+  }
+  .chips li.chip-link{padding:0;background:none}
+  .chips li.chip-link a{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:5px 10px;text-decoration:none}
+  .chips li.chip-link a:hover{text-decoration:underline}
+  .mail-sample{margin:14px 0 0}
+  .mail-sample a.btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:700;
+    font-size:14.5px;border-radius:10px;padding:11px 18px;white-space:nowrap;
+  }
+  .mail-sample p{margin:8px 0 0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+  .contact .btn:active{transform:scale(.97)}
+  .copy-hint{flex-basis:100%;text-align:right;font-size:12px;color:var(--muted);margin-top:-4px}
+  @media (max-width:640px){.copy-hint{text-align:left}}
+  /* 메일 샘플 팝업 */
+  dialog.mail-pop{width:min(680px,calc(100vw - 32px));height:min(88vh,1100px);max-height:none;padding:0;border:0;border-radius:16px;background:var(--surface);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.35);overflow:hidden}
+  dialog.mail-pop[open]{display:flex;flex-direction:column}
+  dialog.mail-pop::backdrop{background:rgba(10,14,24,.55)}
+  .mail-pop header{display:flex;align-items:center;gap:12px;padding:12px 14px 12px 20px;border-bottom:1px solid var(--line)}
+  .mail-pop header .ttl{flex:1;min-width:0}
+  .mail-pop header .k{font-size:11.5px;font-weight:800;letter-spacing:.06em;color:var(--accent)}
+  .mail-pop header .s{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mail-pop .close{flex:none;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font-size:18px;cursor:pointer}
+  .mail-pop iframe{flex:1;width:100%;border:0;background:#F4F1EA}
+  .mail-pop .note{margin:0;padding:8px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+  @media (max-width:640px){dialog.mail-pop{width:100vw;height:100dvh;max-width:none;border-radius:0}}
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--surface);font-size:14px;font-weight:600;padding:10px 16px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s}
+  .toast.show{opacity:1}
+  footer{margin-top:28px;text-align:center;font-size:12.5px;color:var(--muted)}
+  footer .logo{font-weight:800;color:var(--ink-2)}
+  footer .logo em{font-style:normal;color:var(--accent)}
+
+  /* ---------- guide blocks (단계 사이 안내) ---------- */
+  .step.guide .dot{background:var(--surface-2);border-color:var(--line);color:var(--ink-2)}
+  .badge.guide{background:var(--accent-soft);color:var(--accent)}
+  .payflow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 16px}
+  .payflow .pf{background:var(--surface-2);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;color:var(--ink)}
+  .payflow .pf.hot{background:var(--accent-soft);color:var(--accent)}
+  .payflow .arr{color:var(--muted);font-weight:800;font-size:13px}
+  .code-sample{
+    background:var(--surface-2);border-radius:10px;padding:14px 16px;margin:0 0 16px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;
+    letter-spacing:.01em;word-break:break-all;color:var(--ink);
+  }
+  .code-sample .short{color:var(--muted)}
+  .warnline{
+    display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;
+    background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;padding:13px 15px;
+  }
+  .warnline svg{flex:none;margin-top:2px}
+  .warnline p{margin:0;font-size:14px;color:var(--warn-ink)}
+  .steps-mini{margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2)}
+  .steps-mini li{margin:4px 0}
+  .steps-mini li::marker{color:var(--accent);font-weight:700}
+  .steps-mini strong{color:var(--ink)}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="intro">
+    <div class="brandline">
+      <span class="logo">getsite<em>.my</em></span>
+      <span class="tag">주문 진행 안내</span>
+    </div>
+    <h1>주문 후, 이렇게<br />진행됩니다</h1>
+    <p class="lede">접수 폼을 보내고 나서부터 최종 사이트가 완성될 때까지의 <strong>전체 7단계</strong>입니다. 각 단계에서 어떤 메일과 링크가 오가는지, 고객님이 하실 일과 운영자가 하는 일을 함께 정리했습니다.</p>
+  </header>
+
+  <nav class="flow" aria-label="전체 흐름">
+    <a href="#step1"><span class="n">01</span>주문 접수</a>
+    <a href="#step2"><span class="n">02</span>접수 안내 메일</a>
+    <a href="#step3"><span class="n">03</span>브리프 정리</a>
+    <a href="#step4"><span class="n">04</span>샘플 제작</a>
+    <a href="#step5"><span class="n">05</span>샘플 완료 메일</a>
+    <a href="#step6"><span class="n">06</span>확인 · 수정</a>
+    <a href="#step7"><span class="n">07</span>최종 제작</a>
+  </nav>
+
+  <div class="mail-note">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--mail)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+    <p>진행 과정에서 메일은 <strong>두 번</strong> 발송됩니다. 접수 직후의 <strong>접수 안내 메일</strong>(2단계)과 샘플이 완성됐을 때의 <strong>샘플 제작 완료 메일</strong>(5단계)입니다. 두 메일 모두 접수할 때 입력하신 이메일 주소로 갑니다.</p>
+  </div>
+
+  <ol class="timeline">
+
+    <!-- 1 -->
+    <li class="step reveal" id="step1">
+      <span class="dot" aria-hidden="true">1</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>주문 접수</h2>
+          <span class="badge plain">시작</span>
+        </div>
+        <p class="desc">getsite.my 접수 폼에 만들고 싶은 사이트의 내용을 적어 보내 주시면 접수가 완료되고, 주문마다 <strong>의뢰번호</strong>가 하나씩 발급됩니다. 이후 모든 안내는 이 의뢰번호를 기준으로 진행됩니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>접수 폼 입력 내용</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2"/><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M6 21h12"/></svg>의뢰번호 발급</li>
+        </ul>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>접수 폼에 사이트명, 사이트의 목적, 원하는 샘플과 스타일을 적습니다.</li>
+              <li>필요한 섹션과 참고자료(링크·파일·메모)를 함께 보냅니다.</li>
+              <li>접수 후 발급되는 의뢰번호를 확인합니다.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>접수된 주문과 의뢰번호를 확인합니다.</li>
+              <li>다음 단계인 접수 안내 메일 발송으로 이어집니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 안내: 전체 의뢰 코드 · 진행 조회 -->
+    <li class="step guide reveal" id="code-guide">
+      <span class="dot" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg></span>
+      <div class="card">
+        <div class="step-head">
+          <h2>전체 의뢰 코드 · 진행 조회 안내</h2>
+          <span class="badge guide">꼭 확인</span>
+        </div>
+        <p class="desc">주문 진행을 조회할 때는 1단계에서 발급된 짧은 번호가 아니라, <strong>뒤에 20자가 더 붙은 전체 의뢰 코드</strong>가 필요합니다. 짧은 번호만 넣으면 조회가 되지 않습니다.</p>
+        <div class="code-sample" aria-label="전체 의뢰 코드 예시"><span class="short">WO-2026-1234</span>-a1B2c3D4e5F6g7H8i9J0 <span class="short">(예시)</span></div>
+        <div class="detail" style="margin-top:0">
+          <h3>알아 두실 점</h3>
+          <ul style="columns:1">
+            <li>뒤의 20자는 무작위로 만들어져 추측할 수 없습니다. 사실상 <strong>이 주문의 비밀번호</strong> 역할을 합니다.</li>
+            <li>전체 의뢰 코드는 <strong>접수 완료 화면</strong>과 <strong>접수 안내 메일</strong>(2단계)에서 받으실 수 있습니다.</li>
+            <li>진행 조회 시에는 전체 코드를 빠짐없이 그대로 입력해 주세요.</li>
+          </ul>
+        </div>
+        <div class="warnline">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+          <p>전체 의뢰 코드를 알면 누구나 이 주문의 진행 상황을 볼 수 있습니다. <strong>다른 사람에게 공유하지 마세요.</strong></p>
+        </div>
+      </div>
+    </li>
+
+    <!-- 2 -->
+    <li class="step mail-step reveal" id="step2">
+      <span class="dot" aria-hidden="true">2</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>접수 안내 메일 발송</h2>
+          <span class="badge mail">메일 발송</span>
+        </div>
+        <p class="desc">접수가 확인되면 <strong>접수 내역이 담긴 메일</strong>이 고객님과 운영자에게 함께 발송됩니다. 내가 보낸 내용이 제대로 접수됐는지 메일 한 통으로 확인할 수 있습니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>접수 안내 메일</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Drive 폴더 링크</li>
+          <li class="chip-link"><a href="/order-guide/mail-1.html" target="_blank" rel="noopener" data-mail="1"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>메일 샘플 보기</a></li>
+        </ul>
+        <div class="detail">
+          <h3>메일에 담기는 내용</h3>
+          <ul>
+            <li>의뢰번호</li>
+            <li>사이트명</li>
+            <li>사이트의 목적</li>
+            <li>선택한 샘플</li>
+            <li>섹션 구성</li>
+            <li>견적</li>
+            <li>보내 주신 참고자료</li>
+            <li>자료를 올릴 Drive 폴더 링크</li>
+            <li>앞으로의 다음 단계 안내</li>
+          </ul>
+        </div>
+        <div class="mail-sample">
+          <a class="btn" href="/order-guide/mail-1.html" target="_blank" rel="noopener" data-mail="1">접수 안내 메일 샘플 보기</a>
+          <p>예시 주문 WO-2026-6934(다올 그림 스튜디오) 기준으로 채운 메일입니다. 샘플 보기와 진행 조회 버튼은 이 예시 주문의 실제 페이지로 연결되고, 전체 의뢰 코드 표기와 Drive 폴더는 예시 값입니다.</p>
+        </div>
+        <div class="roles" style="margin-top:14px">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>메일에서 접수 내역이 폼에 적은 내용과 같은지 확인합니다.</li>
+              <li>추가로 쓸 사진이나 자료가 있으면 메일 안의 Drive 폴더 링크에 올려 주세요.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>같은 메일을 받아 접수 내용을 확인합니다.</li>
+              <li>접수 내용을 바탕으로 브리프 정리를 시작합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 3 -->
+    <li class="step reveal" id="step3">
+      <span class="dot" aria-hidden="true">3</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>브리프 정리</h2>
+          <span class="badge plain">운영자 작업</span>
+        </div>
+        <p class="desc">접수 폼에 적어 주신 내용을 제작 기준으로 정리한 <strong>브리프</strong>를 만듭니다. 사이트의 목적, 섹션 구성, 원하는 분위기와 참고자료를 샘플 제작에 바로 쓸 수 있는 형태로 정리하는 단계입니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>브리프 문서</li>
+        </ul>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <p class="none">따로 하실 일은 없습니다. 추가로 전하고 싶은 내용이 생기면 Drive 폴더나 메일 회신으로 알려 주세요.</p>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>접수 내용을 항목별로 정리해 브리프를 작성합니다.</li>
+              <li>요청 항목을 어떻게 디자인에 반영할지 기준을 세웁니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 안내: 자료 업로드 가이드 -->
+    <li class="step guide reveal" id="upload-guide">
+      <span class="dot" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></span>
+      <div class="card">
+        <div class="step-head">
+          <h2>자료 업로드 가이드</h2>
+          <span class="badge guide">자료 준비</span>
+        </div>
+        <p class="desc">최종 제작에 필요한 자료는 주문 전용 <strong>Drive 폴더</strong>에 올려 주세요. 어떤 자료가 필요하고, 어떻게 올리는지 정리했습니다.</p>
+        <div class="detail" style="margin-top:0">
+          <h3>필요한 자료</h3>
+          <ul>
+            <li>로고 파일</li>
+            <li>사진 원본</li>
+            <li>소개 · 작업 설명 글</li>
+            <li>참고 사이트 링크</li>
+            <li>SNS 링크</li>
+          </ul>
+        </div>
+        <div class="detail">
+          <h3>올리는 방법</h3>
+          <ol class="steps-mini">
+            <li><strong>접수 안내 메일</strong>(2단계)에 있는 Drive 폴더 링크를 엽니다.</li>
+            <li>올릴 파일을 폴더 화면에 <strong>드래그해서</strong> 놓으면 업로드됩니다.</li>
+            <li>파일 이름은 알아보기 쉽게 적어 주세요. (예: <strong>로고.png</strong>, <strong>작품1.jpg</strong>)</li>
+          </ol>
+        </div>
+        <div class="warnline">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          <p>사진은 줄이거나 압축하지 않은 <strong>원본 고화질</strong>로 보내 주세요. 화질이 좋아야 사이트에서도 선명하게 쓸 수 있습니다.</p>
+        </div>
+      </div>
+    </li>
+
+    <!-- 4 -->
+    <li class="step reveal" id="step4">
+      <span class="dot" aria-hidden="true">4</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>샘플 제작</h2>
+          <span class="badge plain">운영자 작업</span>
+        </div>
+        <p class="desc">브리프를 기준으로 <strong>샘플 홈페이지</strong>를 만듭니다. 실제 사이트와 같은 형태로 만들어, 완성된 모습을 미리 보고 판단할 수 있게 하는 단계입니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>샘플 홈페이지 제작</li>
+        </ul>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <p class="none">따로 하실 일은 없습니다. 샘플이 완성되면 다음 단계의 메일로 알려 드립니다.</p>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>브리프 기준으로 샘플 홈페이지를 제작합니다.</li>
+              <li>요청 항목이 각각 어떻게 반영됐는지 설명을 함께 준비합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 5 -->
+    <li class="step mail-step reveal" id="step5">
+      <span class="dot" aria-hidden="true">5</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>샘플 제작 완료 메일 발송</h2>
+          <span class="badge mail">메일 발송</span>
+        </div>
+        <p class="desc">샘플이 완성되면 <strong>샘플 링크가 담긴 메일</strong>이 고객님에게 발송됩니다. 메일에는 의뢰 내용을 어떻게 반영했는지를 <strong>요청 항목별로 설명한 내용</strong>도 함께 들어갑니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>샘플 제작 완료 메일</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>샘플 보기 링크</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>요청 항목별 반영 설명</li>
+          <li class="chip-link"><a href="/order-guide/mail-2.html" target="_blank" rel="noopener" data-mail="2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>메일 샘플 보기</a></li>
+        </ul>
+        <div class="detail">
+          <h3>메일에 담기는 내용</h3>
+          <ul>
+            <li>샘플 페이지 링크</li>
+            <li>디자인 컨셉 요약</li>
+            <li>요청 → 정리·해석 → 디자인 반영 설명</li>
+            <li>반영하지 못한 항목과 그 이유</li>
+            <li>확인 후 다음 단계 안내</li>
+          </ul>
+        </div>
+        <div class="mail-sample">
+          <a class="btn" href="/order-guide/mail-2.html" target="_blank" rel="noopener" data-mail="2">샘플 제작 완료 메일 샘플 보기</a>
+          <p>예시 주문 WO-2026-6934(다올 그림 스튜디오) 기준으로 채운 메일입니다. 샘플 보기와 진행 조회 버튼은 이 예시 주문의 실제 페이지로 연결되고, 전체 의뢰 코드 표기와 Drive 폴더는 예시 값입니다.</p>
+        </div>
+        <div class="roles" style="margin-top:14px">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>메일의 링크를 열어 샘플을 직접 확인합니다.</li>
+              <li>반영 설명을 읽고, 요청한 내용과 다르게 된 부분이 없는지 봅니다.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>샘플 링크와 항목별 반영 설명을 메일로 보냅니다.</li>
+              <li>고객님의 확인과 수정 요청을 기다립니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 안내: 결제 안내 -->
+    <li class="step guide reveal" id="payment-guide">
+      <span class="dot" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>
+      <div class="card">
+        <div class="step-head">
+          <h2>결제 안내</h2>
+          <span class="badge guide">착수금 50% · 잔금 50%</span>
+        </div>
+        <p class="desc">샘플을 확인하신 뒤 최종 제작을 진행하시려면 결제가 필요합니다. 결제는 <strong>계약금 50% + 잔금 50%</strong>로 두 번에 나눠 진행되며, 금액은 <strong>VAT 별도</strong>입니다.</p>
+        <div class="payflow" aria-label="결제부터 배포까지의 순서">
+          <span class="pf hot">착수금 50% 입금</span><span class="arr" aria-hidden="true">→</span>
+          <span class="pf">최종 제작 시작</span><span class="arr" aria-hidden="true">→</span>
+          <span class="pf">완성 · 확인</span><span class="arr" aria-hidden="true">→</span>
+          <span class="pf hot">잔금 50% 입금</span><span class="arr" aria-hidden="true">→</span>
+          <span class="pf">배포 · 인계</span>
+        </div>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>샘플을 확인하고 최종 제작 진행 여부를 알려 주세요.</li>
+              <li>착수금 50%를 입금해 주시면 최종 제작을 시작합니다.</li>
+              <li>완성된 사이트를 확인하신 뒤 잔금 50%를 입금해 주세요.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>착수금이 확인되면 최종 제작을 시작합니다.</li>
+              <li>완성 후 사이트를 확인하실 수 있게 안내합니다.</li>
+              <li>잔금이 확인되면 사이트를 배포하고 인계합니다.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="warnline">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <p><strong>입금 계좌는 확정 후 안내드립니다.</strong> 안내받으신 계좌로만 입금해 주세요.</p>
+        </div>
+      </div>
+    </li>
+
+    <!-- 6 -->
+    <li class="step reveal" id="step6">
+      <span class="dot" aria-hidden="true">6</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>고객 확인 · 수정</h2>
+          <span class="badge plain">함께 확인</span>
+        </div>
+        <p class="desc">샘플을 보시고 <strong>바꾸고 싶은 부분을 알려 주시는</strong> 단계입니다. 색이나 문구, 구성처럼 눈에 보이는 것부터, 실제 사진·자료로 교체할 부분까지 이 단계에서 정리합니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>수정 요청</li>
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>실제 사진 · 자료</li>
+        </ul>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>샘플을 보고 수정하고 싶은 부분을 알려 주세요.</li>
+              <li>샘플용 이미지 대신 들어갈 실제 사진이나 자료가 있으면 보내 주세요.</li>
+              <li>방향이 확정되면 알려 주세요.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>수정 요청을 확인하고 샘플에 반영합니다.</li>
+              <li>확정된 내용을 최종 제작 기준으로 정리합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <!-- 7 -->
+    <li class="step reveal" id="step7">
+      <span class="dot" aria-hidden="true">7</span>
+      <div class="card">
+        <div class="step-head">
+          <h2>최종 제작</h2>
+          <span class="badge plain">완성</span>
+        </div>
+        <p class="desc">샘플이 확정되면 이를 기준으로 <strong>최종 사이트를 제작하고 배포</strong>합니다. 완성된 사이트는 실제 주소로 열 수 있는 상태로 전달됩니다.</p>
+        <ul class="chips" aria-label="이 단계에서 오가는 것">
+          <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>최종 사이트</li>
+        </ul>
+        <div class="roles">
+          <div class="role customer">
+            <h3>고객님이 할 일</h3>
+            <ul>
+              <li>완성된 최종 사이트를 확인합니다.</li>
+            </ul>
+          </div>
+          <div class="role operator">
+            <h3>운영자가 하는 일</h3>
+            <ul>
+              <li>확정된 샘플을 기준으로 최종 사이트를 제작합니다.</li>
+              <li>사이트를 배포해 실제로 접속할 수 있게 합니다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </li>
+
+  </ol>
+
+  <section class="help">
+    <h2>메일이 오지 않는다면</h2>
+    <p>접수 안내 메일과 샘플 제작 완료 메일은 접수할 때 입력하신 이메일 주소로 발송됩니다. 메일이 보이지 않으면 먼저 <strong>스팸함</strong>을 확인해 주세요. 그래도 찾을 수 없으면 아래 문의처로 의뢰번호와 함께 알려 주시면 확인해 드립니다.</p>
+  </section>
+
+  <section class="contact">
+    <div>
+      <div class="t">진행 중 궁금한 점이 있으신가요?</div>
+      <div class="s">문의하실 때는 의뢰번호를 함께 적어 주시면 빠르게 확인할 수 있습니다.</div>
+    </div>
+    <button type="button" class="btn" id="copyMail" data-copy="getsite.yours@gmail.com" aria-describedby="copyHint">getsite.yours@gmail.com</button>
+    <span id="copyHint" class="copy-hint">누르면 메일 주소가 복사됩니다</span>
+  </section>
+
+  <footer>
+    <span class="logo">getsite<em>.my</em></span> · 주문 진행 안내
+  </footer>
+
+</div>
+
+<dialog class="mail-pop" id="mailPop" aria-labelledby="mailPopSubject">
+  <header>
+    <div class="ttl"><div class="k" id="mailPopKind"></div><div class="s" id="mailPopSubject"></div></div>
+    <button type="button" class="close" id="mailPopClose" aria-label="닫기">✕</button>
+  </header>
+  <iframe id="mailPopFrame" title="메일 샘플"></iframe>
+  <p class="note">예시 주문 기준 메일입니다. 샘플 보기·진행 조회는 실제 페이지로 연결되며, 전체 의뢰 코드 표기와 Drive 폴더는 예시 값입니다.</p>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+  var MAILS = {
+    1: { kind: '접수 안내 메일', subject: '[getsite.my] 주문이 접수되었습니다 — WO-2026-6934', src: '/order-guide/mail-1.html' },
+    2: { kind: '샘플 제작 완료 메일', subject: '[getsite.my] 다올 그림 스튜디오 샘플이 도착했어요 — WO-2026-6934', src: '/order-guide/mail-2.html' }
+  };
+  var pop = document.getElementById('mailPop'), frame = document.getElementById('mailPopFrame'), opener = null;
+  if (pop && typeof pop.showModal === 'function') {
+    document.querySelectorAll('a[data-mail]').forEach(function(a){
+      a.addEventListener('click', function(e){
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // 새 탭으로 열고 싶으면 그대로 둔다
+        e.preventDefault();
+        var m = MAILS[a.getAttribute('data-mail')]; opener = a;
+        document.getElementById('mailPopKind').textContent = m.kind;
+        document.getElementById('mailPopSubject').textContent = m.subject;
+        frame.src = m.src;
+        pop.showModal(); document.body.style.overflow = 'hidden';
+        document.getElementById('mailPopClose').focus();
+      });
+    });
+    document.getElementById('mailPopClose').addEventListener('click', function(){ pop.close(); });
+    pop.addEventListener('click', function(e){ if (e.target === pop) pop.close(); });
+    pop.addEventListener('close', function(){ document.body.style.overflow = ''; frame.removeAttribute('src'); if (opener) opener.focus(); });
+  }
+  var toast = document.getElementById('toast'), timer = null;
+  function show(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(timer); timer = setTimeout(function(){ toast.classList.remove('show'); }, 2200); }
+  var btn = document.getElementById('copyMail');
+  btn.addEventListener('click', function(){
+    var text = btn.getAttribute('data-copy');
+    function ok(){ show('메일 주소를 복사했습니다: ' + text); }
+    function fallback(){
+      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var done = false; try { done = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      if (done) ok(); else show('복사하지 못했습니다. ' + text + ' 를 직접 적어 주세요.');
+    }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(ok, fallback); else fallback();
+  });
+})();
+</script>
+</body>
+</html>
