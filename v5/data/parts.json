@@ -59,26 +59,6 @@
         "anchor": "https://getsite-soap.web.app/"
       },
       {
-        "ref": "cup:hero",
-        "sampleId": "cup",
-        "slug": "hero",
-        "file": "assets/samples/cup/hero.webp",
-        "thumb": "assets/samples/cup/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-cup.web.app/"
-      },
-      {
-        "ref": "cup3d:hero",
-        "sampleId": "cup3d",
-        "slug": "hero",
-        "file": "assets/samples/cup3d/hero.webp",
-        "thumb": "assets/samples/cup3d/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-cup3d.web.app/"
-      },
-      {
         "ref": "portfolio:hero",
         "sampleId": "portfolio",
         "slug": "hero",
@@ -107,46 +87,6 @@
         "w": 1440,
         "h": 900,
         "anchor": "https://getsite-cafe.web.app/"
-      },
-      {
-        "ref": "gallery-layouts:hero",
-        "sampleId": "gallery-layouts",
-        "slug": "hero",
-        "file": "assets/samples/gallery-layouts/hero.webp",
-        "thumb": "assets/samples/gallery-layouts/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-gallery-lab.web.app/"
-      },
-      {
-        "ref": "hero-stack-fan:hero",
-        "sampleId": "hero-stack-fan",
-        "slug": "hero",
-        "file": "assets/samples/hero-stack-fan/hero.webp",
-        "thumb": "assets/samples/hero-stack-fan/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-hero-fan.web.app/"
-      },
-      {
-        "ref": "motion-1:hero",
-        "sampleId": "motion-1",
-        "slug": "hero",
-        "file": "assets/samples/motion-1/hero.webp",
-        "thumb": "assets/samples/motion-1/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-motion.web.app/1.html"
-      },
-      {
-        "ref": "motion-2:hero",
-        "sampleId": "motion-2",
-        "slug": "hero",
-        "file": "assets/samples/motion-2/hero.webp",
-        "thumb": "assets/samples/motion-2/hero-640.webp",
-        "w": 1440,
-        "h": 900,
-        "anchor": "https://getsite-motion.web.app/2.html"
       },
       {
         "ref": "motion-2:scene-watercolor",

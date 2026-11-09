@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>관리자 페이지 샘플 · getsite.my</title>
+<meta name="description" content="getsite.my로 만든 사이트의 관리자 페이지 예시입니다. 사이트의 섹션 구성에 따라 관리 메뉴가 달라집니다.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+<!-- Contract (admin.js fills it, admin.css styles it): ids and classes below are fixed; tests rely on them. -->
+
+<section id="login" class="login" aria-labelledby="login-h">
+  <div class="login-card">
+    <p class="badge">관리자 페이지 샘플</p>
+    <h1 id="login-h">사이트 관리자 로그인</h1>
+    <p class="login-note">실제 사이트에서는 승인된 Google 계정으로만 들어올 수 있습니다. 이 샘플은 로그인 없이 둘러볼 수 있고, 입력한 내용은 이 브라우저에만 저장됩니다.</p>
+    <button type="button" id="googleLogin" class="btn btn-ghost" disabled aria-describedby="googleNote">Google 계정으로 로그인</button>
+    <p id="googleNote" class="login-small">샘플에서는 사용할 수 없습니다.</p>
+    <button type="button" id="demoEnter" class="btn btn-primary">샘플 둘러보기</button>
+    <a class="login-back" href="/">getsite.my로 돌아가기</a>
+  </div>
+</section>
+
+<div id="app" class="app" hidden>
+  <p class="demo-banner" role="note">샘플 관리자 페이지입니다. 모든 내용은 가상 데이터이며, 변경 내용은 이 브라우저에만 저장됩니다.</p>
+  <header class="topbar">
+    <div class="topbar-site">
+      <span class="topbar-kicker">관리자</span>
+      <strong id="siteName">사이트</strong>
+    </div>
+    <div class="topbar-actions">
+      <label class="preset-label" for="presetSelect">사이트 종류</label>
+      <select id="presetSelect"></select>
+      <button type="button" id="logout" class="btn btn-ghost">나가기</button>
+    </div>
+  </header>
+
+  <details id="sectionPanel" class="section-panel">
+    <summary>사이트 섹션 구성 <span id="sectionCount" class="count"></span></summary>
+    <p class="section-note">섹션을 켜고 끄면 왼쪽 관리 메뉴가 바로 달라집니다. 실제 관리자 페이지도 사이트의 섹션 구성에 맞춰 만들어집니다.</p>
+    <fieldset id="sectionToggles" class="section-toggles"><legend class="sr-only">섹션 켜고 끄기</legend></fieldset>
+  </details>
+
+  <div class="layout">
+    <nav class="sidenav" aria-label="관리 메뉴">
+      <ul id="nav"></ul>
+    </nav>
+    <main id="main" class="main" tabindex="-1">
+      <div class="main-head">
+        <div>
+          <h1 id="moduleTitle"></h1>
+          <p id="moduleHint" class="module-hint"></p>
+        </div>
+        <div id="moduleActions" class="module-actions"></div>
+      </div>
+      <div id="moduleBody" class="module-body"></div>
+    </main>
+  </div>
+</div>
+
+<dialog id="editor" class="editor" aria-labelledby="editorTitle">
+  <form id="editorForm" method="dialog" novalidate>
+    <header class="dialog-head">
+      <h2 id="editorTitle"></h2>
+      <button type="button" class="icon-btn" data-close aria-label="닫기">✕</button>
+    </header>
+    <div id="editorFields" class="form-grid"></div>
+    <footer class="dialog-foot">
+      <button type="button" id="editorDelete" class="btn btn-danger">삭제</button>
+      <span class="spacer"></span>
+      <button type="button" class="btn btn-ghost" data-close>취소</button>
+      <button type="submit" id="editorSave" class="btn btn-primary">저장하기</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="confirm" class="confirm" aria-labelledby="confirmTitle">
+  <h2 id="confirmTitle">삭제 확인</h2>
+  <p id="confirmText"></p>
+  <p id="confirmStep" class="confirm-step" role="alert" hidden>한 번 더 누르면 바로 삭제됩니다.</p>
+  <footer class="dialog-foot">
+    <span class="spacer"></span>
+    <button type="button" class="btn btn-ghost" data-close>취소</button>
+    <button type="button" id="confirmGo" class="btn btn-danger">삭제 진행 (1/2)</button>
+  </footer>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script type="module" src="./admin.js"></script>
+</body>
+</html>

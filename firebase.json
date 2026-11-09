@@ -11,10 +11,11 @@
       "**/node_modules/**"
     ],
     "public": "public",
-    "rewrites": [
+    "redirects": [
       {
-        "destination": "/index.html",
-        "source": "/p/**"
+        "source": "/p/**",
+        "destination": "/",
+        "type": 301
       }
     ],
     "site": "getsite-my"

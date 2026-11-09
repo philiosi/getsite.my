@@ -19,7 +19,10 @@ await page.route(FAKE, async (r) => {
   seen.push({ method: req.method(), type: req.headers()['content-type'], body: req.postData() });
   await r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(answer) });
 });
-await page.goto(`${ORIGIN}/v5/`);
+// The deployed web app (REF_UPLOAD_URL in api.js) is intercepted too, so nothing real is called.
+const deployed = [];
+await page.route(/script\.google\.com\/macros\/s\/AKfy/, async (r) => { deployed.push(r.request().url()); await r.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: '{"ok":false,"error":"no-order"}' }); });
+await page.goto(`${ORIGIN}${process.env.PAGE || '/v5/'}`);
 const run = (url) => page.evaluate(async ([u]) => {
   if (u) window.__REF_UPLOAD_URL__ = u; else delete window.__REF_UPLOAD_URL__;
   delete window.__GETSITE_API__;
@@ -37,8 +40,8 @@ answer = { ok: true, exists: true };
 check(await run(FAKE) === 'ok', 'exists (retry after a lost answer) counts as done');
 answer = { ok: false, error: 'not-listed' };
 check(await run(FAKE) === 'throw:not-listed', 'a refusal throws with its code');
-check(await run('') === 'throw:not-configured', 'no web app URL yet: fails without a request');
-check(seen.length === 3, 'no request when not configured');
+check(await run('') === 'throw:no-order', 'without an override the deployed web app URL is used');
+check(deployed.length === 1 && seen.length === 3, 'one request, to the deployed URL only');
 await browser.close();
 console.log(fails ? `${fails} failed` : 'all passed');
 process.exit(fails ? 1 : 0);

@@ -151,6 +151,7 @@ section.block > .wrap > .head .sub { color: var(--ink-2); font-size: 16.5px; }
 
 /* step 1: sample pick */
 .pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+.choices + .pick-grid { margin-top: 24px; } /* the topic chips need air above the cards */
 .pick { text-align: left; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--paper); padding: 0; display: grid; grid-template-rows: auto 1fr; transition: border-color .18s, transform .22s var(--ease); }
 .pick:hover { transform: translateY(-2px); border-color: var(--line-2); }
 .pick[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
@@ -269,6 +270,7 @@ pre.quote { white-space: pre-wrap; overflow-wrap: anywhere; background: var(--pa
 .faq summary::after { content: "+"; color: var(--ink-3); font-family: var(--font-display); }
 .faq details[open] summary::after { content: "−"; }
 .faq p { color: var(--ink-2); font-size: 14.5px; padding: 0 0 18px; }
+.faq p a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 
 /* lookup */
 .lookup-row { display: flex; gap: 8px; flex-wrap: wrap; }

@@ -351,3 +351,77 @@ Firestore 규칙: **보류(사용자 결정)**. 운영 규칙은 orders 생성·
 - **Consequences:**
   - The v2 order page and old `/p/<number>` previews no longer work; they redirect to `/v5/`.
   - The `getsite.my` custom domain does not answer. Only `getsite-my.web.app` serves.
+
+## 15. v5를 메인 주소에 직접, 샘플 정리, 관리자 페이지 샘플 (2026-11-09)
+
+### v5 at the root
+- **Build:** `node scripts/v4-build.mjs --main=v5`. v5's files are copied to the root as well, and `/v5/` stays for old links. The `../v3/` paths resolve to `/v3/` from the root, so nothing in v5 changed.
+- **Firebase config:** `firebase.json` turns the `/p/**` rewrite into a 301 redirect to `/`. A rewrite would serve the root page at `/p/x`, where its relative `./app.js` paths break.
+- **Backup of the redirect version:** live version `555fdc3d2f941171` (`backups/live-2026-11-09b/`, gitignored) and git tag `live-2026-11-09-redirect`.
+- **Tests:**
+  - v5 e2e 55/55 at `/` and at `/v5/` (local and preview channel); unit and ref-upload 11/11.
+  - `tests/v5/upload-client.mjs` updated: its old case expected an empty upload URL, and it now intercepts the deployed URL instead of calling it.
+
+### Samples removed from 주제별 샘플 and 샘플 선택
+- **v5 only:** `v5/data/samples.json` (v4 unchanged).
+- **Removed samples:** 작품 갤러리 레이아웃 15종, 히어로 쌓고 펼치기, Clay and Glaze 도자기 컵·3D 컵, and 화가 히어로 모션 5종·7종.
+- **Also removed:**
+  - their plain hero parts in `v5/data/parts.json`;
+  - the now-empty 모션·실험 topic.
+- **Kept:** the seven motion scenes of step 3 (parts with kind `motion`), which are labelled by scene, not by sample.
+- **Spacing:** topic chips to `pick-grid` is now 24px (`.choices + .pick-grid`).
+
+### FAQ: 관리자 페이지
+- A new item after 유지보수: the admin page is developed separately, updates the site's basic info and data, and follows the site's section composition.
+- It links to `/admin-demo/`.
+
+### Admin page sample (`samples/admin-demo/`, served at `/admin-demo/`)
+- **Reference:** the hansakim.com `/admin/` structure, read from its public markup:
+  - login card;
+  - menus with counts;
+  - list, new item and modal form;
+  - KO/EN fields;
+  - image attach, preview and delete;
+  - two-step delete;
+  - toast;
+  - export, backup and status check.
+
+  The look is getsite's own (light, with dark mode). It is not the hansakim theme.
+- **Behaviour:**
+  - Five site types (fictional data from the getsite samples) and 13 section toggles.
+  - The admin menus are `modulesFor(sections)`: each section maps to a module, and 기본 정보 and 백업 are always present.
+  - No backend; data stays in the visitor's localStorage.
+- **Who wrote what:**
+  - Claude: `index.html` and `schema.js` (contract), the test, and the review fixes.
+  - Codex: `admin.js`.
+  - Argon: `admin.css`.
+- **Test:** `tests/samples/admin-demo.mjs`, 95/95. It checks:
+  - menus per type and per toggle;
+  - validation;
+  - CRUD, two-step delete and images;
+  - export, import and reset;
+  - no markup injection;
+  - focus, labels and the stored-state check;
+  - 1280, 375 and 320, light and dark, with no sideways scroll, AA contrast and no errors.
+
+  The regression tests fail against the pre-fix code.
+
+| Finding | Source | Verdict | Action |
+|---|---|---|---|
+| Focus lost after save/delete/nav/section toggle (DOM re-render) | TS reviewer, a11y, Codex, Gemini | CONFIRMED | `focusKey`/`refocus` after each re-render; tests |
+| Hidden file input not reachable by keyboard | TS reviewer, a11y | CONFIRMED | removed `hidden` (CSS already visually hides it); test |
+| Corrupt stored state crashes boot / silent discard | silent-failure, TS reviewer | CONFIRMED | stored state goes through the import check; notice toast; test |
+| Import: object values, empty required items, duplicate ids | silent-failure, TS reviewer, Codex | CONFIRMED | `checkValues`, unique ids; tests |
+| Save while an image is still decoding loses it | Codex | CONFIRMED | `data-pending` blocks save; test |
+| Bad number input / bare `https://` accepted | TS reviewer | CONFIRMED | `badInput`, digit pattern, `new URL`; tests |
+| Checkbox labelled twice; no `aria-required` | a11y | CONFIRMED | one label; `aria-required`; tests |
+| Focus ring invisible on the current menu item | a11y | CONFIRMED | ink ring on the accent fill |
+| Toast/confirm step not announced | a11y | CONFIRMED | text set after showing, errors assertive; `role=alert` |
+| Readonly values trimmed on save; transparent PNG turns black | silent-failure | CONFIRMED | readonly kept as received; white ground |
+| Confirm dialog cancel loses focus | Gemini | REJECTED | the browser restores it; test passes |
+| Preset select overflows at 320px | a11y (unverified) | REJECTED | 320px test: no overflow |
+| Stretched mobile grid row (gap above the title) | Claude (screenshot) | CONFIRMED | `align-content: start` |
+| Broken stored image keeps its value; count read as "작품 3" | silent-failure, a11y | DEFERRED | low |
+
+- **Reviewers:** Codex, Gemini, the ECC TypeScript reviewer, silent-failure-hunter and a11y-architect returned findings (table above). Argon's review failed with a network error (`AGY_ERROR` retryable) and produced nothing.
+- **What is left:** the demo is not a real admin. A real one needs Google sign-in, Firestore rules and storage per customer site.
