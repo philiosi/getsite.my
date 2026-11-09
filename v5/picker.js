@@ -14,14 +14,22 @@ const reduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let seq = 0;
 /** The dialog shell: title, close, a stage, a candidate list, a detail line and the actions. */
-function shell(title) {
+// Shown beside the motion viewer title: these scenes explain motion graphics; real work follows the customer's references.
+const MOTION_NOTE = '모션그래픽을 설명하기 위한 예시 화면입니다. 실제 제작은 보내 주신 레퍼런스(사이트, 핀터레스트 등) 링크와 상세 설명에 맞춰 진행됩니다. (예: 한붓 그리기, 픽셀 아트, 타이포그래피 등)';
+
+function shell(title, desc = '') {
   const id = `picker-${++seq}`;
   const dlg = h('dialog', 'picker');
   dlg.setAttribute('aria-labelledby', `${id}-t`);
   const head = h('div', 'picker-head');
   const t = h('h3', 'picker-title', title); t.id = `${id}-t`;
   const close = h('button', 'picker-close', '닫기'); close.type = 'button';
-  head.append(t, close);
+  if (desc) {
+    const d = h('p', 'picker-desc', desc); d.id = `${id}-d`;
+    dlg.setAttribute('aria-describedby', d.id);
+    const titles = h('div', 'picker-titles'); titles.append(t, d);
+    head.append(titles, close);
+  } else head.append(t, close);
   const stage = h('div', 'picker-stage');
   const list = h('div', 'picker-list'); list.setAttribute('role', 'radiogroup');
   const info = h('div', 'picker-info'); info.setAttribute('aria-live', 'polite');
@@ -86,7 +94,7 @@ export function openMotionPicker({ parts, startRef = null, returnFocus = null })
   if (!scenes.length || !page) return null;
   const sceneOf = (ref) => scenes.find((p) => p.ref === ref);
   let look = sceneOf(startRef)?.ref || scenes[0].ref;
-  const { dlg, close, stage, list, info, actions } = shell('첫 장면 모션 예시');
+  const { dlg, close, stage, list, info, actions } = shell('첫 장면 모션 예시', MOTION_NOTE);
   dlg.dataset.picker = 'motion';
   list.setAttribute('aria-label', '첫 장면 모션');
 

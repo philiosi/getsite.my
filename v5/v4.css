@@ -309,7 +309,10 @@ footer.site { margin-top: 96px; border-top: 1px solid var(--line); padding: 28px
 .picker::backdrop { background: oklch(19% 0.01 265 / .62); }
 .picker-head { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
 .picker-title { margin: 0; font-size: 16px; }
-.picker-close { margin-left: auto; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
+.picker-titles { display: flex; align-items: baseline; gap: 4px 14px; flex-wrap: wrap; min-width: 0; }
+.picker-titles .picker-title { flex: none; }
+.picker-desc { margin: 0; flex: 1 1 320px; min-width: 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); word-break: keep-all; }
+.picker-close { flex: none; white-space: nowrap; align-self: flex-start; margin-left: auto; border: 1px solid var(--line-2); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
 .picker-close:hover { border-color: var(--ink); }
 .picker-body { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 0; }
 .picker-stage { position: relative; background: #111; min-height: 0; overflow: hidden; }

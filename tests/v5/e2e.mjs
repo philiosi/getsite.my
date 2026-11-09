@@ -302,6 +302,8 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   await page.waitForSelector('dialog.picker[open]');
   const box = await page.$eval('dialog.picker', (d) => { const r = d.getBoundingClientRect(); return { w: Math.round(r.width), h: Math.round(r.height) }; });
   check('375: the motion viewer fills the screen', box.w === 375 && box.h === 812, JSON.stringify(box));
+  const note = await page.$eval('dialog.picker[open]', (d) => { const p = d.querySelector('.picker-desc'); const r = p?.getBoundingClientRect(); return { text: p?.textContent || '', described: d.getAttribute('aria-describedby') === p?.id, inside: !!r && r.right <= innerWidth && r.left >= 0, closeOneLine: (() => { const c = d.querySelector('.picker-close'); return c.getBoundingClientRect().height < parseFloat(getComputedStyle(c).lineHeight || '20') * 1.8 + 16; })(), over: document.documentElement.scrollWidth > innerWidth }; });
+  check('375: the motion viewer explains it is an example (references decide the real work)', /모션그래픽을 설명하기 위한 예시/.test(note.text) && /레퍼런스/.test(note.text) && /한붓 그리기, 픽셀 아트, 타이포그래피/.test(note.text) && note.described && note.inside && note.closeOneLine && !note.over, JSON.stringify(note));
   if (SHOTS) await page.screenshot({ path: `${SHOTS}/v5-m375.png` });
   check('375: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
   await context.close();

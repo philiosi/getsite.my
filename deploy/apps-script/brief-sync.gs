@@ -5,6 +5,111 @@
    Safe to re-run: files are overwritten in a folder named after the order, then the order is marked.
    Section requests saved after payment are copied the same way as sections.md. */
 
+/* Receipt mail HTML template. Placeholders {{...}} are filled by mailHtmlV4_. */
+var RECEIPT_MAIL_HTML = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#F4F1EA;">
+  <tr><td align="center" style="padding:28px 10px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background-color:#FFFFFF;border:1px solid #E6E1D3;border-radius:14px;">
+      <!-- header -->
+      <tr><td style="padding:26px 38px 0;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;font-size:21px;font-weight:800;color:#20242B;letter-spacing:-0.5px;">getsite<span style="color:#1B44C8;">.my</span></td>
+          <td align="right" style="font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;font-size:12px;font-weight:700;color:#1B44C8;letter-spacing:2px;">주문 접수 안내</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:18px 38px 0;"><div style="border-top:2px solid #20242B;font-size:0;line-height:0;">&nbsp;</div></td></tr>
+      <!-- title -->
+      <tr><td style="padding:26px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:25px;font-weight:800;color:#20242B;letter-spacing:-0.5px;line-height:1.35;">주문이 접수되었습니다</div>
+        <p style="margin:14px 0 0;font-size:15px;line-height:1.75;color:#3C4048;">{{CUSTOMER_NAME}} 님, 안녕하세요. getsite.my에 웹사이트 제작을 의뢰해 주셔서 감사합니다.<br/>접수하신 내용을 아래에 정리했습니다. 메일만으로 전체 내역을 확인하실 수 있고, 내용이 다르면 이 메일에 답장으로 알려 주세요.</p>
+      </td></tr>
+      <!-- 전체 의뢰 코드 · 진행 조회 -->
+      <tr><td style="padding:28px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#EEF1FB;border:1px solid #C9D4F5;border-radius:10px;"><tr><td style="padding:20px 22px;">
+          <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">전체 의뢰 코드</div>
+          <div style="margin-top:10px;font-family:'Courier New',Courier,monospace;font-size:18px;font-weight:700;color:#20242B;letter-spacing:0.5px;line-height:1.5;word-break:break-all;">{{ORDER_ID}}</div>
+          <p style="margin:12px 0 0;font-size:13.5px;line-height:1.75;color:#3C4048;">진행 조회에는 짧은 번호가 아니라 이 전체 코드가 필요합니다. 이 코드는 주문의 비밀번호와 같으니 다른 사람에게 공유하지 마세요.</p>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;"><tr>
+            <td align="center" style="background-color:#1B44C8;border-radius:9px;">
+              <a href="{{TRACK_URL}}" target="_blank" style="display:inline-block;padding:13px 26px;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;font-size:14.5px;font-weight:700;color:#FFFFFF;text-decoration:none;">내 주문 진행 조회하기</a>
+            </td>
+          </tr></table>
+        </td></tr></table>
+      </td></tr>
+      <!-- 접수 내역 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">01 · 접수 내역</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+          <tr><td width="104" style="padding:11px 0;border-top:1px solid #ECE8DC;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">의뢰번호</td><td style="padding:11px 0 11px 14px;border-top:1px solid #ECE8DC;border-bottom:1px solid #ECE8DC;font-size:15px;font-weight:700;color:#20242B;">{{DISPLAY_NO}}</td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">접수 일시</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;color:#20242B;">{{CREATED_DATE}}</td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">사이트명</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;font-weight:600;color:#20242B;">{{SITE_NAME}}</td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">목적</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;line-height:1.65;color:#20242B;">{{ONE_LINER}}</td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">이름</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;color:#20242B;">{{CUSTOMER_NAME}}</td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">이메일</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;color:#20242B;overflow-wrap:anywhere;">{{CUSTOMER_EMAIL}}</td></tr>
+          <tr><td style="padding:11px 0;font-size:13px;color:#8A8D94;vertical-align:top;">선택한 샘플</td><td style="padding:11px 0 11px 14px;font-size:14.5px;color:#20242B;">{{SAMPLE_TITLE}}<br/><a href="{{SAMPLE_URL}}" target="_blank" style="color:#1B44C8;text-decoration:underline;font-size:13.5px;">{{SAMPLE_URL}}</a></td></tr>
+        </table>
+      </td></tr>
+      <!-- 구성 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">02 · 구성</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+          {{SECTIONS_ROWS}}
+        </table>
+        <p style="margin:14px 0 0;font-size:14px;line-height:1.75;color:#3C4048;"><b style="color:#20242B;">갤러리 구도</b> · {{GALLERY_TEXT}}</p>
+      </td></tr>
+      <!-- 견적 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">03 · 견적 내역</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+          <tr>
+            <td style="padding:13px 16px;background-color:#FBF5E9;border-radius:8px 0 0 0;font-size:14.5px;color:#20242B;">기본 구성 <span style="color:#8A8D94;font-size:13px;">— {{ESTIMATE_DETAIL}}</span></td>
+            <td align="right" style="padding:13px 16px;background-color:#FBF5E9;border-radius:0 8px 0 0;font-size:14.5px;font-weight:600;color:#20242B;white-space:nowrap;">{{ESTIMATE_TOTAL}}원</td>
+          </tr>
+          <tr>
+            <td style="padding:14px 16px;border-top:2px solid #20242B;font-size:15px;font-weight:800;color:#20242B;">합계</td>
+            <td align="right" style="padding:14px 16px;border-top:2px solid #20242B;font-size:17px;font-weight:800;color:#1B44C8;white-space:nowrap;">{{ESTIMATE_TOTAL}}원</td>
+          </tr>
+        </table>
+        <p style="margin:10px 0 0;font-size:13px;line-height:1.7;color:#8A8D94;">샘플을 확인하신 뒤 최종 제작 범위와 추가 옵션이 정해지면, 최종 견적을 다시 안내해 드립니다.</p>
+      </td></tr>
+      <!-- 참고자료 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">04 · 보내 주신 참고자료</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;">
+          <tr><td width="104" style="padding:11px 0;border-top:1px solid #ECE8DC;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">참고 링크</td><td style="padding:11px 0 11px 14px;border-top:1px solid #ECE8DC;border-bottom:1px solid #ECE8DC;font-size:14.5px;color:#20242B;"><a href="{{REF_LINK_1}}" style="color:#1B44C8;text-decoration:underline;">{{REF_LINK_1}}</a></td></tr>
+          <tr><td style="padding:11px 0;border-bottom:1px solid #ECE8DC;font-size:13px;color:#8A8D94;vertical-align:top;">참고 파일</td><td style="padding:11px 0 11px 14px;border-bottom:1px solid #ECE8DC;font-size:14.5px;color:#20242B;">{{REF_FILE_1}}</td></tr>
+          <tr><td style="padding:11px 0;font-size:13px;color:#8A8D94;vertical-align:top;">참고 메모</td><td style="padding:11px 0 11px 14px;font-size:14.5px;line-height:1.7;color:#20242B;">{{REF_NOTES}}</td></tr>
+        </table>
+      </td></tr>
+      <!-- 자료 올리는 방법 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">05 · 자료 올리는 방법</div>
+        <p style="margin:12px 0 0;font-size:14.5px;line-height:1.75;color:#3C4048;">작품 이미지, 소개 글, 로고 같은 추가 자료는 의뢰번호 전용 Drive 폴더에 올려 주세요. 올려 주신 자료는 이 주문 건에만 사용합니다.</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;"><tr>
+          <td align="center" style="background-color:#1B44C8;border-radius:9px;">
+            <a href="{{DRIVE_FOLDER_URL}}" target="_blank" style="display:inline-block;padding:13px 26px;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;font-size:14.5px;font-weight:700;color:#FFFFFF;text-decoration:none;">내 주문 Drive 폴더 열기</a>
+          </td>
+        </tr></table>
+        <p style="margin:14px 0 0;font-size:13.5px;line-height:1.8;color:#6A6E76;overflow-wrap:anywhere;word-break:break-all;">· 폴더 주소: <a href="{{DRIVE_FOLDER_URL}}" style="color:#1B44C8;">{{DRIVE_FOLDER_URL}}</a><br/>· 파일 이름에 내용을 알 수 있게 적어 주시면 작업이 빠릅니다. (예: 작품-브랜드-01.jpg)<br/>· 폴더에 올리기 어려우면 이 메일에 답장으로 첨부해 주셔도 됩니다.</p>
+      </td></tr>
+      <!-- 다음 단계 -->
+      <tr><td style="padding:32px 38px 0;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="font-size:13px;font-weight:800;color:#1B44C8;letter-spacing:1.5px;">06 · 다음 단계</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:12px;">
+          <tr><td width="30" style="padding:4px 0 14px;"><span style="display:inline-block;width:24px;height:24px;border-radius:12px;background-color:#20242B;color:#FFFFFF;font-size:12.5px;font-weight:700;text-align:center;line-height:24px;">1</span></td><td style="padding:2px 0 14px 6px;font-size:14.5px;line-height:1.65;color:#3C4048;"><b style="color:#20242B;">브리프 정리</b> — 보내 주신 의뢰 내용과 참고자료를 정리해 제작 방향을 확정합니다.</td></tr>
+          <tr><td style="padding:4px 0 14px;"><span style="display:inline-block;width:24px;height:24px;border-radius:12px;background-color:#20242B;color:#FFFFFF;font-size:12.5px;font-weight:700;text-align:center;line-height:24px;">2</span></td><td style="padding:2px 0 14px 6px;font-size:14.5px;line-height:1.65;color:#3C4048;"><b style="color:#20242B;">샘플 제작</b> — 정리한 브리프를 바탕으로 사이트 샘플을 만듭니다.</td></tr>
+          <tr><td style="padding:4px 0 0;"><span style="display:inline-block;width:24px;height:24px;border-radius:12px;background-color:#1B44C8;color:#FFFFFF;font-size:12.5px;font-weight:700;text-align:center;line-height:24px;">3</span></td><td style="padding:2px 0 0 6px;font-size:14.5px;line-height:1.65;color:#3C4048;"><b style="color:#20242B;">샘플 발송</b> — 완성된 샘플 링크와, 요청 항목을 어떻게 반영했는지 정리한 안내를 메일로 보내 드립니다.</td></tr>
+        </table>
+      </td></tr>
+      <!-- footer -->
+      <tr><td style="padding:34px 38px 30px;font-family:'Apple SD Gothic Neo','Malgun Gothic',AppleGothic,Arial,sans-serif;">
+        <div style="border-top:1px solid #ECE8DC;font-size:0;line-height:0;">&nbsp;</div>
+        <p style="margin:16px 0 0;font-size:13.5px;line-height:1.75;color:#6A6E76;">문의는 이 메일에 답장하시거나 <a href="mailto:getsite.yours@gmail.com" style="color:#1B44C8;">getsite.yours@gmail.com</a>으로 보내 주세요. 의뢰번호 <b style="color:#20242B;">{{DISPLAY_NO}}</b>를 함께 적어 주시면 빠르게 확인할 수 있습니다.</p>
+        <p style="margin:14px 0 0;font-size:12.5px;color:#A6A9A0;">getsite.my · 웹사이트 제작 스튜디오</p>
+      </td></tr>
+    </table>
+  </td></tr>
+</table>`;
+
 var PROJECT = 'getsite-my';
 var ROOT_FOLDER_NAME = 'getsite-orders';
 var BASE = 'https://firestore.googleapis.com/v1/projects/' + PROJECT + '/databases/(default)/documents';
@@ -126,6 +231,51 @@ function mailBodyV4_(key, order, catalog) {
   lines.push('', '궁금하신 점은 이 메일에 회신해 주시면 바로 답변드리겠습니다.', '감사합니다.', '', 'getsite 드림'); return lines.join('\n');
 }
 
+function escapeHtml_(v) {
+  return String(v == null ? '' : v)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function mailHtmlV4_(key, order, catalog) {
+  var r = resolvePicksV4_(order, catalog), e = order.estimate || {};
+  var pages = Number.isInteger(e.pages) && e.pages >= 0 && e.pages <= 20 ? e.pages : 0;
+  var revisions = Number.isInteger(e.revisions) && e.revisions >= 0 && e.revisions <= 20 ? e.revisions : 0;
+  var total = 500000 + pages * 100000 + (e.video === true ? 200000 : 0) + revisions * 50000;
+  var fmt = function(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+  var rows = '';
+  (order.sections || []).forEach(function(id, i) {
+    var label = own_(SECTION_LABELS_V4, id); if (!label) return;
+    rows += '<tr><td width="34" style="padding:9px 0;border-top:1px solid #ECE8DC;font-size:14px;font-weight:800;color:#D9532F;">' + (i + 1) + '</td><td style="padding:9px 0;border-top:1px solid #ECE8DC;font-size:14.5px;color:#20242B;"><b>' + escapeHtml_(label) + '</b></td></tr>';
+  });
+  var sampleUrl = (order.brief && order.brief.sample && order.brief.sample.url) || '';
+  var refs = (order.brief && order.brief.references) || {};
+  var created = order.createdAt ? Utilities.formatDate(new Date(order.createdAt), 'Asia/Seoul', 'yyyy년 M월 d일') : '';
+  var rep = {
+    '{{ORDER_ID}}': key,
+    '{{DISPLAY_NO}}': order.displayNo || key.slice(0, 12),
+    '{{TRACK_URL}}': 'https://getsite-my.web.app/p/' + key,
+    '{{SITE_NAME}}': escapeHtml_(order.siteName),
+    '{{CUSTOMER_NAME}}': escapeHtml_(order.name),
+    '{{CUSTOMER_EMAIL}}': escapeHtml_(order.email),
+    '{{ONE_LINER}}': escapeHtml_(order.oneLiner),
+    '{{SAMPLE_TITLE}}': escapeHtml_(r.sample ? r.sample.title : (order.sampleId || '')),
+    '{{SAMPLE_URL}}': escapeHtml_(sampleUrl),
+    '{{DRIVE_FOLDER_URL}}': escapeHtml_(order.driveFolderUrl || ''),
+    '{{REF_LINK_1}}': escapeHtml_(order.ref1 || ''),
+    '{{REF_FILE_1}}': escapeHtml_(typeof refs.files === 'string' ? refs.files : ''),
+    '{{REF_NOTES}}': escapeHtml_([refs.fileNote].concat(Array.isArray(refs.refNotes) ? refs.refNotes : []).filter(function(x){ return x && String(x).trim(); }).join(' / ')),
+    '{{CREATED_DATE}}': created,
+    '{{SECTIONS_ROWS}}': rows,
+    '{{ESTIMATE_TOTAL}}': fmt(total),
+    '{{ESTIMATE_DETAIL}}': '섹션 ' + (order.sections || []).length + '개',
+    '{{GALLERY_TEXT}}': escapeHtml_(r.gallery.name) + ' 구성입니다.'
+  };
+  var html = RECEIPT_MAIL_HTML;
+  Object.keys(rep).forEach(function(k){ html = html.split(k).join(rep[k]); });
+  return html;
+}
+
 /** Pure: returns null when an ID is not in the catalog. Tested from node. */
 function renderBrief_(key, order, catalog) {
   if (order.schema === 'v4') return renderBriefV4_(key, order, catalog);
@@ -245,6 +395,33 @@ function notify_(subject, body) {
   }
 }
 
+/* The customer uploads materials through the folder link in the mail: anyone with the link may add files.
+   Left alone when already shared that way. A failure is logged and does not stop the brief or the mail. */
+function shareFolder_(folder) {
+  try {
+    if (folder.getSharingAccess() !== DriveApp.Access.ANYONE_WITH_LINK || folder.getSharingPermission() !== DriveApp.Permission.EDIT) {
+      folder.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.EDIT);
+    }
+    return true;
+  } catch (error) {
+    console.warn('shareFolder_ failed for ' + folder.getName() + ': ' + error);
+    return false;
+  }
+}
+
+/* Run once from the editor: applies the same sharing to order folders made before shareFolder_ existed. */
+function shareOrderFolders() {
+  var roots = DriveApp.getFoldersByName(ROOT_FOLDER_NAME);
+  if (!roots.hasNext()) { console.log('no ' + ROOT_FOLDER_NAME + ' folder'); return; }
+  var subs = roots.next().getFolders(), ok = 0, failed = [];
+  while (subs.hasNext()) {
+    var f = subs.next();
+    if (!/^WO-\d{4}-\d{4}-[A-Za-z0-9]{20}$/.test(f.getName())) continue;
+    if (shareFolder_(f)) ok++; else failed.push(f.getName());
+  }
+  console.log('shared ' + ok + ' order folders' + (failed.length ? '; failed: ' + failed.join(', ') : ''));
+}
+
 function childFolder_(parent, name) {
   var it = parent.getFoldersByName(name);
   return it.hasNext() ? it.next() : parent.createFolder(name);
@@ -313,6 +490,7 @@ function syncBriefs() {
           return;
         }
         var folder = childFolder_(root, key);
+        shareFolder_(folder);
         writeFile_(folder, 'brief.md', out.md, 'text/markdown');
         writeFile_(folder, 'brief.json', JSON.stringify(out.json, null, 2), 'application/json');
         var syncFields = stamp_('synced', 'briefStatus');
@@ -368,9 +546,13 @@ function processMail_() {
       var body = '의뢰번호: ' + key.slice(0,12) + '\n주문 페이지: ' + ORDER_PAGE + key + '\n다음 단계: 샘플 제작 후 이메일로 안내드립니다.';
       if (/^https:\/\/drive\.google\.com\/drive\/folders\/[A-Za-z0-9_-]+(?:\?usp=[a-z_]+)?$/.test(order.driveFolderUrl || '')) body += '\n자료 폴더: ' + order.driveFolderUrl;
       if (order.schema === 'v4') body = mailBodyV4_(key, order, CATALOG);
+
       var subject = order.schema === 'v4' ? '[getsite] 샘플 제작 요청이 접수되었습니다' + (DISPLAY_RE.test(order.displayNo || '') ? ' (' + order.displayNo + ')' : '') : '[getsite] 의뢰 접수 안내';
       try {
-        MailApp.sendEmail({to:order.email,bcc:operator,replyTo:operator,subject:subject,body:body});
+        var html = order.schema === 'v4' ? mailHtmlV4_(key, order, CATALOG) : null;
+        var opts = {to:order.email,bcc:operator,replyTo:operator,subject:subject,body:body};
+        if (html) opts.htmlBody = html;
+        MailApp.sendEmail(opts);
       } catch (sendError) {
         patch_(key, {custMail:{stringValue:'failed'},opMail:{stringValue:'failed'}}); return;
       }
