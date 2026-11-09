@@ -453,3 +453,8 @@ Firestore 규칙: **보류(사용자 결정)**. 운영 규칙은 orders 생성·
   ignored; later posts (a layout button pressed) store the layout. A choice made in the large viewer is sent to the inline
   lab as `{type:'getsite:gallery-set', id}` (the lab accepts it only from its parent, same origin).
 - sections.json: "구도 14가지". e2e 117/117 locally. Argon review timed out (15 min, no output).
+
+### 13c. Tile without inline preview (2026-11-10, user request)
+
+- The inline lab was too cramped in the step 3 column on phones. The tile now shows only "선택한 구도", the
+  "갤러리 보고 고르기" button (opens the lab viewer) and "제작자에게 맡기기". e2e 116/116.

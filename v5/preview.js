@@ -4,7 +4,7 @@
    picked here or in the large viewer. */
 import { layoutName } from './gallery-mount.js';
 import { partsFor } from './parts.js';
-import { openMotionPicker, openGalleryPicker, GALLERY_LAB_URL, LAB_IDS } from './picker.js';
+import { openMotionPicker, openGalleryPicker } from './picker.js';
 
 const h = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
 
@@ -15,68 +15,36 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
   let drawnSample;
   let drawnGallery;
 
-  /* The gallery tile is the gallery lab itself (the same 14 layouts as "크게 보며 고르기"), in pick mode,
-     in a same-origin iframe loaded when the tile nears the screen. A layout button pressed in it is
-     the choice (as the chips were); a layout chosen elsewhere is sent to it. The lab posts its layout
-     once when it loads: that first post is its starting point, not a choice, and is ignored. */
+  /* The gallery tile: the chosen layout and one button that opens the gallery lab (14 layouts) in the
+     large viewer, where the layout is picked. No inline preview: the column is too narrow for it. */
   function galleryTile(state) {
     const tile = h('div', 'tile');
     tile.dataset.section = 'gallery';
     const head = h('div', 'tile-head');
-    head.append(h('span', 'tile-no'), h('b', '', '작품·제품 갤러리'), h('span', 'src', '실제로 움직이는 미리보기 · 레이아웃 버튼을 누르면 그 구도로 담깁니다'));
-    const big = h('button', 'alt-toggle', '크게 보며 고르기');
-    big.type = 'button'; big.dataset.galleryOpen = '';
-    big.addEventListener('click', () => openGalleryPicker({ store, data, toast, returnFocus: big }));
-    head.append(big);
+    head.append(h('span', 'tile-no'), h('b', '', '작품·제품 갤러리'), h('span', 'src', '14가지 구도를 직접 움직여 보며 고릅니다'));
     const body = h('div', 'tile-gallery');
-    const bar = h('div', 'g-bar');
     const chosenLine = h('p', 'g-chosen'); chosenLine.dataset.galleryChosen = ''; chosenLine.setAttribute('aria-live', 'polite');
+    const actions = h('div', 'g-actions');
+    const open = h('button', 'btn btn-ink g-open', '갤러리 보고 고르기');
+    open.type = 'button'; open.dataset.galleryOpen = '';
+    open.addEventListener('click', () => openGalleryPicker({ store, data, toast, returnFocus: () => tiles.get('gallery')?.querySelector('[data-gallery-open]') }));
     const auto = h('button', 'g-auto', '제작자에게 맡기기'); auto.type = 'button'; auto.dataset.galleryAuto = '';
     auto.title = '주제와 자료에 맞춰 저희가 고릅니다';
     auto.addEventListener('click', () => store.setGallery('auto'));
-    bar.append(chosenLine, auto);
-    const frame = h('iframe', 'g-lab');
-    frame.title = '갤러리 구도 미리보기 (레이아웃 버튼으로 구도를 고릅니다)';
-    frame.loading = 'lazy';
-    const start = LAB_IDS.includes(state.gallery) ? state.gallery : '';
-    frame.src = `${GALLERY_LAB_URL}?pick=1${start ? `&layout=${start}` : ''}`;
-    labLayout = null;
-    labFrame = frame;
-    body.append(bar, frame);
+    actions.append(open, auto);
+    body.append(chosenLine, actions);
     tile.append(head, body);
-    paintChips(state);
+    paintChips(state, tile);
     return tile;
   }
 
-  // The lab's own layout and the frame it lives in (null until its first post after a load).
-  let labFrame = null;
-  let labLayout = null;
-  function onLabMessage(e) {
-    if (!labFrame || e.source !== labFrame.contentWindow || e.origin !== location.origin) return;
-    const d = e.data;
-    if (!d || d.type !== 'getsite:gallery-layout' || !LAB_IDS.includes(d.id)) return;
-    const first = labLayout === null;
-    labLayout = d.id;
-    if (first) { syncLab(store.get()); return; }
-    if (store.get().gallery !== d.id) store.setGallery(d.id);
-  }
-  window.addEventListener('message', onLabMessage);
-  /** Shows the stored layout in the lab when it differs (a choice made in the large viewer). */
-  function syncLab(state) {
-    if (!labFrame || labLayout === null || !LAB_IDS.includes(state.gallery) || state.gallery === labLayout) return;
-    labFrame.contentWindow?.postMessage({ type: 'getsite:gallery-set', id: state.gallery }, location.origin);
-  }
-
-  function paintChips(state) {
-    const tile = tiles.get('gallery') || labFrame?.closest('.tile');
-    const line = tile?.querySelector('[data-gallery-chosen]') || labFrame?.parentElement?.querySelector('[data-gallery-chosen]');
-    const auto = labFrame?.parentElement?.querySelector('[data-gallery-auto]');
-    if (auto) auto.setAttribute('aria-pressed', String(state.gallery === 'auto'));
-    if (line) {
-      line.textContent = '';
-      line.append(h('span', '', '선택한 구도: '), h('b', '', layoutName(state.gallery)));
-      if (state.gallery === 'auto') line.append(h('span', 'g-chosen-hint', ' · 주제와 자료에 맞춰 저희가 고릅니다. 아래에서 레이아웃을 누르면 그 구도로 바뀝니다.'));
-    }
+  function paintChips(state, tile = tiles.get('gallery')) {
+    const line = tile?.querySelector('[data-gallery-chosen]');
+    tile?.querySelector('[data-gallery-auto]')?.setAttribute('aria-pressed', String(state.gallery === 'auto'));
+    if (!line) return;
+    line.textContent = '';
+    line.append(h('span', '', '선택한 구도: '), h('b', '', layoutName(state.gallery)));
+    if (state.gallery === 'auto') line.append(h('span', 'g-chosen-hint', ' · 주제와 자료에 맡겨 저희가 고릅니다.'));
   }
 
   const motions = () => partsFor(parts, 'hero').filter((p) => p.kind === 'motion');
@@ -131,7 +99,7 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
     for (const [id, el] of tiles) {
       if (!order.includes(id) && id !== 'gallery') { el.remove(); tiles.delete(id); }
     }
-    if (!order.includes('gallery') && tiles.has('gallery')) { tiles.get('gallery').remove(); tiles.delete('gallery'); labFrame = null; labLayout = null; }
+    if (!order.includes('gallery') && tiles.has('gallery')) { tiles.get('gallery').remove(); tiles.delete('gallery'); }
     for (const id of order) {
       if (tiles.has(id)) continue;
       const def = sections.find((s) => s.id === id);
@@ -144,7 +112,7 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
       const el = tiles.get(id); const n = String(i + 1).padStart(2, '0');
       el?.querySelectorAll('.tile-no, .wire-no').forEach((no) => { no.textContent = n; });
     });
-    if (labFrame && state.gallery !== drawnGallery) { paintChips(state); syncLab(state); }
+    if (state.gallery !== drawnGallery) paintChips(state);
     drawnSample = state.sampleId;
     drawnGallery = state.gallery;
     const chosen = data.samples.find((s) => s.id === state.sampleId);
@@ -168,6 +136,6 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
   return {
     render,
     focusSection,
-    destroy() { window.removeEventListener('message', onLabMessage); labFrame = null; labLayout = null; tiles.clear(); scroll.textContent = ''; },
+    destroy() { tiles.clear(); scroll.textContent = ''; },
   };
 }
