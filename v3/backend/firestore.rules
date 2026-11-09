@@ -7,8 +7,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function op() {
       return request.auth != null
-        // getsite.yours is the operator account; the old one stays until the Apps Script move is done.
-        && request.auth.token.email in ['getsite.yours@gmail.com', 'johanshna@gmail.com']
+        // The operator account (it also owns the Apps Script getsite-operator).
+        && request.auth.token.email == 'getsite.yours@gmail.com'
         && request.auth.token.email_verified == true;
     }
     function s(v, n) { return v is string && v.size() <= n; }

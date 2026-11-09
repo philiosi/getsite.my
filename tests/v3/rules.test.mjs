@@ -114,15 +114,16 @@ test('v4 picks validation (wire string per section, all 13 sections within the e
   for (const change of bad) {const {order,data}=freshV4(); await assertFails(setDoc(doc(anon(),'orders',order.key),change(data)));}
 });
 
-test('the operator accounts (verified Google email) can list and update orders; others cannot', async () => {
+test('only the operator account (verified Google email) can list and update orders', async () => {
   const { order, data } = fresh();
   await seed(order.key, { ...data, createdAt: new Date() });
   const as = (email, verified = true) => env.authenticatedContext('u-' + email, { email, email_verified: verified }).firestore();
-  for (const email of ['getsite.yours@gmail.com', 'johanshna@gmail.com']) {
+  for (const email of ['getsite.yours@gmail.com']) {
     await assertSucceeds(getDocs(collection(as(email), 'orders')));
     await assertSucceeds(updateDoc(doc(as(email), 'orders', order.key), { status: '샘플 제작 중' }));
   }
   await assertFails(getDocs(collection(as('getsite.yours@gmail.com', false), 'orders')));
   await assertFails(getDocs(collection(as('someone@gmail.com'), 'orders')));
+  await assertFails(getDocs(collection(as('johanshna@gmail.com'), 'orders'))); // the former operator
   await assertFails(updateDoc(doc(as('getsite.yours@gmail.co'), 'orders', order.key), { status: 'x' }));
 });
