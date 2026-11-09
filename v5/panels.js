@@ -363,7 +363,7 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
     // The summary frozen at submit time, never the current form; mailto gets the note-free short form.
     const summary = order.summary || `${summaryText(s, data, sections, parts)}\n의뢰 코드: ${order.key}`;
     const mailBody = `${summaryText(s, data, sections, parts, { notes: false })}\n의뢰 코드: ${order.key}`.slice(0, 1500).replace(/[\uD800-\uDBFF]$/, '');
-    const mail = h('a', 'btn btn-line', '운영자에게 메일로 보내기'); mail.href = `mailto:johanshna@gmail.com?subject=${encodeURIComponent(`제작 요청 ${order.displayNo}`)}&body=${encodeURIComponent(mailBody)}`;
+    const mail = h('a', 'btn btn-line', '운영자에게 메일로 보내기'); mail.href = `mailto:getsite.yours@gmail.com?subject=${encodeURIComponent(`제작 요청 ${order.displayNo}`)}&body=${encodeURIComponent(mailBody)}`;
     result.append(h('h4', '', '접수 완료'), no, codeLine, link('내 주문 페이지 열기', orderPageLink(order.key)), drive, h('p', '', '접수되었습니다. 안내 메일은 서버에서 곧 발송됩니다. 메일이 오지 않으면 의뢰 코드로 진행 조회를 이용하세요. 이 코드와 링크는 꼭 보관하세요.'), button('접수 요약 복사', () => copy(summary, toast)), mail);
     let focusAfter = null;
     if (order.uploads?.length) {
