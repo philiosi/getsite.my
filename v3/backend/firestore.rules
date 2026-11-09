@@ -1,5 +1,5 @@
 rules_version = '2';
-// NOT DEPLOYED. Review with the operator first. Closes the public list of orders.
+// Live since 2026-11-09. Closes the public list of orders.
 // Customers never set status or the Drive folder: the operator does.
 // Consequence: legacy 4-digit order IDs can no longer be created or read by customers,
 // so the v2 page and /p/{no} previews stop working for new orders once this is live.
@@ -7,7 +7,8 @@ service cloud.firestore {
   match /databases/{database}/documents {
     function op() {
       return request.auth != null
-        && request.auth.token.email == 'johanshna@gmail.com'
+        // getsite.yours is the operator account; the old one stays until the Apps Script move is done.
+        && request.auth.token.email in ['getsite.yours@gmail.com', 'johanshna@gmail.com']
         && request.auth.token.email_verified == true;
     }
     function s(v, n) { return v is string && v.size() <= n; }
