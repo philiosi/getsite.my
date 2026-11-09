@@ -369,3 +369,11 @@ footer.site { margin-top: 96px; border-top: 1px solid var(--line); padding: 28px
 .picker-lab .picker-loading { color: var(--ink-2); }
 .picker-lab .picker-actions [data-picker-choose] { flex: none; }
 @media (max-width: 720px) { .picker-lab .picker-actions [data-picker-choose] { flex: 1 1 0; } }
+
+/* Step 3 gallery tile: the gallery lab inline (the same 14 layouts as the large viewer). */
+.g-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.g-chosen b { color: var(--ink); }
+.g-auto { border: 1px solid var(--line-2); background: var(--paper); border-radius: 999px; padding: 7px 13px; font-size: 12.5px; font-weight: 600; color: var(--ink-2); white-space: nowrap; min-height: 36px; }
+.g-auto[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.g-lab { display: block; width: 100%; height: min(760px, 78vh); border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+@media (max-width: 720px) { .g-lab { height: min(680px, 80vh); } }

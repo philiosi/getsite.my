@@ -8,7 +8,7 @@
     { "id": "story", "label": "브랜드·작가 이야기", "sub": "지키는 원칙과 세계관을 한 단락으로", "previews": [
       { "sample": "artist", "selector": ".statement" }, { "sample": "cafe", "selector": "#story" }, { "sample": "portfolio", "selector": ".manifesto" },
       { "sample": "portfolio-react", "selector": ".manifesto" }, { "sample": "soap", "selector": "#benefits" }, { "sample": "nooreemadang", "selector": "#artist-note" } ] },
-    { "id": "gallery", "label": "작품·제품 갤러리", "sub": "작품과 제품을 모아 보여주는 핵심 섹션. 구도 11가지 중에서 고릅니다", "live": "gallery", "previews": [
+    { "id": "gallery", "label": "작품·제품 갤러리", "sub": "작품과 제품을 모아 보여주는 핵심 섹션. 구도 14가지 중에서 고릅니다", "live": "gallery", "previews": [
       { "sample": "artist", "selector": "#works" }, { "sample": "hansakim", "selector": "#works" }, { "sample": "cafe", "selector": "#gallery" },
       { "sample": "nooreemadang", "selector": "#favorites" }, { "sample": "portfolio", "selector": "#works" } ] },
     { "id": "featured", "label": "대표작·대표 제품", "sub": "가장 강한 것부터 골라서 보여주기", "previews": [

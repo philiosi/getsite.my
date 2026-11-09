@@ -445,3 +445,11 @@ Firestore 규칙: **보류(사용자 결정)**. 운영 규칙은 orders 생성·
 | Apps Script must be updated before rules/site, else brief null | ECC | CONFIRMED (deploy order) | deploy Apps Script first |
 | Rapid switches can briefly show a stale view | Codex | DEFERRED | pre-existing lab transition; the last swap renders right |
 | `?layout=` applies without `pick=1` | Codex | REJECTED | intended by the contract; default unchanged |
+
+### 13b. The step 3 gallery tile is the lab inline (2026-11-10)
+
+- The tile's old v3-engine preview and 11 chips are replaced by the lab in pick mode (lazy iframe `.g-lab`) with a
+  "선택한 구도" line and a "제작자에게 맡기기" button. The lab's first post after loading is its starting point and is
+  ignored; later posts (a layout button pressed) store the layout. A choice made in the large viewer is sent to the inline
+  lab as `{type:'getsite:gallery-set', id}` (the lab accepts it only from its parent, same origin).
+- sections.json: "구도 14가지". e2e 117/117 locally. Argon review timed out (15 min, no output).

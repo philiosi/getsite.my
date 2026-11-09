@@ -114,6 +114,19 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   check('motion: looking at examples changes nothing in the order', s1.picks.hero.ref === 'new' && s1.extras.video === false, JSON.stringify({ hero: s1.picks.hero, video: s1.extras.video }));
   check('motion: focus returns to the button that opened it', await page.evaluate(() => document.activeElement?.dataset?.motionOpen === ''));
 
+  // Gallery tile: the gallery lab inline. Its load never changes the order; a layout button pressed in it does.
+  const inline = page.frameLocator('.tile[data-section="gallery"] iframe.g-lab');
+  await page.locator('.tile[data-section="gallery"] iframe.g-lab').scrollIntoViewIfNeeded();
+  await inline.locator('#layoutSeg button').first().waitFor({ timeout: 60000 });
+  await wait(page, 500);
+  const g0 = await st(page);
+  const tileInfo = await page.$eval('.tile[data-section="gallery"]', (t) => ({ src: t.querySelector('iframe.g-lab').getAttribute('src'), oldEngine: !!t.querySelector('.g-stage, .g-chips'), line: t.querySelector('[data-gallery-chosen]').textContent, auto: t.querySelector('[data-gallery-auto]').getAttribute('aria-pressed'), h: Math.round(t.querySelector('iframe.g-lab').getBoundingClientRect().height) }));
+  check('gallery tile: the lab itself (pick mode), not the old 11-layout engine; loading it keeps "제작자에게 맡기기"', /^\/gallery-lab\/index\.html\?pick=1/.test(tileInfo.src) && !tileInfo.oldEngine && g0.gallery === 'auto' && tileInfo.auto === 'true' && /제작자에게 맡기기/.test(tileInfo.line) && tileInfo.h >= 400, JSON.stringify({ ...tileInfo, gallery: g0.gallery }));
+  await inline.locator('#layoutSeg button', { hasText: '메이슨리' }).click();
+  await wait(page, 400);
+  const g1 = await page.$eval('.tile[data-section="gallery"] [data-gallery-chosen]', (n) => n.textContent);
+  check('gallery tile: a layout button in the lab is the choice', (await st(page)).gallery === 'masonry' && /벽돌처럼 쌓기/.test(g1), `${(await st(page)).gallery} ${g1}`);
+  if (SHOTS) await page.locator('.tile[data-section="gallery"]').screenshot({ path: `${SHOTS}/v5-gallery-tile.png` });
   // Gallery: picked in the large viewer, which is the gallery lab (14 layouts) in pick mode.
   await page.click('.tile[data-section="gallery"] [data-gallery-open]');
   await page.waitForSelector('dialog.picker[data-picker="gallery"][open]');
@@ -121,8 +134,8 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   await lab.locator('#layoutSeg button').first().waitFor({ timeout: 60000 });
   const labInfo = await page.$eval('dialog.picker iframe.picker-frame', (f) => ({ src: f.getAttribute('src'), hero: getComputedStyle(f.contentDocument.querySelector('.hero')).display, chips: f.contentDocument.querySelectorAll('#layoutSeg button').length }));
   check('gallery: the viewer is the lab in pick mode, 14 layouts, no lab hero', /^\/gallery-lab\/index\.html\?pick=1/.test(labInfo.src) && labInfo.hero === 'none' && labInfo.chips === 14, JSON.stringify(labInfo));
-  await page.waitForFunction(() => /그리드/.test(document.querySelector('dialog.picker .picker-info-name')?.textContent || ''), null, { timeout: 10000 }).catch(() => {});
-  check('gallery: the viewer reports the layout the lab shows', /지금 보는 구도: 그리드/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
+  await page.waitForFunction(() => /메이슨리/.test(document.querySelector('dialog.picker .picker-info-name')?.textContent || ''), null, { timeout: 10000 }).catch(() => {});
+  check('gallery: the viewer reports the layout the lab shows', /지금 보는 구도: 메이슨리/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
   await lab.locator('#layoutSeg button', { hasText: '피크 캐러셀' }).click();
   await page.waitForFunction(() => /피크 캐러셀/.test(document.querySelector('dialog.picker .picker-info-name')?.textContent || ''), null, { timeout: 5000 }).catch(() => {});
   check('gallery: switching in the lab updates the viewer', /지금 보는 구도: 피크 캐러셀/.test(await page.$eval('dialog.picker .picker-info-name', (n) => n.textContent)));
@@ -133,6 +146,9 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   check('gallery: "이 구도로 선택" stores the lab layout (peek)', (await st(page)).gallery === 'peek');
   const chosenLine = await page.$eval('.tile[data-section="gallery"] [data-gallery-chosen]', (n) => ({ hidden: n.hidden, text: n.textContent }));
   check('gallery: the tile names a lab-only layout', !chosenLine.hidden && /피크 캐러셀/.test(chosenLine.text), JSON.stringify(chosenLine));
+  await wait(page, 500);
+  const inlineNow = await inline.locator('#layoutSeg button[aria-pressed="true"]').textContent();
+  check('gallery tile: a choice in the large viewer is shown in the inline lab', /피크 캐러셀/.test(inlineNow), inlineNow);
   check('gallery: focus returns to the button', await page.evaluate(() => document.activeElement?.dataset?.galleryOpen === ''));
   // Reopen: the lab starts on the stored layout; a message from another window is ignored.
   await page.click('.tile[data-section="gallery"] [data-gallery-open]');
@@ -153,6 +169,7 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   await page.click('dialog.picker [data-picker-auto]');
   await wait(page, 300);
   check('gallery: "제작자에게 맡기기" stores auto', (await st(page)).gallery === 'auto');
+  check('gallery tile: its "제작자에게 맡기기" shows pressed', await page.$eval('.tile[data-section="gallery"] [data-gallery-auto]', (b) => b.getAttribute('aria-pressed')) === 'true');
   // The lab page failing to load says so and leaves "제작자에게 맡기기" usable.
   await page.route('**/gallery-lab/index.html*', (r) => r.fulfill({ status: 404, contentType: 'text/html', body: 'not found' }));
   await page.click('.tile[data-section="gallery"] [data-gallery-open]');

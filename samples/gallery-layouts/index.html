@@ -1253,6 +1253,16 @@ function centerLayoutChip(){
   layoutSegEl.scrollTo({ left: Math.max(0, target), behavior: reduced ? "auto" : "smooth" });
 }
 layoutSegEl.addEventListener("click", function(){ requestAnimationFrame(centerLayoutChip); });
+/* pick mode: the order page can set the layout (its other viewer chose one); same origin, the parent window only */
+if (document.documentElement.getAttribute("data-pick") === "1") window.addEventListener("message", function(e){
+  if (e.source !== window.parent || e.origin !== location.origin) return;
+  var d = e.data;
+  if (!d || d.type !== "getsite:gallery-set") return;
+  var i = LAYOUTS.map(function(l){ return l.id; }).indexOf(d.id);
+  if (i < 0 || state.layout === d.id) return;
+  var b = layoutSegEl.querySelectorAll("button")[i];
+  if (b) { b.click(); }
+});
 window.addEventListener("load", function(){ centerLayoutChip(); });
 
 var palRow = document.getElementById("paletteRow");
