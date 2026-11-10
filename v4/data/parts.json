@@ -1,5 +1,5 @@
 {
-  "version": "p-5bc72c3713",
+  "version": "p-fe8e8874fe",
   "assetBase": "https://getsite-my.web.app/v4/",
   "motion": {
     "sampleId": "motion-2",
@@ -57,6 +57,16 @@
         "w": 1440,
         "h": 900,
         "anchor": "https://getsite-soap.web.app/"
+      },
+      {
+        "ref": "candle:hero",
+        "sampleId": "candle",
+        "slug": "hero",
+        "file": "assets/samples/candle/hero.webp",
+        "thumb": "assets/samples/candle/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-candle.web.app/"
       },
       {
         "ref": "cup:hero",
@@ -390,6 +400,16 @@
         "w": 1440,
         "h": 653,
         "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#artist-note"
+      },
+      {
+        "ref": "candle:story",
+        "sampleId": "candle",
+        "slug": "story",
+        "file": "assets/samples/candle/story.webp",
+        "thumb": "assets/samples/candle/story-640.webp",
+        "w": 1440,
+        "h": 987,
+        "anchor": "https://getsite-candle.web.app/#story"
       }
     ],
     "featured": [
@@ -652,6 +672,16 @@
         "w": 1440,
         "h": 745,
         "anchor": "https://getsite-haru.web.app/#guide"
+      },
+      {
+        "ref": "candle:faq",
+        "sampleId": "candle",
+        "slug": "faq",
+        "file": "assets/samples/candle/faq.webp",
+        "thumb": "assets/samples/candle/faq-640.webp",
+        "w": 1440,
+        "h": 1077,
+        "anchor": "https://getsite-candle.web.app/#faq"
       }
     ],
     "contact": [
@@ -734,6 +764,16 @@
         "w": 1440,
         "h": 1021,
         "anchor": "https://getsite-daol.web.app/#contact"
+      },
+      {
+        "ref": "candle:contact",
+        "sampleId": "candle",
+        "slug": "contact",
+        "file": "assets/samples/candle/contact.webp",
+        "thumb": "assets/samples/candle/contact-640.webp",
+        "w": 1440,
+        "h": 599,
+        "anchor": "https://getsite-candle.web.app/#contact"
       }
     ],
     "booking": [
@@ -776,6 +816,16 @@
         "w": 1440,
         "h": 745,
         "anchor": "https://getsite-haru.web.app/#guide"
+      },
+      {
+        "ref": "candle:shop",
+        "sampleId": "candle",
+        "slug": "shop",
+        "file": "assets/samples/candle/shop.webp",
+        "thumb": "assets/samples/candle/shop-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-candle.web.app/#shop"
       }
     ],
     "newsletter": []

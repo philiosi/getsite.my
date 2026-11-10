@@ -531,12 +531,31 @@ for (const scheme of ['light', 'dark']) {
   await context.close();
 }
 
+/* Candle sample (온결 캔들): its card links to the live site with its own captures, under 제품·브랜드. */
+{
+  const { page, errors, context } = await open();
+  const card = page.locator('.s-card[data-sample="candle"]');
+  await card.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => [...document.querySelectorAll('.s-card[data-sample="candle"] img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 30000 });
+  const d = await card.evaluate((c) => ({ topic: c.dataset.topic, title: c.querySelector('h3')?.textContent, badge: c.querySelector('.s-badge')?.textContent, hero: c.querySelector('a.s-hero')?.href, target: c.querySelector('a.s-hero')?.target, img: c.querySelector('a.s-hero img')?.getAttribute('src'), keys: [...c.querySelectorAll('.s-keys img')].map((i) => i.getAttribute('src')) }));
+  check('candle card: title, badge, product topic and live link', d.title === '온결 캔들' && d.badge === '가상 샘플' && d.topic === 'product' && d.hero === 'https://getsite-candle.web.app/' && d.target === '_blank', JSON.stringify(d));
+  check('candle card: its own capture and 3 thumbnails load', d.img === './assets/samples/candle/hero.webp' && JSON.stringify(d.keys) === JSON.stringify(['gallery', 'story', 'shop'].map((k) => `./assets/samples/candle/${k}-640.webp`)), JSON.stringify(d));
+  await page.click('#samples button[data-topic="product"]');
+  const prod = await page.evaluate(() => [...document.querySelectorAll('#samples .s-card:not(.is-hidden)')].map((c) => c.dataset.sample));
+  check('candle card: shown under 제품·브랜드', prod.includes('candle'), JSON.stringify(prod));
+  await card.locator('button', { hasText: '이 샘플로 시작' }).click();
+  await wait(page, 400);
+  check('candle: "이 샘플로 시작" picks it', (await st(page)).sampleId === 'candle');
+  check('candle: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
+  await context.close();
+}
+
 /* Daol sample (다올 그림 스튜디오): its card links to the live site with its own captures, and it can be chosen through to the order. */
 {
   const { page, errors, forbidden, context } = await open();
   const all = await page.evaluate(async () => (await (await fetch('./data/samples.json')).json()).samples.length);
   const grid = await page.evaluate(() => ({ cards: document.querySelectorAll('#samples .s-card').length, count: document.querySelector('#sampleCount')?.textContent }));
-  check('samples: one card per sample, Daol included (9), and the count says so', all === 9 && grid.cards === all && grid.count === `샘플 ${all}개`, JSON.stringify({ all, ...grid }));
+  check('samples: one card per sample, Daol and Candle included (10), and the count says so', all === 10 && grid.cards === all && grid.count === `샘플 ${all}개`, JSON.stringify({ all, ...grid }));
   const card = page.locator('.s-card[data-sample="daol"]');
   await card.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => [...document.querySelectorAll('.s-card[data-sample="daol"] img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 30000 });
