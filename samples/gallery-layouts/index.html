@@ -379,6 +379,8 @@
     *, *::before, *::after{ transition-duration:.01ms !important; animation-duration:.01ms !important; }
     html{ scroll-behavior:auto; }
   }
+  /* no number badge on any photo, at every width */
+  .card-media .card-num, .cov-item .card-num, .peek-item .card-num, .drag-media .card-num{display:none}
   /* mobile-fit: nothing sits on the artwork */
   @media (max-width:720px){
     .card-no{display:block; font-size:11px; font-weight:900; letter-spacing:.06em; color:var(--ink2); margin-bottom:2px; flex-basis:100%}
