@@ -89,6 +89,9 @@ p { margin: 0; }
 section.block { padding: 72px 0 0; }
 section.block > .wrap > .head { display: grid; gap: 8px; margin-bottom: 28px; max-width: 48em; }
 section.block > .wrap > .head .sub { color: var(--ink-2); font-size: 16.5px; }
+.making-of-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 12px 0 0; font-size: 14.5px; color: var(--ink-2); }
+.making-of-link a { color: var(--ink); font-weight: 700; text-underline-offset: 3px; white-space: nowrap; }
+.making-of-link a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .note { background: var(--paper-2); border: 1px solid var(--line); border-radius: var(--r-card); padding: 16px 18px; font-size: 14.5px; color: var(--ink-2); }
 .note b { color: var(--ink); display: block; margin-bottom: 4px; }
 .card { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-card); }

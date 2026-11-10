@@ -92,6 +92,21 @@ const st = (page) => page.evaluate(() => window.__getsite4.store.get());
   await page.evaluate(() => { const s = window.__getsite4.store; for (const id of ['history', 'faq']) if (s.get().sections.includes(id)) s.toggleSection(id); });
   await wait(page, 300);
 
+  // "제작 과정 들여다보기": a link under the process heading, and the page it opens.
+  const mk = await page.$eval('#process [data-making-of]', (a) => ({ href: a.getAttribute('href'), target: a.target, text: a.textContent, shown: !!a.offsetParent }));
+  check('making-of: the process heading links to /making-of/ in a new tab', mk.shown && mk.href === '/making-of/' && mk.target === '_blank' && /제작 과정 들여다보기/.test(mk.text), JSON.stringify(mk));
+  for (const w of [1440, 375]) {
+    const mp = await context.newPage(); await mp.setViewportSize({ width: w, height: 900 });
+    const bad = []; mp.on('requestfailed', (r) => bad.push(r.url())); mp.on('response', (r) => { if (r.status() >= 400) bad.push(`${r.status()} ${r.url()}`); });
+    await mp.goto(new URL('making-of/', BASE).href, { waitUntil: 'load' });
+    const m = await mp.evaluate(() => ({ ids: ['order', 'requirements', 'reference', 'notyet', 'next', 'prep'].every((id) => document.getElementById(id)), over: document.documentElement.scrollWidth - innerWidth, text: document.body.textContent, hrefs: [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')), imgs: [...document.images].every((i) => !i.complete || i.naturalWidth > 0) }));
+    check(`making-of ${w}: opens with its 6 chapters, images and no sideways scroll`, m.ids && m.over <= 0 && m.imgs && !bad.length, JSON.stringify({ ids: m.ids, over: m.over, imgs: m.imgs, bad }));
+    if (w === 1440) {
+      check('making-of: links to the finished sample, the order form and the order guide', ['https://getsite-daol.web.app/', '/#process', '/order-guide/', '/'].every((h) => m.hrefs.includes(h)), JSON.stringify(m.hrefs));
+      check('making-of: says it is an example order, that a sample costs nothing, and asks for requirements and references', /예시 주문/.test(m.text) && !/실제 주문 사례/.test(m.text) && !/발송 대기/.test(m.text) && /샘플만 받는 것은 결제하지 않습니다/.test(m.text) && /원하시는 디자인의 방향성은 요구사항과 레퍼런스를 통해 제시해 주세요!/.test(m.text));
+    }
+    await mp.close();
+  }
   // Hero: motion scenes as examples only.
   const heroBtn = await page.$eval('.tile[data-section="hero"] [data-motion-open]', (b) => b.textContent).catch(() => null);
   check('motion: the hero tile offers the 7 scenes as examples', heroBtn === '모션 예시 보기 (7)', heroBtn);
@@ -413,6 +428,10 @@ if (process.env.GUIDE_URL) for (const width of [1280, 375]) {
   check(`guide ${width}: page loads with all 10 anchors`, res.status() === 200 && found.length === 10, `${res.status()} ${found.join(',')}`);
   const top = await page.$eval('#code-guide', (x) => Math.round(x.getBoundingClientRect().top));
   check(`guide ${width}: #code-guide link lands on the code block`, top >= -2 && top < 200, String(top));
+  if (width === 1280 || width === 1440) {
+    const gm = await page.$eval('#step4 [data-making]', (x) => ({ href: x.getAttribute('href'), target: x.target })).catch(() => null);
+    check(`guide ${width}: step 4 links to /making-of/ and the payment note says a sample is free`, gm?.href === '/making-of/' && gm.target === '_blank' && /샘플만 받는 것은 결제하지 않습니다/.test(await page.textContent('#payment-guide')) && !/계약금/.test(await page.textContent('body')), JSON.stringify(gm));
+  }
   let jumps = 0;
   for (const n of [1, 2, 3, 4, 5, 6, 7]) { await page.click(`a[href="#step${n}"]`); await wait(page, 150); await settle(); const t = await page.$eval(`#step${n}`, (x) => x.getBoundingClientRect().top); if (t > -2 && t < 300) jumps++; }
   check(`guide ${width}: summary bar jumps to each of the 7 steps`, jumps === 7, String(jumps));
@@ -509,6 +528,56 @@ for (const scheme of ['light', 'dark']) {
   check(`theme (${scheme} device): button shows at 320 with no sideways scroll`, vis && !over);
   if (SHOTS && scheme === 'light') await page.locator('.topbar').screenshot({ path: `${SHOTS}/v5-theme-bar-320.png` });
   check(`theme (${scheme} device): no page errors`, errors.length === 0, errors.join('|').slice(0, 200));
+  await context.close();
+}
+
+/* Daol sample (다올 그림 스튜디오): its card links to the live site with its own captures, and it can be chosen through to the order. */
+{
+  const { page, errors, forbidden, context } = await open();
+  const all = await page.evaluate(async () => (await (await fetch('./data/samples.json')).json()).samples.length);
+  const grid = await page.evaluate(() => ({ cards: document.querySelectorAll('#samples .s-card').length, count: document.querySelector('#sampleCount')?.textContent }));
+  check('samples: one card per sample, Daol included (9), and the count says so', all === 9 && grid.cards === all && grid.count === `샘플 ${all}개`, JSON.stringify({ all, ...grid }));
+  const card = page.locator('.s-card[data-sample="daol"]');
+  await card.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => [...document.querySelectorAll('.s-card[data-sample="daol"] img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 30000 });
+  const d = await card.evaluate((c) => ({
+    topic: c.dataset.topic, title: c.querySelector('h3')?.textContent, badge: c.querySelector('.s-badge')?.textContent,
+    hero: c.querySelector('a.s-hero')?.href, target: c.querySelector('a.s-hero')?.target, rel: c.querySelector('a.s-hero')?.rel,
+    img: c.querySelector('a.s-hero img')?.getAttribute('src'), w: c.querySelector('a.s-hero img')?.naturalWidth,
+    keys: [...c.querySelectorAll('.s-keys img')].map((i) => i.getAttribute('src')), open: c.querySelector('.s-actions a')?.href,
+  }));
+  check('daol card: title, badge and studio topic', d.title === '다올 그림 스튜디오' && d.badge === '가상 샘플' && d.topic === 'studio', JSON.stringify(d));
+  check('daol card: links to the live site in a new tab', d.hero === 'https://getsite-daol.web.app/' && d.open === d.hero && d.target === '_blank' && /noopener/.test(d.rel), JSON.stringify(d));
+  check('daol card: its own first-screen capture and 3 section thumbnails load', d.img === './assets/samples/daol/hero.webp' && d.w === 1440 && JSON.stringify(d.keys) === JSON.stringify(['about', 'works', 'contact'].map((k) => `./assets/samples/daol/${k}-640.webp`)), JSON.stringify(d));
+  await page.click('#samples button[data-topic="studio"]');
+  const studio = await page.evaluate(() => [...document.querySelectorAll('#samples .s-card:not(.is-hidden)')].map((c) => c.dataset.sample));
+  check('daol card: shown under 포트폴리오·스튜디오', studio.includes('daol') && studio.length === 3, JSON.stringify(studio));
+  await card.locator('button', { hasText: '이 샘플로 시작' }).click();
+  await wait(page, 400);
+  check('daol: "이 샘플로 시작" picks it', (await st(page)).sampleId === 'daol');
+  await page.evaluate(() => {
+    const s = window.__getsite4.store;
+    ['email', 'siteName', 'oneLiner'].forEach((k, i) => s.setField(k, ['v5@example.com', '다올 화실', '손그림 인물 일러스트'][i]));
+    for (const id of ['about', 'contact']) if (!s.get().sections.includes(id)) s.toggleSection(id);
+    s.setStep(4); s.setConsent(true); s.setStep(5);
+  });
+  await wait(page, 300);
+  await page.click('#panel-5 [data-submit]');
+  await wait(page, 800);
+  const doc = (await page.evaluate(() => window.__calls))[0]?.doc || {};
+  check('daol order: sampleId, topic and brief sample are Daol', doc.schema === 'v4' && doc.sampleId === 'daol' && doc.topic === 'studio' && JSON.stringify(doc.brief?.sample) === JSON.stringify({ id: 'daol', title: '다올 그림 스튜디오', topic: 'studio', url: 'https://getsite-daol.web.app/' }), JSON.stringify({ sampleId: doc.sampleId, topic: doc.topic, sample: doc.brief?.sample }));
+  check('daol order: every pick passes the rules regex', Object.values(doc.picks || {}).length > 0 && Object.values(doc.picks).every((v) => PICK_RULE.test(v)), JSON.stringify(doc.picks));
+  check('daol: no page errors, no Firebase traffic', errors.length === 0 && forbidden.length === 0, [...errors, ...forbidden].join('|').slice(0, 200));
+  await context.close();
+}
+{
+  const { page, errors, context } = await open({ width: 375, height: 812 });
+  const card = page.locator('.s-card[data-sample="daol"]');
+  await card.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => { const i = document.querySelector('.s-card[data-sample="daol"] a.s-hero img'); return i?.complete && i.naturalWidth > 0; }, null, { timeout: 30000 });
+  const fit = await card.evaluate((c) => { const r = c.getBoundingClientRect(); return { l: r.left, r: r.right, over: document.documentElement.scrollWidth > innerWidth }; });
+  check('375: the Daol card fits the screen with its capture loaded', fit.l >= 0 && fit.r <= 375 && !fit.over, JSON.stringify(fit));
+  check('375: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
   await context.close();
 }
 

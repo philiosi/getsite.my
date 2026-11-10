@@ -54,7 +54,7 @@ service cloud.firestore {
         && d.schema == 'v4' && s(d.catalogVersion,40)
         && s(d.email,120) && d.email.matches('^[a-z0-9._%+-]+@[a-z0-9.-]+[.][a-z]{2,}$')
         && s(d.siteName,80) && s(d.oneLiner,200) && s(d.name,40)
-        && d.topic in ['artist','product','studio','class','place','motion'] && d.sampleId in ['artist','hansakim','nooreemadang','haru','soap','cup','cup3d','portfolio','portfolio-react','cafe','gallery-layouts','hero-stack-fan','motion-1','motion-2']
+        && d.topic in ['artist','product','studio','class','place','motion'] && d.sampleId in ['artist','hansakim','nooreemadang','haru','soap','cup','cup3d','portfolio','portfolio-react','daol','cafe','gallery-layouts','hero-stack-fan','motion-1','motion-2']
         && d.sections is list && d.sections.size() >= 1 && d.sections.size() <= 13
         && d.sections.toSet().size() == d.sections.size() && d.sections.toSet().hasOnly(['hero','about','story','gallery','featured','history','process','services','trust','faq','contact','booking','newsletter'])
         && d.picks is map && d.picks.keys().toSet() == d.sections.toSet().difference(['gallery'].toSet())

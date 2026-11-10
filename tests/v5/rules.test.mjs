@@ -40,4 +40,9 @@ test('firestore: the gallery lab layouts are accepted, with all 13 sections; an 
   await assertFails(create(v4({ galleryLayout: 'carousel' })));
 });
 
+test('firestore: the Daol sample (studio) is accepted with all 13 sections; an unknown sample is refused', async () => {
+  const o = withRefs(REFS, ALL); o.data.topic = 'studio'; o.data.sampleId = 'daol'; await assertSucceeds(create(o));
+  await assertFails(create(v4({ sampleId: 'daol-x' })));
+});
+
 test.after(() => env.cleanup());

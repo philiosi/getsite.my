@@ -20,6 +20,12 @@ test('v4 picks render from snapshots, safely fence notes, and build a private ma
  const c=context(),d=order(),out=c.renderBrief_(key,d,c.CATALOG);assert.ok(out);assert.match(out.md,/\| 순서 \| 섹션 \| 참고 샘플/);assert.match(out.md,/\[캡처\]\(https:\/\/getsite-my\.web\.app\/v4\//);assert.match(out.md,/\[원본\]\(https:/);assert.match(out.md,/구성, 분위기/);assert.match(out.md,/## 섹션별 의견/);assert.ok(out.md.indexOf('비밀 의견')>out.md.indexOf('## 섹션별 의견'));assert.doesNotMatch(out.md,/\u202e|example\.com\/`evil/);assert.equal(out.md.split('\n').filter(x=>x==='```').length,3);assert.equal(out.json.picks.map(x=>x.status).join(','),'ok,ok,new');
  const mail=c.mailBodyV4_(key,d,c.CATALOG);for(const text of ['고르신 구성','01 첫 장면','결제 여부를 결정','세부 요구사항','950,000원','의견: 2건','https://getsite-my.web.app/v3/order.html#t='+key,out.json.picks[0].sampleTitle])assert.ok(mail.includes(text),text);for(const text of ['비밀 사이트','비밀 의견','example.com'])assert.ok(!mail.includes(text));
 });
+test('a Daol order names the sample in the mail and resolves its own section captures',()=>{
+ const c=context(),d={...order(),sampleId:'daol',topic:'studio',sections:['hero','about','gallery','contact'],picks:{hero:'daol:hero|auto||',about:'daol:about|user||',contact:'daol:contact|auto||'}};
+ const out=c.renderBrief_(key,d,c.CATALOG);assert.equal(Array.from(out.unknown).length,0);assert.equal(out.json.picks.map(x=>x.status+':'+x.sampleId).join(','),'ok:daol,ok:daol,ok:daol');
+ assert.ok(out.md.includes('https://getsite-my.web.app/v4/assets/samples/daol/about.webp'));
+ assert.ok(c.mailBodyV4_(key,d,c.CATALOG).includes('■ 선택하신 샘플: 다올 그림 스튜디오'));
+});
 test('unknown section pair remains isolated',()=>{const c=context(),d=order();d.picks.about='portfolio:works|user||';const out=c.renderBrief_(key,d,c.CATALOG);assert.ok(out);assert.equal(Array.from(out.unknown).join(','),'about');assert.equal(out.json.picks.map(x=>x.status).join(','),'ok,unknown,new');assert.match(out.md,/확인 필요/);});
 
 test('emoji notes count characters like firestore.rules (300 code points pass, not unknown)',()=>{const c=context(),d=order();d.picks.about='portfolio:about|user||'+'😀'.repeat(300);const out=c.renderBrief_(key,d,c.CATALOG);assert.equal(Array.from(out.unknown).length,0);assert.equal(out.json.picks[1].status,'ok');assert.equal(Array.from(out.json.picks[1].note).length,300);});

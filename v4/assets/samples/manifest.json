@@ -371,5 +371,26 @@
       "w": 1440,
       "h": 900
     }
+  },
+  "daol": {
+    "hero": "hero.webp",
+    "about": {
+      "file": "about.webp",
+      "w": 1440,
+      "h": 1065,
+      "thumb": "about-640.webp"
+    },
+    "works": {
+      "file": "works.webp",
+      "w": 1440,
+      "h": 1100,
+      "thumb": "works-640.webp"
+    },
+    "contact": {
+      "file": "contact.webp",
+      "w": 1440,
+      "h": 1021,
+      "thumb": "contact-640.webp"
+    }
   }
 }

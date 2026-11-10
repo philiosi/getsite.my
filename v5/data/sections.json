@@ -4,16 +4,16 @@
     { "id": "hero", "label": "첫 장면", "sub": "대표 이미지나 모션과 한 줄 소개로 시작", "previews": [{ "sample": "*", "selector": "__hero__" }] },
     { "id": "about", "label": "소개", "sub": "프로필과 소개글, 활동을 한눈에", "previews": [
       { "sample": "artist", "selector": "#about" }, { "sample": "hansakim", "selector": "#artist" }, { "sample": "nooreemadang", "selector": "#family" },
-      { "sample": "haru", "selector": "#about" }, { "sample": "portfolio", "selector": "#about" }, { "sample": "portfolio-react", "selector": "#about" } ] },
+      { "sample": "haru", "selector": "#about" }, { "sample": "portfolio", "selector": "#about" }, { "sample": "portfolio-react", "selector": "#about" }, { "sample": "daol", "selector": "#about" } ] },
     { "id": "story", "label": "브랜드·작가 이야기", "sub": "지키는 원칙과 세계관을 한 단락으로", "previews": [
       { "sample": "artist", "selector": ".statement" }, { "sample": "cafe", "selector": "#story" }, { "sample": "portfolio", "selector": ".manifesto" },
       { "sample": "portfolio-react", "selector": ".manifesto" }, { "sample": "soap", "selector": "#benefits" }, { "sample": "nooreemadang", "selector": "#artist-note" } ] },
     { "id": "gallery", "label": "작품·제품 갤러리", "sub": "작품과 제품을 모아 보여주는 핵심 섹션. 구도 14가지 중에서 고릅니다", "live": "gallery", "previews": [
       { "sample": "artist", "selector": "#works" }, { "sample": "hansakim", "selector": "#works" }, { "sample": "cafe", "selector": "#gallery" },
-      { "sample": "nooreemadang", "selector": "#favorites" }, { "sample": "portfolio", "selector": "#works" } ] },
+      { "sample": "nooreemadang", "selector": "#favorites" }, { "sample": "portfolio", "selector": "#works" }, { "sample": "daol", "selector": "#works" } ] },
     { "id": "featured", "label": "대표작·대표 제품", "sub": "가장 강한 것부터 골라서 보여주기", "previews": [
       { "sample": "portfolio", "selector": "#works" }, { "sample": "portfolio-react", "selector": "#works" }, { "sample": "cafe", "selector": "#menu" },
-      { "sample": "artist", "selector": "#atelier" }, { "sample": "soap", "selector": "#package" }, { "sample": "haru", "selector": "#classes" } ] },
+      { "sample": "artist", "selector": "#atelier" }, { "sample": "soap", "selector": "#package" }, { "sample": "haru", "selector": "#classes" }, { "sample": "daol", "selector": "#works" } ] },
     { "id": "history", "label": "이력·연혁", "sub": "전시와 경력을 연도 순으로", "previews": [
       { "sample": "artist", "selector": "#exhibitions" }, { "sample": "hansakim", "selector": "#chronicle" }, { "sample": "hansakim", "selector": "#collections" } ] },
     { "id": "process", "label": "작업 과정·이야기", "sub": "만드는 방식과 과정을 사진과 글로", "previews": [
@@ -27,7 +27,7 @@
     { "id": "faq", "label": "자주 묻는 질문", "sub": "문의 전에 궁금증을 먼저 해결", "previews": [ { "sample": "haru", "selector": "#guide" } ] },
     { "id": "contact", "label": "연락처·문의", "sub": "연락처 공개와 메일로 문의받는 폼", "previews": [
       { "sample": "portfolio", "selector": "#contact" }, { "sample": "haru", "selector": "#contact" }, { "sample": "artist", "selector": "#contact" },
-      { "sample": "hansakim", "selector": "#contact" }, { "sample": "cafe", "selector": "#visit" }, { "sample": "soap", "selector": "#inquiry" }, { "sample": "nooreemadang", "selector": "#visit" } ] },
+      { "sample": "hansakim", "selector": "#contact" }, { "sample": "cafe", "selector": "#visit" }, { "sample": "soap", "selector": "#inquiry" }, { "sample": "nooreemadang", "selector": "#visit" }, { "sample": "daol", "selector": "#contact" } ] },
     { "id": "booking", "label": "예약·구매·결제", "sub": "구매와 예약 동선, 결제 안내", "previews": [
       { "sample": "soap", "selector": "#buy" }, { "sample": "cafe", "selector": "#visit" }, { "sample": "nooreemadang", "selector": "#visit" }, { "sample": "haru", "selector": "#guide" } ] },
     { "id": "newsletter", "label": "뉴스레터·소식 구독", "sub": "새 전시와 신제품 소식을 이메일로 (확장 옵션)", "previews": [] }

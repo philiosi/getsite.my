@@ -1,5 +1,5 @@
 {
-  "version": "p-82cad756a2",
+  "version": "p-5bc72c3713",
   "assetBase": "https://getsite-my.web.app/v4/",
   "motion": {
     "sampleId": "motion-2",
@@ -97,6 +97,16 @@
         "w": 1440,
         "h": 900,
         "anchor": "https://getsite-react-portfolio.web.app/"
+      },
+      {
+        "ref": "daol:hero",
+        "sampleId": "daol",
+        "slug": "hero",
+        "file": "assets/samples/daol/hero.webp",
+        "thumb": "assets/samples/daol/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-daol.web.app/"
       },
       {
         "ref": "cafe:hero",
@@ -308,6 +318,16 @@
         "w": 1032,
         "h": 966,
         "anchor": "https://getsite-react-portfolio.web.app/#about"
+      },
+      {
+        "ref": "daol:about",
+        "sampleId": "daol",
+        "slug": "about",
+        "file": "assets/samples/daol/about.webp",
+        "thumb": "assets/samples/daol/about-640.webp",
+        "w": 1440,
+        "h": 1065,
+        "anchor": "https://getsite-daol.web.app/#about"
       }
     ],
     "story": [
@@ -432,6 +452,16 @@
         "w": 1440,
         "h": 1100,
         "anchor": "https://getsite-haru.web.app/#classes"
+      },
+      {
+        "ref": "daol:works",
+        "sampleId": "daol",
+        "slug": "works",
+        "file": "assets/samples/daol/works.webp",
+        "thumb": "assets/samples/daol/works-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-daol.web.app/#works"
       }
     ],
     "history": [
@@ -694,6 +724,16 @@
         "w": 1440,
         "h": 1100,
         "anchor": "https://nooreemadang.web.app/madang/2026-nureongi/#visit"
+      },
+      {
+        "ref": "daol:contact",
+        "sampleId": "daol",
+        "slug": "contact",
+        "file": "assets/samples/daol/contact.webp",
+        "thumb": "assets/samples/daol/contact-640.webp",
+        "w": 1440,
+        "h": 1021,
+        "anchor": "https://getsite-daol.web.app/#contact"
       }
     ],
     "booking": [
