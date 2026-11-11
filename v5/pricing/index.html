@@ -1,0 +1,738 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>가격 안내 — getsite</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2rem; }
+
+      :root {
+        --paper: #FAF9F5;
+        --surface: #FFFFFF;
+        --surface-2: #F3F1EA;
+        --ink: #17171A;
+        --ink-2: #4A4A50;
+        --ink-3: #83838B;
+        --line: #E5E2D8;
+        --line-2: #D5D1C4;
+        --blue: #2451E6;
+        --blue-deep: #1D3FB4;
+        --blue-wash: #EDF1FE;
+        --amber: #B45309;
+        --amber-wash: #FBF3E2;
+        --ok: #177245;
+        --shadow: 0 1px 2px rgba(23,23,26,.05), 0 12px 32px -12px rgba(23,23,26,.14);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #131316;
+          --surface: #1C1C20;
+          --surface-2: #242429;
+          --ink: #F2F1EC;
+          --ink-2: #B9B9C0;
+          --ink-3: #8B8B94;
+          --line: #2E2E35;
+          --line-2: #3D3D46;
+          --blue: #7E9BFF;
+          --blue-deep: #A9BEFF;
+          --blue-wash: #1D2440;
+          --amber: #E5A44B;
+          --amber-wash: #2E2413;
+          --ok: #4CC38A;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px -12px rgba(0,0,0,.5);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        font-size: 16.5px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: var(--blue); }
+      .wrap { max-width: 1060px; margin: 0 auto; padding: 0 22px; }
+
+      /* ---------- top nav ---------- */
+      .nav {
+        position: sticky; top: 0; z-index: 40;
+        background: color-mix(in srgb, var(--paper) 88%, transparent);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-in { display: flex; align-items: center; gap: 8px; height: 60px; }
+      .brand { font-size: 19px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); text-decoration: none; margin-right: auto; }
+      .brand em { font-style: normal; color: var(--blue); }
+      .nav a.nl { color: var(--ink-2); text-decoration: none; font-size: 14.5px; font-weight: 600; padding: 10px 10px; border-radius: 8px; }
+      .nav a.nl:hover { color: var(--ink); background: var(--surface-2); }
+      .nav .cta {
+        background: var(--ink); color: var(--paper); text-decoration: none;
+        font-size: 14.5px; font-weight: 700; padding: 10px 18px; border-radius: 999px; margin-left: 6px;
+        display: inline-flex; align-items: center; min-height: 40px;
+      }
+      .nav .cta:hover { background: var(--blue); color: #fff; }
+      @media (max-width: 720px) { .nav a.nl { display: none; } }
+
+      /* ---------- hero ---------- */
+      .hero { padding: 72px 0 56px; border-bottom: 1px solid var(--line); }
+      .hero h1 { font-size: clamp(34px, 5.4vw, 52px); line-height: 1.16; letter-spacing: -.03em; margin: 0 0 18px; font-weight: 800; }
+      .hero h1 .u { box-shadow: inset 0 -0.42em 0 var(--blue-wash); }
+      .hero p.lede { font-size: 18.5px; color: var(--ink-2); max-width: 640px; margin: 0 0 34px; }
+      .hero p.lede b { color: var(--ink); }
+      .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+      .flow .step {
+        display: inline-flex; align-items: center; gap: 9px;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+        padding: 9px 16px 9px 10px; font-size: 14.5px; font-weight: 600;
+      }
+      .flow .step i {
+        font-style: normal; width: 24px; height: 24px; border-radius: 50%;
+        background: var(--blue); color: #fff; font-size: 13px; font-weight: 800;
+        display: inline-flex; align-items: center; justify-content: center;
+      }
+      .flow .arr { color: var(--ink-3); font-weight: 700; }
+      .hero .note { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
+
+      /* ---------- sections ---------- */
+      section.block { padding: 64px 0; border-bottom: 1px solid var(--line); }
+      section.block:last-of-type { border-bottom: none; }
+      .sec-head { margin-bottom: 30px; }
+      .sec-head h2 { font-size: clamp(24px, 3.4vw, 31px); letter-spacing: -.025em; margin: 0 0 8px; font-weight: 800; }
+      .sec-head p { margin: 0; color: var(--ink-2); max-width: 620px; }
+
+      /* base package */
+      .base-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; align-items: start; }
+      @media (max-width: 860px) { .base-grid { grid-template-columns: 1fr; } }
+      .incl { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 8px 26px; box-shadow: var(--shadow); }
+      .incl li { list-style: none; display: flex; gap: 14px; padding: 17px 0; border-bottom: 1px solid var(--line); }
+      .incl li:last-child { border-bottom: none; }
+      .incl ul { margin: 0; padding: 0; }
+      .incl .ck {
+        flex: none; width: 26px; height: 26px; border-radius: 50%; margin-top: 1px;
+        background: var(--blue-wash); color: var(--blue);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .incl .ck svg { width: 14px; height: 14px; }
+      .incl b { display: block; font-size: 16.5px; }
+      .incl span.d { color: var(--ink-2); font-size: 14.5px; }
+      .price-card {
+        background: var(--ink); color: var(--paper); border-radius: 16px; padding: 30px 28px;
+        position: sticky; top: 84px;
+      }
+      @media (prefers-color-scheme: dark) { .price-card { background: var(--surface-2); color: var(--ink); border: 1px solid var(--line-2); } }
+      .price-card .lbl { font-size: 14px; font-weight: 700; opacity: .72; letter-spacing: .01em; }
+      .price-card .amt { font-size: 46px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
+      .price-card .vat { font-size: 14px; opacity: .72; }
+      .price-card hr { border: none; border-top: 1px solid color-mix(in srgb, currentColor 22%, transparent); margin: 22px 0; }
+      .price-card ul { margin: 0; padding: 0; list-style: none; font-size: 14.5px; }
+      .price-card li { padding: 5px 0; display: flex; justify-content: space-between; gap: 12px; }
+      .price-card li span:last-child { font-weight: 700; white-space: nowrap; }
+      .price-card .go {
+        display: flex; align-items: center; justify-content: center; min-height: 50px;
+        background: var(--blue); color: #fff; border-radius: 10px; text-decoration: none;
+        font-weight: 700; font-size: 16px; margin-top: 22px;
+      }
+      .price-card .go:hover { background: var(--blue-deep); color: #fff; }
+      @media (prefers-color-scheme: dark) { .price-card .go:hover { color: var(--ink); } }
+
+      /* example strip */
+      .example {
+        margin-top: 22px; background: var(--amber-wash); border: 1px solid var(--line);
+        border-radius: 14px; padding: 20px 24px; display: flex; gap: 16px; align-items: flex-start;
+      }
+      .example .tag { flex: none; background: var(--amber); color: #fff; font-size: 12.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; margin-top: 3px; }
+      .example p { margin: 0; font-size: 15.5px; color: var(--ink-2); }
+      .example p b { color: var(--ink); }
+
+      /* options table */
+      .opt-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+      .opt-table th, .opt-table td { text-align: left; padding: 18px 22px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      .opt-table tr:last-child td { border-bottom: none; }
+      .opt-table th { font-size: 13.5px; color: var(--ink-3); font-weight: 700; background: var(--surface-2); padding-top: 13px; padding-bottom: 13px; }
+      .opt-table td.name b { display: block; font-size: 16.5px; }
+      .opt-table td.name span { color: var(--ink-2); font-size: 14.5px; }
+      .opt-table td.price { text-align: right; font-weight: 800; font-size: 17px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .opt-table td.price small { display: block; font-weight: 500; color: var(--ink-3); font-size: 13px; }
+      .soon { display: inline-block; background: var(--surface-2); border: 1px solid var(--line-2); color: var(--ink-2); font-size: 13px; font-weight: 700; padding: 5px 12px; border-radius: 999px; }
+      .tier-badge { display: inline-block; background: var(--blue); color: #fff; font-size: 12.5px; font-weight: 800; letter-spacing: .02em; padding: 5px 12px; border-radius: 999px; margin-bottom: 16px; }
+
+      /* comparison table */
+      .cmp { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+      .cmp th, .cmp td { padding: 15px 20px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+      .cmp tr:last-child td { border-bottom: none; }
+      .cmp th { font-size: 13.5px; color: var(--ink-3); font-weight: 700; background: var(--surface-2); padding-top: 13px; padding-bottom: 13px; }
+      .cmp th.c, .cmp td.c { text-align: center; white-space: nowrap; }
+      .cmp td.feat b { display: block; font-size: 15.5px; }
+      .cmp td.feat span { color: var(--ink-2); font-size: 13.5px; }
+      .cmp .yes { color: var(--blue); font-weight: 800; font-size: 15px; }
+      .cmp .dash { color: var(--ink-3); }
+      .cmp td.opt { font-weight: 700; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-size: 15px; }
+      @media (max-width: 640px) {
+        .cmp th, .cmp td { padding: 12px 12px; }
+        .cmp td.opt { white-space: normal; }
+        .cmp td.feat span { display: none; }
+      }
+
+      /* trust row in CTA band */
+      .trust { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; margin: 0 auto 26px; font-size: 14.5px; font-weight: 600; }
+      .trust span { display: inline-flex; align-items: center; gap: 7px; }
+      .trust svg { width: 15px; height: 15px; color: var(--blue); flex: none; }
+      @media (max-width: 640px) {
+        .opt-table th { display: none; }
+        .opt-table td { display: block; padding: 6px 20px; border-bottom: none; }
+        .opt-table tr { display: block; padding: 16px 0; border-bottom: 1px solid var(--line); }
+        .opt-table tr:last-child { border-bottom: none; }
+        .opt-table td.price { text-align: left; }
+        .opt-table td.price small { display: inline; margin-left: 6px; }
+      }
+
+      /* calculator */
+      .calc { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); overflow: hidden; }
+      .calc-row { display: flex; align-items: center; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+      .calc-row .what { flex: 1 1 260px; }
+      .calc-row .what b { display: block; font-size: 16.5px; }
+      .calc-row .what span { color: var(--ink-2); font-size: 14px; }
+      .stepper { display: flex; align-items: center; gap: 4px; }
+      .stepper button {
+        width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line-2);
+        background: var(--surface); color: var(--ink); font-size: 20px; font-weight: 700; cursor: pointer;
+        display: flex; align-items: center; justify-content: center; line-height: 1;
+      }
+      .stepper button:hover { border-color: var(--blue); color: var(--blue); }
+      .stepper button:disabled { opacity: .32; cursor: default; border-color: var(--line-2); color: var(--ink); }
+      .stepper .n { min-width: 58px; text-align: center; font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
+      .stepper .n small { display: block; font-size: 12px; color: var(--ink-3); font-weight: 600; }
+      .calc-row .line-amt { min-width: 118px; text-align: right; font-weight: 800; font-size: 17px; font-variant-numeric: tabular-nums; }
+      .calc-row.base-row { background: var(--surface-2); }
+      .calc-total { padding: 24px; display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+      .calc-total .t-lbl { font-size: 15px; font-weight: 700; color: var(--ink-2); }
+      .calc-total .t-amt { font-size: clamp(30px, 4.6vw, 40px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+      .calc-total .t-vat { font-size: 14px; color: var(--ink-3); margin-top: 2px; }
+      .calc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+      .btn {
+        min-height: 46px; padding: 10px 20px; border-radius: 10px; font-size: 15px; font-weight: 700;
+        cursor: pointer; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink);
+        display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+      }
+      .btn:hover { border-color: var(--blue); color: var(--blue); }
+      .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+      .btn.primary:hover { background: var(--blue-deep); color: #fff; }
+      .calc-foot { padding: 0 24px 22px; font-size: 13.5px; color: var(--ink-3); margin: 0; }
+      .copied { font-size: 14px; font-weight: 700; color: var(--ok); align-self: center; }
+
+      /* payment steps */
+      .pay-flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+      @media (max-width: 860px) { .pay-flow { grid-template-columns: 1fr; } }
+      .pay-step { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; position: relative; }
+      .pay-step .no { font-size: 13px; font-weight: 800; color: var(--blue); letter-spacing: .04em; }
+      .pay-step b { display: block; font-size: 16.5px; margin: 6px 0 4px; }
+      .pay-step p { margin: 0; font-size: 14px; color: var(--ink-2); }
+      .pay-step.money { border-color: var(--blue); background: var(--blue-wash); }
+      .pay-note { margin-top: 18px; font-size: 14.5px; color: var(--ink-2); }
+      .pay-note b { color: var(--ink); }
+
+      /* maintenance */
+      .maint { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+      @media (max-width: 720px) { .maint { grid-template-columns: 1fr; } }
+      .maint .box { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+      .maint h3 { margin: 0 0 14px; font-size: 18px; }
+      .maint ul { margin: 0; padding: 0; list-style: none; }
+      .maint li { padding: 7px 0 7px 22px; position: relative; font-size: 15.5px; color: var(--ink-2); }
+      .maint li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+      .maint .box.alt li::before { background: var(--ink-3); }
+
+      /* FAQ */
+      .faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; }
+      .faq summary {
+        cursor: pointer; font-weight: 700; font-size: 16.5px; padding: 18px 22px; list-style: none;
+        display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 56px;
+      }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: "+"; font-size: 22px; font-weight: 400; color: var(--ink-3); flex: none; }
+      .faq details[open ] summary::after { content: "–"; }
+      .faq details p { margin: 0; padding: 0 22px 20px; color: var(--ink-2); font-size: 15.5px; }
+
+      /* bottom CTA */
+      .cta-band { background: var(--ink); color: var(--paper); border-radius: 20px; padding: 44px 36px; text-align: center; margin: 64px 0 0; }
+      @media (prefers-color-scheme: dark) { .cta-band { background: var(--surface-2); color: var(--ink); border: 1px solid var(--line-2); } }
+      .cta-band h2 { margin: 0 0 10px; font-size: clamp(23px, 3.4vw, 30px); letter-spacing: -.02em; }
+      .cta-band p { margin: 0 auto 26px; max-width: 520px; opacity: .78; }
+      .cta-band .row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+      .cta-band a.big {
+        display: inline-flex; align-items: center; min-height: 52px; padding: 12px 28px; border-radius: 999px;
+        background: var(--blue); color: #fff; font-weight: 700; text-decoration: none; font-size: 16.5px;
+      }
+      .cta-band a.mail {
+        display: inline-flex; align-items: center; min-height: 52px; padding: 12px 24px; border-radius: 999px;
+        border: 1px solid color-mix(in srgb, currentColor 35%, transparent); color: inherit; font-weight: 600; text-decoration: none; font-size: 15.5px;
+      }
+      footer { padding: 34px 0 48px; font-size: 13.5px; color: var(--ink-3); }
+      footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+
+    <header class="nav">
+      <div class="wrap nav-in">
+        <a class="brand" href="#top">get<em>site</em></a>
+        <a class="nl" href="#base">기본 구성</a>
+        <a class="nl" href="#options">추가 옵션</a>
+        <a class="nl" href="#compare">구성 비교</a>
+        <a class="nl" href="#calc">견적 계산기</a>
+        <a class="nl" href="#pay">결제 안내</a>
+        <a class="nl" href="#faq">자주 묻는 질문</a>
+        <a class="cta" href="https://getsite-my.web.app" target="_blank" rel="noopener">샘플 신청하기</a>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="wrap">
+          <h1>가격은 <span class="u">구성</span>으로 정해집니다</h1>
+          <p class="lede">getsite의 가격은 단순합니다. 누구나 같은 <b>기본 구성 500,000원</b>으로 시작하고, 필요한 것만 옵션으로 더합니다. 샘플을 먼저 보고, 구성이 확정되면 그 구성 그대로 견적이 나옵니다.</p>
+          <div class="flow" aria-label="진행 순서">
+            <span class="step"><i>1</i>샘플 신청</span><span class="arr">→</span>
+            <span class="step"><i>2</i>샘플 확인</span><span class="arr">→</span>
+            <span class="step"><i>3</i>구성 확정 · 견적</span><span class="arr">→</span>
+            <span class="step"><i>4</i>결제 후 제작</span>
+          </div>
+          <p class="note">모든 가격 VAT 별도 · 결제 전에는 비용이 발생하지 않습니다</p>
+        </div>
+      </div>
+
+      <!-- BASE -->
+      <section class="block" id="base">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>기본 구성 — 500,000원에 모두 포함</h2>
+            <p>어떤 주제로 주문하셔도 기본 구성은 같습니다. 아래 다섯 가지가 빠짐없이 들어갑니다.</p>
+          </div>
+          <div class="base-grid">
+            <div class="incl">
+              <ul>
+                <li>
+                  <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <div><b>히어로 섹션 1개</b><span class="d">첫 화면의 핵심 연출 — 모션 20초 이내 또는 이미지 연출 중 주제에 맞는 방식으로 제작합니다.</span></div>
+                </li>
+                <li>
+                  <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <div><b>원페이지 구성 — 섹션 7개까지 포함</b><span class="d">소개·갤러리·문의 등 필요한 섹션을 한 페이지에 담습니다. 섹션 7개까지는 기본 구성에 포함되며, 섹션 구성은 샘플 단계에서 함께 정합니다.</span></div>
+                </li>
+                <li>
+                  <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <div><b>한국어 / 영어 기본 포함</b><span class="d">다국어 추가 요금 없이 한국어와 영어를 함께 제공합니다.</span></div>
+                </li>
+                <li>
+                  <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <div><b>배포 + 도메인 연결</b><span class="d">Google Firebase 호스팅에 배포하고, 구입하신 도메인 연결과 보안 연결(https)까지 마쳐서 납품합니다. 도메인 구입 비용은 별도입니다.</span></div>
+                </li>
+                <li>
+                  <span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                  <div><b>유지보수 1년 무료</b><span class="d">납품 후 1년간 텍스트·이미지 교체, 링크·오류 수정, 연결 상태 확인이 포함됩니다.</span></div>
+                </li>
+              </ul>
+            </div>
+            <aside class="price-card" aria-label="기본 구성 가격">
+              <span class="tier-badge">기본 구성 · 단일 패키지</span>
+              <div class="amt">500,000원</div>
+              <div class="vat">VAT 별도 · 1회 결제 (계약금 50% + 잔금 50%)</div>
+              <hr />
+              <ul>
+                <li><span>섹션</span><span>7개까지 포함</span></li>
+                <li><span>수정</span><span>기본 2회 포함</span></li>
+                <li><span>호스팅</span><span>신청자 본인 계정</span></li>
+                <li><span>유지보수</span><span>1년 무료</span></li>
+              </ul>
+              <a class="go" href="https://getsite-my.web.app" target="_blank" rel="noopener">샘플부터 신청하기</a>
+            </aside>
+          </div>
+          <div class="example">
+            <span class="tag">예시</span>
+            <p>포트폴리오 사이트 한 건 — 히어로 · 소개 · 갤러리 · 문의 4개 섹션, 추가 옵션 없음 → <b>기본 구성 500,000원</b>으로 제작됩니다. 여기에 소개 페이지를 한 장 더하면 +100,000원입니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- OPTIONS -->
+      <section class="block" id="options">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>추가 옵션 단가</h2>
+            <p>필요한 것만 더하세요. 옵션은 샘플을 본 뒤, 구성을 확정할 때 함께 정합니다.</p>
+          </div>
+          <table class="opt-table">
+            <thead>
+              <tr><th style="width:62%">옵션</th><th style="text-align:right">가격 (VAT 별도)</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="name"><b>추가 페이지</b><span>원페이지를 넘어 별도 페이지가 필요할 때 — 2개 이상의 섹션으로 이루어진 단일 또는 탭 페이지를 말합니다. 예: 작품 상세, 공지 목록 (간단한 팝업 방식의 모달은 제외)</span></td>
+                <td class="price">장당 100,000원</td>
+              </tr>
+              <tr>
+                <td class="name"><b>영상 기반 모션 그래픽</b><span>영상으로 제작하는 히어로·섹션 모션 (30초 기준)</span></td>
+                <td class="price">200,000원<small>30초 기준</small></td>
+              </tr>
+              <tr>
+                <td class="name"><b>추가 수정</b><span>기본 포함된 수정 2회를 넘긴 뒤의 수정</span></td>
+                <td class="price">회당 50,000원</td>
+              </tr>
+              <tr>
+                <td class="name"><b>PG 연동 · 회원제 · 예약 시스템</b><span>결제, 회원, 예약 같은 기능형 시스템</span></td>
+                <td class="price"><span class="soon">준비 중 — 추후 오픈</span><small><a href="mailto:getsite.yours@gmail.com">필요하시면 이메일로 문의</a></small></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- COMPARE -->
+      <section class="block" id="compare">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>구성 비교 — 뭐가 포함되고, 뭐가 추가인가요</h2>
+            <p>기본 구성에 포함된 것과 옵션으로 더하는 것을 한 표로 정리했습니다.</p>
+          </div>
+          <table class="cmp">
+            <thead>
+              <tr><th style="width:46%">항목</th><th class="c">기본 구성 500,000원</th><th style="text-align:right">추가할 때</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="feat"><b>히어로 섹션 1개</b><span>모션 20초 이내 또는 이미지 연출</span></td>
+                <td class="c"><span class="yes">✓ 포함</span></td>
+                <td class="opt"><span class="dash">—</span></td>
+              </tr>
+              <tr>
+                <td class="feat"><b>원페이지 섹션</b><span>소개·갤러리·문의 등</span></td>
+                <td class="c"><span class="yes">✓ 7개까지 포함</span></td>
+                <td class="opt">구성 변경 시 재안내</td>
+              </tr>
+              <tr>
+                <td class="feat"><b>한국어 / 영어</b></td>
+                <td class="c"><span class="yes">✓ 포함</span></td>
+                <td class="opt"><span class="dash">—</span></td>
+              </tr>
+              <tr>
+                <td class="feat"><b>배포 + 도메인 연결</b><span>Firebase 배포, https 적용</span></td>
+                <td class="c"><span class="yes">✓ 포함</span></td>
+                <td class="opt">도메인 구입비 별도</td>
+              </tr>
+              <tr>
+                <td class="feat"><b>기본 수정</b></td>
+                <td class="c"><span class="yes">✓ 2회 포함</span></td>
+                <td class="opt">추가 회당 50,000원</td>
+              </tr>
+              <tr>
+                <td class="feat"><b>유지보수</b></td>
+                <td class="c"><span class="yes">✓ 1년 무료</span></td>
+                <td class="opt"><span class="dash">—</span></td>
+              </tr>
+              <tr>
+                <td class="feat"><b>추가 페이지</b><span>2개 이상의 섹션으로 이루어진 단일 또는 탭 페이지 (간단한 팝업 방식의 모달은 제외)</span></td>
+                <td class="c"><span class="dash">—</span></td>
+                <td class="opt">장당 100,000원</td>
+              </tr>
+              <tr>
+                <td class="feat"><b>영상 기반 모션 그래픽</b><span>30초 기준</span></td>
+                <td class="c"><span class="dash">—</span></td>
+                <td class="opt">건당 200,000원</td>
+              </tr>
+              <tr>
+                <td class="feat"><b>PG 연동 · 회원제 · 예약 시스템</b></td>
+                <td class="c"><span class="dash">—</span></td>
+                <td class="opt">준비 중 · 이메일 문의</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CALCULATOR -->
+      <section class="block" id="calc">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>견적 계산기</h2>
+            <p>위 단가 그대로 계산합니다. 옵션을 눌러보면서 예상 금액을 확인해 보세요.</p>
+          </div>
+          <div class="calc">
+            <div class="calc-row base-row">
+              <div class="what"><b>기본 구성</b><span>히어로 · 원페이지 (섹션 7개까지) · 한/영 · 배포 · 유지보수 1년</span></div>
+              <div class="line-amt">500,000원</div>
+            </div>
+            <div class="calc-row">
+              <div class="what"><b>추가 페이지</b><span>장당 100,000원 · 2개 이상의 섹션으로 이루어진 단일 또는 탭 페이지</span></div>
+              <div class="stepper">
+                <button type="button" data-key="pages" data-dir="-1" aria-label="추가 페이지 줄이기">−</button>
+                <div class="n"><span id="n-pages">0</span><small>장</small></div>
+                <button type="button" data-key="pages" data-dir="1" aria-label="추가 페이지 늘리기">+</button>
+              </div>
+              <div class="line-amt" id="amt-pages">0원</div>
+            </div>
+            <div class="calc-row">
+              <div class="what"><b>영상 기반 모션 그래픽</b><span>건당 200,000원 (30초 기준)</span></div>
+              <div class="stepper">
+                <button type="button" data-key="motion" data-dir="-1" aria-label="영상 모션 줄이기">−</button>
+                <div class="n"><span id="n-motion">0</span><small>건</small></div>
+                <button type="button" data-key="motion" data-dir="1" aria-label="영상 모션 늘리기">+</button>
+              </div>
+              <div class="line-amt" id="amt-motion">0원</div>
+            </div>
+            <div class="calc-row">
+              <div class="what"><b>추가 수정</b><span>회당 50,000원 · 기본 2회는 무료 포함</span></div>
+              <div class="stepper">
+                <button type="button" data-key="revisions" data-dir="-1" aria-label="추가 수정 줄이기">−</button>
+                <div class="n"><span id="n-revisions">0</span><small>회</small></div>
+                <button type="button" data-key="revisions" data-dir="1" aria-label="추가 수정 늘리기">+</button>
+              </div>
+              <div class="line-amt" id="amt-revisions">0원</div>
+            </div>
+            <div class="calc-total">
+              <div>
+                <div class="t-lbl">예상 합계</div>
+                <div class="t-amt" id="totalAmt">500,000원</div>
+                <div class="t-vat">VAT 별도 · VAT 포함 시 <span id="totalVat">550,000원</span></div>
+              </div>
+              <div class="calc-actions">
+                <span class="copied" id="copiedMsg" hidden>복사했습니다</span>
+                <button type="button" class="btn" id="copyBtn">견적 요약 복사</button>
+                <a class="btn primary" href="https://getsite-my.web.app" target="_blank" rel="noopener">이 구성으로 신청하기</a>
+              </div>
+            </div>
+            <p class="calc-foot">예상 견적입니다. 최종 금액은 샘플 확인 후 구성이 확정되면 견적서로 다시 안내합니다. 샘플 단계에서 섹션 구성이 바뀌면 가격도 바뀐 구성 기준으로 계산합니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAYMENT -->
+      <section class="block" id="pay">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>결제는 이렇게 진행됩니다</h2>
+            <p>샘플을 확인하고 진행을 결정한 뒤에 결제가 시작됩니다. 한 번에 전액을 받지 않습니다.</p>
+          </div>
+          <div class="pay-flow">
+            <div class="pay-step money"><span class="no">STEP 1</span><b>계약금 50% 입금</b><p>최종 제작 시작 전, 안내받은 계좌로 입금합니다.</p></div>
+            <div class="pay-step"><span class="no">STEP 2</span><b>최종 제작 시작</b><p>확정된 구성 그대로 제작에 들어갑니다.</p></div>
+            <div class="pay-step"><span class="no">STEP 3</span><b>완성 · 확인</b><p>완성본을 확인하고 기본 수정 2회 안에서 다듬습니다.</p></div>
+            <div class="pay-step money"><span class="no">STEP 4</span><b>잔금 50% 입금</b><p>완성본 확인 후, 배포 전에 입금합니다.</p></div>
+            <div class="pay-step"><span class="no">STEP 5</span><b>배포 · 인계</b><p>내 도메인으로 배포하고 운영 안내와 함께 인계합니다.</p></div>
+          </div>
+          <p class="pay-note"><b>입금 계좌는 확정 후 안내드립니다.</b> 결제 방법은 샘플 확인 후 이메일로 안내하며, 안내받으신 계좌로만 입금해 주세요.</p>
+        </div>
+      </section>
+
+      <!-- MAINTENANCE -->
+      <section class="block" id="maint">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>유지보수 1년 무료 — 범위</h2>
+            <p>납품 후 1년 동안 아래 항목은 추가 비용 없이 이메일 요청으로 반영해 드립니다.</p>
+          </div>
+          <div class="maint">
+            <div class="box">
+              <h3>무료 유지보수에 포함</h3>
+              <ul>
+                <li>작은 텍스트·이미지 교체</li>
+                <li>링크·오류 수정</li>
+                <li>호스팅·도메인 연결 상태 확인</li>
+              </ul>
+            </div>
+            <div class="box alt">
+              <h3>별도 견적으로 진행</h3>
+              <ul>
+                <li>전면 재디자인</li>
+                <li>섹션 대폭 추가 · 구조 변경</li>
+                <li>새로운 기능 추가</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="block" id="faq">
+        <div class="wrap">
+          <div class="sec-head">
+            <h2>자주 묻는 질문</h2>
+          </div>
+          <div class="faq">
+            <details>
+              <summary>비용은 어떻게 정해지나요?</summary>
+              <p>가격표부터 보여드리지 않습니다. 샘플을 고르고 구성안을 확인하시면, 그 구성에 맞는 패키지 가격과 필요한 옵션 단가만 그 자리에서 제시합니다. 이 페이지의 기본 구성 500,000원과 위 옵션 단가가 그 기준이며, 모든 가격 VAT 별도이고, 최종 금액은 상세 요구사항 확정 후 견적서로 발행합니다.</p>
+            </details>
+            <details>
+              <summary>샘플은 언제, 어떻게 받나요?</summary>
+              <p>접수 후 구성안 기준으로 샘플을 제작해, 운영자(getsite.yours@gmail.com)가 등록한 이메일로 프리뷰 링크와 개발 컨셉 설명을 보냅니다. 샘플 단계에서는 소스코드를 제공하지 않습니다. 구체적인 납기 일수는 약속하지 않으며 일정은 이메일로 조율합니다.</p>
+            </details>
+            <details>
+              <summary>결제는 언제 하나요?</summary>
+              <p>샘플을 확인하고 진행을 결정한 뒤입니다. 계약금 50%, 납품 전 잔금 50%입니다. 결제는 샘플 확인 후 이메일로 안내합니다.</p>
+            </details>
+            <details>
+              <summary>수정은 몇 회까지 되나요?</summary>
+              <p>기본 수정 2회가 포함됩니다. 추가 수정은 회당 50,000원이며, 구조 변경·페이지 추가는 별도 견적입니다.</p>
+            </details>
+            <details>
+              <summary>도메인은 어떻게 사나요? 비용은 얼마인가요?</summary>
+              <p>도메인은 가비아·후이즈·카페24 같은 국내 도메인 등록대행사에서 직접 구입하실 수 있습니다. 등록대행사 사이트에서 원하는 주소(예: mybrand.com)를 검색해 사용 가능하면, 회원가입 후 결제하면 바로 본인 소유가 됩니다. 비용은 확장자마다 다른데 .com 기준 보통 연 2만 원 안팎이고 .co.kr도 비슷한 수준입니다(등록대행사·할인 행사에 따라 달라집니다). 도메인은 본인 명의로 구입하시는 것이 원칙이라, 순서가 헷갈리시면 접수 후 이메일로 단계별로 안내해 드립니다. 도메인 구입 비용은 제작비와 별도입니다.</p>
+            </details>
+            <details>
+              <summary>호스팅 서비스는 어디를 이용하나요?</summary>
+              <p>Google Firebase 호스팅을 이용합니다. 신청자 본인의 구글 계정에 연동해 만들기 때문에 사이트와 데이터의 소유권이 신청자께 있습니다. Firebase 무료 요금제 범위로 운영되며, 일반적인 소개·포트폴리오 사이트는 무료 범위로 충분한 경우가 많습니다. 방문자가 크게 늘어 유료 전환이 필요해지면 그때 미리 안내해 드립니다.</p>
+            </details>
+            <details>
+              <summary>도메인과 호스팅(Google Firebase) 연동은 어떻게 하나요?</summary>
+              <p>연동은 배포할 때 개발자가 직접 해드립니다. 구입하신 도메인의 소유 확인과 DNS 설정까지 저희가 진행하므로, 신청자께서 직접 설정하실 일은 거의 없습니다. 연동이 끝나면 보안 연결(https)까지 적용된 상태로 납품합니다.</p>
+            </details>
+            <details>
+              <summary>유지보수는 어떻게 되나요?</summary>
+              <p>납품 후 1년간 무료입니다. 텍스트·이미지 교체, 링크·오류 수정 같은 기본적인 수정과 호스팅·도메인 연결 상태 확인이 포함됩니다. 섹션 추가나 기능 추가는 유지보수 범위에 포함되지 않으며, 별도 요청으로 진행합니다.</p>
+            </details>
+            <details>
+              <summary>관리자 페이지도 있나요?</summary>
+              <p>관리자 페이지는 별도 개발을 통해 제공됩니다. 관리자 페이지에서 사이트의 기본 정보와 데이터를 직접 업데이트할 수 있도록 구성하며, 개발되는 사이트의 섹션 구성에 따라 관리자 페이지 구성이 달라집니다.</p>
+            </details>
+            <details>
+              <summary>내용 업데이트는 어떻게 하나요?</summary>
+              <p>납품 후 1년 무료 유지보수 기간에는 텍스트·이미지 교체 같은 기본 업데이트를 이메일로 요청하시면 반영해 드립니다. 구조 변경·섹션 추가는 별도 요청으로 진행합니다.</p>
+            </details>
+            <details>
+              <summary>섹션이나 기능을 추가하고 싶으면요?</summary>
+              <p>가능합니다. 샘플을 받으신 뒤 의견을 주시면 섹션을 더하거나 빼고 순서·형태를 바꾸는 수정도 할 수 있고, 처음부터 없던 섹션·기능의 추가는 별도로 요청해 주시면 작업 범위와 비용을 확인해 안내해 드린 뒤 진행합니다. 구조가 크게 바뀌면 구성안과 가격을 바뀐 기준으로 다시 안내합니다.</p>
+            </details>
+            <details>
+              <summary>납품물은 무엇인가요?</summary>
+              <p>완성 사이트(고객 도메인 연결 완료), 검수 리포트, 운영 안내입니다. 사이트는 고객 소유 계정·도메인으로 구축하는 것이 원칙입니다.</p>
+            </details>
+          </div>
+
+          <div class="cta-band">
+            <h2>가격보다 먼저, 샘플을 보세요</h2>
+            <p>신청하시면 내 주제로 만든 샘플을 먼저 보내드립니다. 샘플을 보고 구성을 정하면, 이 페이지의 단가 그대로 견적이 나옵니다.</p>
+            <div class="trust">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>샘플을 먼저 확인</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>결제 전에 비용 없음</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>최종 금액은 견적서로 확정</span>
+            </div>
+            <div class="row">
+              <a class="big" href="https://getsite-my.web.app" target="_blank" rel="noopener">샘플 신청하기</a>
+              <a class="mail" href="mailto:getsite.yours@gmail.com">getsite.yours@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>getsite — 웹사이트 제작</span>
+        <span>모든 가격 VAT 별도 · 최종 금액은 견적서로 안내합니다</span>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var BASE = 500000;
+        var PRICES = { pages: 100000, motion: 200000, revisions: 50000 };
+        var LIMITS = { pages: 10, motion: 5, revisions: 10 };
+        var NAMES = {
+          pages: "추가 페이지",
+          motion: "영상 기반 모션 그래픽",
+          revisions: "추가 수정"
+        };
+        var UNITS = { pages: "장", motion: "건", revisions: "회" };
+        var state = { pages: 0, motion: 0, revisions: 0 };
+
+        function fmt(n) { return n.toLocaleString("ko-KR") + "원"; }
+
+        function total() {
+          var t = BASE;
+          for (var k in PRICES) t += state[k] * PRICES[k];
+          return t;
+        }
+
+        function render() {
+          for (var k in PRICES) {
+            document.getElementById("n-" + k).textContent = state[k];
+            document.getElementById("amt-" + k).textContent = fmt(state[k] * PRICES[k]);
+          }
+          var t = total();
+          document.getElementById("totalAmt").textContent = fmt(t);
+          document.getElementById("totalVat").textContent = fmt(Math.round(t * 1.1));
+          var btns = document.querySelectorAll(".stepper button");
+          for (var i = 0; i < btns.length; i++) {
+            var key = btns[i].getAttribute("data-key");
+            var dir = parseInt(btns[i].getAttribute("data-dir"), 10);
+            btns[i].disabled = dir < 0 ? state[key] <= 0 : state[key] >= LIMITS[key];
+          }
+        }
+
+        var steppers = document.querySelectorAll(".stepper button");
+        for (var i = 0; i < steppers.length; i++) {
+          steppers[i].addEventListener("click", function () {
+            var key = this.getAttribute("data-key");
+            var dir = parseInt(this.getAttribute("data-dir"), 10);
+            var next = state[key] + dir;
+            if (next < 0) next = 0;
+            if (next > LIMITS[key]) next = LIMITS[key];
+            state[key] = next;
+            render();
+          });
+        }
+
+        function summaryText() {
+          var lines = [];
+          lines.push("[getsite 예상 견적]");
+          lines.push("기본 구성 — " + fmt(BASE));
+          for (var k in PRICES) {
+            if (state[k] > 0) {
+              lines.push("· " + NAMES[k] + " " + state[k] + UNITS[k] + " × " + fmt(PRICES[k]) + " = " + fmt(state[k] * PRICES[k]));
+            }
+          }
+          var t = total();
+          lines.push("예상 합계 " + fmt(t) + " (VAT 별도) / VAT 포함 " + fmt(Math.round(t * 1.1)));
+          lines.push("결제: 계약금 50% + 잔금 50% · 수정 기본 2회 포함");
+          lines.push("※ 예상 견적이며, 최종 금액은 구성 확정 후 견적서로 안내합니다.");
+          return lines.join("\n");
+        }
+
+        var copyBtn = document.getElementById("copyBtn");
+        var copiedMsg = document.getElementById("copiedMsg");
+        var copyTimer = null;
+        copyBtn.addEventListener("click", function () {
+          var text = summaryText();
+          function done() {
+            copiedMsg.hidden = false;
+            if (copyTimer) clearTimeout(copyTimer);
+            copyTimer = setTimeout(function () { copiedMsg.hidden = true; }, 2200);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallback(); });
+          } else { fallback(); }
+          function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed"; ta.style.opacity = "0";
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand("copy"); } catch (e) {}
+            document.body.removeChild(ta);
+            done();
+          }
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>
