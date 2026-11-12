@@ -114,11 +114,13 @@ section.block > .wrap > .head .sub { color: var(--ink-2); font-size: 16.5px; }
 .s-line { color: var(--ink-2); font-size: 14.5px; }
 .s-hero { grid-row: 1; } .s-keys { grid-row: 2; } .s-body { grid-row: 3; } .s-actions { grid-row: 4; }
 .s-actions { display: flex; gap: 8px; padding: 12px 18px 18px; flex-wrap: wrap; align-items: flex-start; }
-.s-rail { position: sticky; bottom: 16px; z-index: 20; margin: 28px auto 0; width: max-content; max-width: 100%; display: flex; gap: 4px; padding: 6px; border-radius: 999px; background: color-mix(in oklch, var(--paper) 86%, transparent); backdrop-filter: blur(14px); border: 1px solid var(--line); box-shadow: var(--shadow); overflow-x: auto; scrollbar-width: none; }
+/* The rail sits under the section intro and stays under the top bar while the cards scroll. */
+.s-rail { position: sticky; top: 76px; z-index: 20; margin: 0 auto 18px; width: max-content; max-width: 100%; display: flex; gap: 4px; padding: 6px; border-radius: 999px; background: color-mix(in oklch, var(--ink) 94%, transparent); backdrop-filter: blur(14px); border: 1px solid var(--ink); box-shadow: var(--shadow); overflow-x: auto; scrollbar-width: none; }
 .s-rail::-webkit-scrollbar { display: none; }
-.s-rail button { border: 0; background: transparent; border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: 14px; color: var(--ink-2); white-space: nowrap; transition: background .18s, color .18s; }
-.s-rail button:hover { color: var(--ink); background: var(--paper-2); }
-.s-rail button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+/* Inverted against the page so the rail reads as a control, not as another card. */
+.s-rail button { border: 0; background: transparent; border-radius: 999px; padding: 9px 14px; font-weight: 700; font-size: 14px; color: color-mix(in oklch, var(--paper) 78%, transparent); white-space: nowrap; transition: background .18s, color .18s; }
+.s-rail button:hover { color: var(--paper); background: color-mix(in oklch, var(--paper) 16%, transparent); }
+.s-rail button[aria-pressed="true"], .s-rail button[aria-pressed="true"]:hover { background: var(--paper); color: var(--ink); }
 .s-count { color: var(--ink-3); font-size: 13.5px; margin: 0 0 14px; }
 
 /* ---------- process ---------- */

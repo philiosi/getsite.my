@@ -65,5 +65,18 @@ export function renderSamples({ grid, rail, count, data, manifest, store, onStar
     count.textContent = state.topic === 'all' ? `샘플 ${n}개` : `${t?.name || ''} 샘플 ${n}개 · ${t?.hint || ''}`;
   }
   paint(store.get());
-  store.subscribe((s, p) => { if (s.topic !== p.topic) paint(s); });
+  /* Filtering shortens the grid. If the reader is already down among the cards, the next
+     section would slide up under them, so bring the first cards back under the rail.
+     Scroll anchoring is held off for this one layout: it would shift the page a second time. */
+  function settle(state) {
+    const root = document.documentElement;
+    root.style.overflowAnchor = 'none';
+    paint(state);
+    /* Where the rail rests while stuck. Its live position is no guide: a shorter grid can push it off screen. */
+    const line = (parseFloat(getComputedStyle(rail).top) || 0) + rail.offsetHeight + 14;
+    const top = count.getBoundingClientRect().top;
+    if (top < line) window.scrollTo({ top: Math.max(0, window.scrollY + top - line) });
+    requestAnimationFrame(() => requestAnimationFrame(() => { root.style.overflowAnchor = ''; }));
+  }
+  store.subscribe((s, p) => { if (s.topic !== p.topic) settle(s); });
 }
