@@ -11,12 +11,13 @@
      Its ../v3/ paths resolve to /v3/ from the root, so nothing in v5 changes.
    Run: node scripts/v4-build.mjs [--root=v4|v5 | --main=v5]   then   firebase hosting:channel:deploy <name> --project getsite-my
    Nothing here deploys; the deploy command is run by the operator. */
-import { cpSync, rmSync, mkdirSync, existsSync, copyFileSync, writeFileSync } from 'node:fs';
+import { cpSync, rmSync, mkdirSync, existsSync, copyFileSync, writeFileSync, renameSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repo = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const out = resolve(repo, 'public');
+const finalOut = resolve(repo, 'public');
+const out = resolve(repo, 'public.tmp');
 const rootArg = (process.argv.find((a) => a.startsWith('--root=')) || '').slice(7);
 if (rootArg && !['v4', 'v5'].includes(rootArg)) throw new Error('--root must be v4 or v5');
 const rootIsV4 = !!rootArg; // the root redirects to /<rootArg>/
@@ -54,4 +55,6 @@ if (mainArg) {
 if (!existsSync(resolve(out, 'v4/index.html'))) throw new Error('v4/index.html missing');
 if (!existsSync(resolve(out, 'gallery-lab/index.html'))) throw new Error('gallery lab missing');
 if (!existsSync(resolve(out, 'motion/hwaga-hieoro-mosyeongeuraepig-saempeul-2.html'))) throw new Error('motion sample missing');
+rmSync(finalOut, { recursive: true, force: true });
+renameSync(out, finalOut);
 console.log(`public/ assembled (${mainArg ? 'root = v5 itself' : rootIsV4 ? `root redirects to /${rootArg}/` : 'root = current live page'}). v3 backend files were not copied.`);
