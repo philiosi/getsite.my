@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="description" content="블레싱공방 홈페이지 제작 샘플입니다. getsite.my가 만든 예시 페이지로, 가격·일정·후기는 예시입니다.">
+    <meta name="theme-color" content="#F2EBDD">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="블레싱공방 — 홈페이지 제작 샘플">
+    <meta property="og:description" content="블레싱공방을 위해 만든 홈페이지 샘플입니다. 이 디자인 그대로 제작을 신청할 수 있습니다.">
+    <meta property="og:url" content="https://getsite-samples.web.app/outreach/blessing-atelier/">
+    <meta property="og:image" content="https://getsite-samples.web.app/outreach/blessing-atelier/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231E3A2F'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='sans-serif' font-size='18' font-weight='700' fill='%23F2EBDD'%3E%EB%B8%94%3C/text%3E%3C/svg%3E">
+    <title>블레싱공방 — 의정부 라탄·글라스아트 원데이 클래스 (샘플)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      :root {
+        --bg: #F2EBDD;
+        --bg-soft: #E7DDC4;
+        --surface: #FFFEF7;
+        --surface-2: #EFE6CF;
+        --ink: #1E3A2F;
+        --ink-soft: #445C4F;
+        --line: #D6C7A0;
+        --forest: #1E3A2F;
+        --forest-deep: #12251C;
+        --forest-mid: #2B4F3E;
+        --forest-soft: #DCE5D8;
+        --brass: #B08D3E;
+        --brass-deep: #7A5E20;
+        --brass-soft: #EADFC0;
+        --linen: #F2EBDD;
+        /* legacy aliases mapped to new palette so no old hue survives */
+        --terra: #B08D3E;
+        --terra-deep: #1E3A2F;
+        --terra-soft: #EADFC0;
+        --sage: #2B4F3E;
+        --sage-soft: #DCE5D8;
+        --gold: #B08D3E;
+        --shadow: 0 12px 32px rgba(30, 58, 47, .16);
+        --radius: 18px;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0F2018;
+          --bg-soft: #162E22;
+          --surface: #1E3A2F;
+          --surface-2: #264636;
+          --ink: #F2EBDD;
+          --ink-soft: #CFC4A8;
+          --line: #3A5A48;
+          --forest: #F2EBDD;
+          --forest-deep: #F2EBDD;
+          --forest-mid: #8FB09C;
+          --forest-soft: #264636;
+          --brass: #C9A44E;
+          --brass-deep: #E3C87A;
+          --brass-soft: #2E4A3A;
+          --linen: #F2EBDD;
+          --terra: #C9A44E;
+          --terra-deep: #E3C87A;
+          --terra-soft: #2E4A3A;
+          --sage: #8FB09C;
+          --sage-soft: #264636;
+          --gold: #C9A44E;
+          --shadow: 0 12px 32px rgba(0, 0, 0, .45);
+          color-scheme: dark;
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Noto Sans KR", system-ui, sans-serif;
+        font-size: 16px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3, .serif { font-family: "Gowun Dodum", "Noto Serif KR", serif; font-weight: 400; }
+      img, svg { display: block; max-width: 100%; }
+      a { color: inherit; }
+      :focus-visible { outline: 2px solid var(--forest-focus, #1E3A2F); outline-offset: 2px; }
+      @media (prefers-color-scheme: dark) { :focus-visible { outline-color: var(--brass); } }
+      .hero :focus-visible, header.site :focus-visible, footer.site :focus-visible { outline-color: #C9A44E; }
+      .confirm h3:focus { outline: none; }
+      section[id], main[id] { scroll-margin-top: 80px; }
+      @media (max-width: 760px) { section[id], main[id] { scroll-margin-top: 124px; } }
+      .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+      /* ---------- SAMPLE ribbon ---------- */
+      .sample-bar {
+        background: #1E3A2F;
+        color: #F2EBDD;
+        text-align: center;
+        font-size: 12.5px;
+        letter-spacing: .08em;
+        padding: 8px 12px;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+      .sample-bar span { color: #F2EBDD; font-weight: 400; letter-spacing: .01em; margin-left: 6px; }
+      .sample-bar a { color: #EADFC0; text-decoration: underline; text-underline-offset: 3px; font-weight: 700; letter-spacing: .01em; }
+      .sample-bar a:hover { color: #FFFFFF; }
+      @media (max-width: 760px) {
+        .sample-bar { position: static; font-size: 12px; padding: 7px 12px; }
+      }
+
+      /* ---------- Header ---------- */
+      header.site {
+        position: sticky; top: 0; z-index: 40;
+        background: #1E3A2F;
+        border-bottom: 3px solid var(--brass);
+      }
+      @media (prefers-color-scheme: dark) {
+        header.site { background: #0B1A13; }
+      }
+      header.site .brand { color: #F2EBDD; }
+      header.site .brand em { color: var(--brass); }
+      header.site nav.main a { color: #EAE2D0; }
+      header.site nav.main a:hover { color: #F2EBDD; background: rgba(176,141,62,.22); }
+      .site-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+      .brand { font-family: "Gowun Dodum", serif; font-size: 24px; text-decoration: none; letter-spacing: .04em; }
+      .brand em { font-style: normal; color: var(--terra); }
+      nav.main { display: flex; gap: 4px; flex-wrap: wrap; }
+      nav.main a {
+        text-decoration: none; font-size: 14.5px; font-weight: 500; color: var(--ink-soft);
+        padding: 8px 12px; border-radius: 999px; min-height: 40px; display: inline-flex; align-items: center;
+      }
+      nav.main a:hover { color: var(--terra-deep); background: var(--terra-soft); }
+      .nav-cta {
+        background: var(--brass); color: #12251C !important; font-weight: 700;
+      }
+      .nav-cta:hover { background: #C9A44E; color: #12251C !important; }
+      @media (max-width: 760px) {
+        .site-inner { flex-wrap: wrap; gap: 6px 12px; padding-block: 10px 6px; }
+        nav.main {
+          width: 100%;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          white-space: nowrap;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          border-top: 1px solid rgba(242, 235, 221, .16);
+          padding-top: 6px;
+          gap: 4px;
+          padding: 6px 4px 4px; margin: 0 -4px;
+        }
+        nav.main::-webkit-scrollbar { display: none; }
+        nav.main a { flex: 0 0 auto; min-height: 40px; padding: 6px 12px; font-size: 14px; }
+      }
+
+      /* ---------- Hero : hand-weaving scene ---------- */
+      .hero {
+        position: relative; overflow: hidden;
+        background: #1E3A2F;
+        color: #F2EBDD;
+      }
+      @media (prefers-color-scheme: dark) { .hero { background: #0F2018; } }
+      .hero p.lead { color: #DAD2B8 !important; }
+      .hero .place { color: #C9A44E !important; }
+      .hero h1 { color: #F2EBDD; }
+      .hero h1 .hl { color: #D9B95C !important; }
+      .hero-tags span { background: rgba(242,235,221,.08) !important; border-color: rgba(242,235,221,.28) !important; color: #EDE6D0 !important; }
+      /* 엮는 선이 그려지는 배경 실 */
+      .weave-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+      .weave-bg path {
+        fill: none; stroke-linecap: round;
+        stroke-dasharray: 1500; stroke-dashoffset: 1500;
+        animation: threadDraw 8s ease-in-out infinite alternate;
+      }
+      .weave-bg .t1 { stroke: var(--terra); stroke-width: 2.4; opacity: .34; }
+      .weave-bg .t2 { stroke: var(--gold); stroke-width: 2; opacity: .4; animation-delay: 1.1s; }
+      .weave-bg .t3 { stroke: var(--sage); stroke-width: 2; opacity: .34; animation-delay: 2.2s; }
+      .weave-bg .t4 { stroke: #B08D3E; stroke-width: 1.6; opacity: .3; animation-delay: .6s; stroke-dasharray: 10 14; animation-name: threadDash; }
+      @keyframes threadDraw { 0% { stroke-dashoffset: 1500; } 55% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -260; } }
+      @keyframes threadDash { from { stroke-dashoffset: 480; } to { stroke-dashoffset: 0; } }
+
+      .hero-inner {
+        position: relative; z-index: 2; display: grid; grid-template-columns: .92fr 1.08fr;
+        gap: 8px; align-items: center; padding-block: 52px 64px;
+      }
+      .hero-copy > * { animation: riseIn .8s cubic-bezier(.22,1,.36,1) both; }
+      .hero-copy > *:nth-child(2) { animation-delay: .1s; }
+      .hero-copy > *:nth-child(3) { animation-delay: .2s; }
+      .hero-copy > *:nth-child(4) { animation-delay: .3s; }
+      .hero-copy > *:nth-child(5) { animation-delay: .4s; }
+      @keyframes riseIn { from { transform: translateY(16px); } to { transform: none; } }
+      .hero h1 .hl::after {
+        content: ""; position: absolute; left: 0; right: 0; bottom: 1px; height: 7px; border-radius: 4px;
+        background: repeating-linear-gradient(90deg, var(--gold) 0 9px, transparent 9px 16px);
+        opacity: .55; animation: weaveSlide 2.6s linear infinite;
+      }
+      @keyframes weaveSlide { from { background-position: 0 0; } to { background-position: 32px 0; } }
+
+      /* 엮는 장면 무대 */
+      .weaving-stage { position: relative; height: 540px; }
+      .stage-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+      .ring-rotor { transform-origin: 260px 248px; animation: spinSlow 52s linear infinite; }
+      @keyframes spinSlow { to { transform: rotate(360deg); } }
+      .strand-draw { stroke-dasharray: 340; stroke-dashoffset: 340; animation: strandIn 1.1s ease forwards; }
+      @keyframes strandIn { to { stroke-dashoffset: 0; } }
+      .thread-live { stroke-dasharray: 12 9; animation: threadFlow 1.6s linear infinite; }
+      @keyframes threadFlow { to { stroke-dashoffset: -42; } }
+      .hand-l { transform-origin: 128px 318px; animation: handSway 3.8s ease-in-out infinite; }
+      @keyframes handSway { 0%,100% { transform: rotate(-2.5deg) translateY(0); } 50% { transform: rotate(2.5deg) translateY(-7px); } }
+      .hand-r { transform-origin: 402px 196px; animation: handWeave 3.8s ease-in-out infinite; }
+      @keyframes handWeave {
+        0%,100% { transform: translate(0,0) rotate(0deg); }
+        30% { transform: translate(-12px, 16px) rotate(-4deg); }
+        62% { transform: translate(5px, 30px) rotate(2.5deg); }
+      }
+      .fingers { transform-origin: center; animation: fingerTap 1.9s ease-in-out infinite; }
+      @keyframes fingerTap { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-5deg) translateY(2px); } }
+      .loose-strand { transform-origin: 260px 302px; animation: strandSway 4.4s ease-in-out infinite; }
+      @keyframes strandSway { 0%,100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+
+      /* 떠다니는 공예 조각 */
+      .float-piece {
+        position: absolute; z-index: 3; width: 74px; height: 74px; padding: 13px;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 50%;
+        box-shadow: var(--shadow); animation: floaty 6s ease-in-out infinite; will-change: transform;
+      }
+      .float-piece svg { width: 100%; height: 100%; }
+      .fp-1 { top: 2%; left: 0; animation-duration: 6.4s; }
+      .fp-2 { top: 10%; right: 1%; width: 62px; height: 62px; animation-duration: 5.4s; animation-delay: .8s; }
+      .fp-3 { bottom: 20%; left: -2%; width: 58px; height: 58px; animation-duration: 7s; animation-delay: 1.5s; }
+      .fp-4 { bottom: 12%; right: 4%; animation-duration: 6s; animation-delay: .4s; }
+      .fp-5 { top: 46%; right: -1%; width: 52px; height: 52px; animation-duration: 5.8s; animation-delay: 2s; }
+      @keyframes floaty { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-16px) rotate(4deg); } }
+      .stage-caption {
+        position: absolute; left: 50%; bottom: 2%; transform: translateX(-50%); z-index: 3;
+        margin: 0; white-space: nowrap; font-size: 13.5px; color: var(--ink-soft);
+        background: var(--surface); border: 1px dashed var(--terra); border-radius: 999px; padding: 7px 16px;
+      }
+      @media (max-width: 860px) {
+        .weaving-stage { height: 430px; }
+        .float-piece { width: 58px; height: 58px; padding: 10px; }
+        .fp-2, .fp-3 { width: 48px; height: 48px; }
+        .fp-5 { display: none; }
+      }
+      .hero .place { font-size: 14px; letter-spacing: .22em; color: var(--terra); font-weight: 700; margin: 0 0 14px; }
+      .hero h1 { font-size: clamp(34px, 5.2vw, 54px); line-height: 1.22; margin: 0 0 18px; }
+      .hero h1 .hl { color: var(--terra); position: relative; white-space: nowrap; }
+      .hero p.lead { color: var(--ink-soft); font-size: 17px; margin: 0 0 28px; max-width: 30em; }
+      .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        min-height: 48px; padding: 12px 24px; border-radius: 999px;
+        font-size: 15.5px; font-weight: 700; text-decoration: none; border: 1.5px solid transparent;
+        cursor: pointer; transition: transform .15s ease, background .15s ease;
+      }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-terra { background: var(--brass); color: #12251C; }
+      .btn-terra:hover { background: #C9A44E; }
+      .btn-line { border-color: #F2EBDD; color: #F2EBDD; background: transparent; }
+      .btn-line:hover { background: rgba(242,235,221,.14); }
+      section:not(.hero) .btn-line, .confirm .btn-line { border-color: var(--forest); color: var(--forest); }
+      section:not(.hero) .btn-line:hover, .confirm .btn-line:hover { background: var(--brass-soft); }
+      .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 26px; }
+      .hero-tags span {
+        font-size: 13px; padding: 6px 12px; border-radius: 999px;
+        background: var(--surface); border: 1px solid var(--line); color: var(--ink-soft);
+      }
+      @media (max-width: 860px) {
+        .hero-inner { grid-template-columns: 1fr; padding-block: 40px 48px; }
+      }
+      @media (max-width: 380px) {
+        .stage-caption { font-size: 12px; padding: 6px 12px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .weave-bg path, .ring-rotor, .float-piece, .hand-l, .hand-r, .fingers, .loose-strand,
+        .hero-copy > *, .hero h1 .hl::after, .thread-live { animation: none !important; }
+        .weave-bg path, .strand-draw { stroke-dashoffset: 0 !important; }
+        html { scroll-behavior: auto; }
+      }
+
+      /* ---------- Sections ---------- */
+      section.block { padding: 76px 0; }
+      section.block.alt { background: #E7DDC4; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+      @media (prefers-color-scheme: dark) { section.block.alt { background: #162E22; } }
+      .sec-head { max-width: 640px; margin-bottom: 36px; }
+      .sec-head .no { font-size: 13px; letter-spacing: .2em; color: var(--brass-deep); font-weight: 700; margin: 0 0 8px; }
+      .sec-head h2 { font-size: clamp(26px, 3.6vw, 36px); margin: 0 0 10px; line-height: 1.3; }
+      .sec-head p { color: var(--ink-soft); margin: 0; }
+
+      /* ---------- Classes ---------- */
+      .class-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      @media (max-width: 720px) { .class-grid { grid-template-columns: 1fr; } }
+      .class-card {
+        background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--forest);
+        border-radius: var(--radius);
+        overflow: hidden; box-shadow: var(--shadow);
+        opacity: 1; visibility: visible;
+        transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
+      }
+      .class-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 22px 40px rgba(30, 58, 47, .22);
+      }
+      .class-card .class-art svg { transition: transform .5s cubic-bezier(.22,1,.36,1); }
+      .class-card:hover .class-art svg { transform: scale(1.08) rotate(-2deg); }
+      @media (prefers-reduced-motion: reduce) {
+        .class-card { transition: none; }
+      }
+      .class-art { height: 168px; display: flex; align-items: flex-end; justify-content: center; position: relative; overflow: hidden; }
+      .class-art.rattan { background: repeating-linear-gradient(0deg, #2B4F3E 0 10px, #1E3A2F 10px 12px), #1E3A2F; }
+      .class-art.glass { background: linear-gradient(135deg, #1E3A2F, #B08D3E 55%, #F2EBDD); }
+      .class-art.ceramic { background: radial-gradient(circle at 30% 20%, #F2EBDD, #D9C99A); }
+      .class-art.daily { background: linear-gradient(120deg, #2B4F3E, #EADFC0 60%, #F2EBDD); }
+      .class-art svg { width: 132px; height: 132px; margin-bottom: -6px; }
+      .class-body { padding: 22px 24px 26px; }
+      .class-body h3 { font-size: 22px; margin: 0 0 4px; }
+      .class-body .en { font-size: 12px; letter-spacing: .18em; color: var(--brass-deep); font-weight: 700; margin: 0 0 12px; }
+      .class-body p { color: var(--ink-soft); margin: 0 0 16px; font-size: 15px; }
+      .class-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+      .class-meta span { font-size: 12.5px; background: var(--surface-2); border: 1px solid var(--line); padding: 5px 10px; border-radius: 999px; }
+
+      /* ---------- Price table ---------- */
+      .table-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+      table.price { width: 100%; border-collapse: collapse; font-size: 15px; }
+      table.price th, table.price td { padding: 16px 18px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: middle; }
+      table.price thead th { background: #1E3A2F; color: #F2EBDD; font-weight: 700; font-size: 14px; letter-spacing: .04em; }
+      table.price tbody tr:last-child td { border-bottom: none; }
+      table.price td.name { font-weight: 700; }
+      table.price td.name small { display: block; font-weight: 400; color: var(--ink-soft); font-size: 12.5px; }
+      table.price td.fee { font-weight: 700; color: var(--terra-deep); white-space: nowrap; }
+      @media (max-width: 640px) {
+        table.price thead { display: none; }
+        table.price, table.price tbody, table.price tr, table.price td { display: block; width: 100%; }
+        table.price tr { padding: 14px 18px; border-bottom: 1px solid var(--line); }
+        table.price tr:last-child { border-bottom: none; }
+        table.price td { border: none; padding: 3px 0; }
+        table.price td::before { content: attr(data-label); display: inline-block; width: 74px; font-size: 12.5px; color: var(--ink-soft); font-weight: 700; }
+        table.price td.name::before { display: none; }
+      }
+      .price-notes { margin: 16px 4px 0; color: var(--ink-soft); font-size: 13.5px; padding-left: 18px; }
+      .sched { margin-top: 34px; }
+      .sched h3 { font-size: 20px; margin: 0 0 14px; }
+      .sched-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      @media (max-width: 860px) { .sched-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 460px) { .sched-grid { grid-template-columns: 1fr; } }
+      .sched-item { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+      .sched-item .day { font-weight: 700; color: var(--terra-deep); margin-bottom: 6px; font-size: 14px; }
+      .sched-item p { margin: 0; font-size: 14px; color: var(--ink-soft); }
+      .sched-item p b { color: var(--ink); }
+
+      /* ---------- Group / outreach ---------- */
+      .group-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (max-width: 860px) { .group-grid { grid-template-columns: 1fr; } }
+      .group-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow); }
+      .group-card .g-no { font-family: "Gowun Dodum", serif; font-size: 30px; color: var(--brass-deep); }
+      .group-card h3 { font-size: 20px; margin: 8px 0 10px; }
+      .group-card p { color: var(--ink-soft); font-size: 14.5px; margin: 0 0 14px; }
+      .group-card ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-soft); }
+      .steps { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px; align-items: stretch; }
+      .step { flex: 1 1 150px; background: var(--surface-2); border: 1px dashed var(--terra); border-radius: 14px; padding: 14px 16px; font-size: 14px; }
+      .step b { display: block; color: var(--terra-deep); margin-bottom: 4px; }
+
+      /* ---------- Gallery ---------- */
+      .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      @media (max-width: 860px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 520px) { .gallery-grid { grid-template-columns: 1fr; } }
+      figure.work { margin: 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+      .work-art { height: 190px; display: flex; align-items: center; justify-content: center; }
+      .work-art svg { width: 150px; height: 150px; }
+      .w1 { background: radial-gradient(circle at 50% 30%, #F2EBDD, #D9C99A); }
+      .w2 { background: linear-gradient(160deg, #2B4F3E, #EADFC0); }
+      .w3 { background: radial-gradient(circle at 70% 20%, #F2EBDD, #CBB87A); }
+      .w4 { background: linear-gradient(150deg, #DCE5D8, #1E3A2F); }
+      .w5 { background: radial-gradient(circle at 30% 80%, #EADFC0, #B08D3E); }
+      .w6 { background: linear-gradient(140deg, #F2EBDD, #2B4F3E); }
+      figure.work figcaption { padding: 14px 18px 16px; }
+      figure.work figcaption b { display: block; font-size: 15.5px; }
+      figure.work figcaption span { font-size: 13px; color: var(--ink-soft); }
+
+      /* ---------- Reviews ---------- */
+      .review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (max-width: 860px) { .review-grid { grid-template-columns: 1fr; } }
+      .review { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; box-shadow: var(--shadow); }
+      .stars { color: var(--brass-deep); letter-spacing: 3px; font-size: 15px; margin-bottom: 12px; }
+      .review p { margin: 0 0 16px; font-size: 15px; }
+      .review .who { font-size: 13.5px; color: var(--ink-soft); }
+      .review .who b { color: var(--ink); }
+
+      /* ---------- Booking ---------- */
+      .book-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 28px; align-items: start; }
+      @media (max-width: 860px) { .book-grid { grid-template-columns: 1fr; } }
+      .contact-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px 26px; box-shadow: var(--shadow); }
+      .contact-card h3 { font-size: 21px; margin: 0 0 8px; }
+      .contact-card p { color: var(--ink-soft); font-size: 14.5px; margin: 0 0 20px; }
+      .contact-btns { display: grid; gap: 10px; }
+      .btn-naver { background: #03C75A; color: #081F12; }
+      .btn-naver:hover { background: #19D66B; color: #081F12; }
+      .info-list { list-style: none; margin: 22px 0 0; padding: 18px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px; font-size: 14.5px; }
+      .info-list li { display: flex; gap: 10px; }
+      .info-list b { flex: 0 0 64px; color: var(--terra-deep); }
+
+      /* Google-Form-style application form */
+      @media (prefers-color-scheme: dark) { .gform { border-top-color: var(--brass) !important; } table.price thead th { background: #2E4A3A; } .confirm .check path { stroke: #F2EBDD; } }
+      .gform { background: var(--surface); border: 1px solid var(--line); border-top: 10px solid #1E3A2F; border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+      .gform-head { padding: 26px 28px 8px; }
+      .gform-head h3 { font-size: 24px; margin: 0 0 6px; }
+      .gform-head p { color: var(--ink-soft); font-size: 13.5px; margin: 0; }
+      .gform-head .req-note { color: var(--terra-deep); font-size: 12.5px; margin-top: 8px; }
+      form.app { padding: 10px 28px 28px; display: grid; gap: 8px; }
+      @media (max-width: 480px) {
+        .contact-card { padding: 22px 18px; }
+        .gform-head { padding: 22px 18px 6px; }
+        form.app { padding: 10px 18px 22px; }
+        .confirm { padding: 28px 18px 32px; }
+      }
+      .field { padding: 14px 0 6px; }
+      .field label { display: block; font-size: 14.5px; font-weight: 500; margin-bottom: 10px; }
+      .field label .req { color: #C5221F; }
+      @media (prefers-color-scheme: dark) { .field label .req { color: #F28B82; } }
+      .field input[type="text"], .field input[type="tel"], .field input[type="date"],
+      .field select, .field textarea {
+        width: 100%; font: inherit; font-size: 15px; color: var(--ink);
+        background: transparent; border: none; border-bottom: 1.5px solid var(--line);
+        padding: 8px 2px; border-radius: 0; min-height: 40px;
+      }
+      .field textarea { resize: vertical; min-height: 56px; }
+      .field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--terra); }
+      .field .hint { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+      .radio-row { display: flex; gap: 8px; flex-wrap: wrap; }
+      .radio-row label {
+        display: inline-flex; align-items: center; gap: 7px; margin: 0;
+        border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
+        font-size: 14px; cursor: pointer; min-height: 40px; background: var(--surface);
+      }
+      .radio-row input { accent-color: var(--terra); width: 16px; height: 16px; }
+      .form-error { display: none; color: #C5221F; font-size: 13.5px; padding: 6px 0 0; }
+      @media (prefers-color-scheme: dark) { .form-error { color: #F28B82; } }
+      .form-error.show { display: block; }
+      .submit-row { display: flex; align-items: center; gap: 14px; padding-top: 14px; flex-wrap: wrap; }
+      .submit-btn {
+        background: #1E3A2F; color: #F2EBDD; border: none; border-radius: 8px;
+        font: inherit; font-weight: 700; font-size: 15px; padding: 12px 30px; min-height: 48px; cursor: pointer;
+        white-space: nowrap; flex-shrink: 0;
+      }
+      .submit-btn:hover { background: var(--forest-mid); }
+      @media (prefers-color-scheme: dark) {
+        .submit-btn { background: var(--brass); color: #12251C; }
+        .submit-btn:hover { background: #E3C87A; }
+      }
+      .submit-row small { color: var(--ink-soft); font-size: 12.5px; }
+      .confirm { display: none; padding: 34px 28px 38px; text-align: center; }
+      .confirm.show { display: block; }
+      .confirm .check {
+        width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%;
+        background: var(--sage-soft); display: flex; align-items: center; justify-content: center;
+      }
+      .confirm h3 { font-size: 23px; margin: 0 0 10px; }
+      .confirm p { color: var(--ink-soft); margin: 0 auto 8px; max-width: 26em; font-size: 15px; }
+      .confirm .summary {
+        text-align: left; background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 12px; padding: 16px 20px; margin: 20px auto; max-width: 420px; font-size: 14.5px;
+      }
+      .confirm .summary div { display: flex; gap: 12px; padding: 3px 0; }
+      .confirm .summary b { flex: 0 0 76px; color: var(--terra-deep); }
+
+      footer.site { background: #1E3A2F; border-top: 4px solid var(--brass); padding: 34px 0 44px; color: #DAD2B8; font-size: 13.5px; }
+      @media (prefers-color-scheme: dark) { footer.site { background: #0B1A13; } }
+      footer.site .brand { color: #F2EBDD !important; }
+      footer.site .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+      footer.site .brand { font-size: 20px; color: #F2EBDD; }
+      footer.site a.credit-link { color: #EADFC0; text-decoration: underline; text-underline-offset: 3px; font-weight: 700; }
+      footer.site a.credit-link:hover { color: #FFFFFF; }
+
+      /* ---------- getsite.my order banner ---------- */
+      .getsite-banner {
+        background: var(--brass-soft);
+        border-top: 3px solid var(--brass);
+        padding: 48px 0 52px;
+        text-align: center;
+      }
+      .getsite-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+      .getsite-banner h2 { font-size: clamp(24px, 3.4vw, 32px); line-height: 1.3; margin: 0 0 10px; color: var(--ink); }
+      .getsite-banner p { margin: 0; color: var(--ink-soft); font-size: 15.5px; max-width: 36em; }
+      .getsite-btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        min-height: 52px; padding: 14px 28px; border-radius: 999px;
+        background: #1E3A2F; color: #F2EBDD !important; border: 1.5px solid #1E3A2F;
+        font-size: 16px; font-weight: 700; text-decoration: none;
+        box-shadow: 0 10px 24px rgba(30, 58, 47, .22);
+        transition: transform .15s ease, background .15s ease;
+      }
+      .getsite-btn:hover { background: #2B4F3E; transform: translateY(-1px); }
+      @media (prefers-color-scheme: dark) {
+        .getsite-btn { background: #B08D3E; color: #12251C !important; border-color: #B08D3E; box-shadow: 0 10px 24px rgba(0,0,0,.35); }
+        .getsite-btn:hover { background: #C9A44E; }
+      }
+    </style>
+
+  </head>
+  <body>
+    <div class="sample-bar">SAMPLE<span>블레싱공방 제작 샘플 · 가격·일정·후기는 예시입니다 · 제작: <a href="https://getsite-my.web.app" target="_blank" rel="noopener">getsite.my</a></span></div>
+
+    <header class="site">
+      <div class="wrap site-inner">
+        <a class="brand" href="#top">블레싱<em>공방</em></a>
+        <nav class="main" aria-label="주요 메뉴">
+          <a href="#classes">클래스</a>
+          <a href="#price">일정·가격</a>
+          <a href="#group">단체·출강</a>
+          <a href="#gallery">갤러리</a>
+          <a href="#reviews">후기</a>
+          <a class="nav-cta" href="#booking">예약·문의</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- 1. 히어로 -->
+      <section class="hero">
+        <svg class="weave-bg" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true">
+          <path class="t1" d="M-40 120 C 220 40, 420 210, 680 130 S 1080 60, 1260 150" />
+          <path class="t2" d="M-40 300 C 260 210, 480 390, 760 300 S 1100 230, 1260 320" />
+          <path class="t3" d="M-40 460 C 240 390, 520 520, 800 450 S 1120 390, 1260 470" />
+          <path class="t4" d="M-40 210 C 300 140, 560 280, 860 200 S 1140 150, 1260 230" />
+        </svg>
+        <div class="wrap hero-inner">
+          <div class="hero-copy">
+            <p class="place">의정부 · 원데이 클래스 공방</p>
+            <h1>손끝에서 피어나는<br />작은 행복, <span class="hl">블레싱공방</span></h1>
+            <p class="lead">라탄을 엮고, 유리에 빛을 담고, 흙을 빚는 시간. 처음이어도 괜찮아요. 천천히, 따뜻하게 — 나만의 작품 하나를 완성해 가는 공방입니다.</p>
+            <div class="hero-cta">
+              <a class="btn btn-terra" href="#booking">클래스 신청하기</a>
+              <a class="btn btn-line" href="#classes">클래스 둘러보기</a>
+            </div>
+            <div class="hero-tags">
+              <span>라탄</span><span>글라스아트</span><span>발포세라믹</span><span>데일리꾸</span><span>단체·출강 가능</span>
+            </div>
+          </div>
+          <div class="weaving-stage" role="img" aria-label="두 손이 라탄 바구니를 엮고 있는 일러스트. 엮는 선이 그려지고 주변에 공예 소품들이 떠다닌다">
+            <svg class="stage-svg" viewBox="0 0 520 520" aria-hidden="true">
+              <!-- 회전하는 원형 레터링 -->
+              <g class="ring-rotor">
+                <defs><path id="ringPath" d="M260,248 m-198,0 a198,198 0 1,1 396,0 a198,198 0 1,1 -396,0" /></defs>
+                <text font-size="13.5" letter-spacing="4.5" fill="#B08D3E" font-weight="700">
+                  <textPath href="#ringPath">HANDMADE RATTAN · BLESSING ATELIER · ONE DAY CLASS · WOVEN BY HAND ·</textPath>
+                </text>
+              </g>
+              <!-- 엮은 원형 매트 -->
+              <circle cx="260" cy="248" r="168" fill="#F2EBDD" />
+              <circle cx="260" cy="248" r="168" fill="none" stroke="#C9A44E" stroke-width="10" stroke-dasharray="26 10" />
+              <circle cx="260" cy="248" r="140" fill="none" stroke="#D9C99A" stroke-width="7" stroke-dasharray="4 12" />
+              <circle cx="260" cy="248" r="112" fill="#FFFEF7" stroke="#D6C7A0" stroke-width="1.5" />
+              <!-- 실타래에서 바구니로 이어지는 실 -->
+              <path class="thread-live" d="M96 420 C 150 372, 168 356, 196 348" fill="none" stroke="#B08D3E" stroke-width="3" />
+              <path class="thread-live" d="M402 150 C 372 218, 356 262, 330 300" fill="none" stroke="#B08D3E" stroke-width="3" />
+              <!-- 바구니 위로 솟은 덜 엮인 날실 -->
+              <g class="loose-strand" stroke="#B08D3E" stroke-width="5" fill="none" stroke-linecap="round">
+                <path d="M216 306 q-8 -44 -24 -62" />
+                <path d="M244 300 q-2 -48 -10 -70" />
+                <path d="M274 300 q4 -46 16 -66" />
+                <path d="M302 306 q10 -40 28 -56" />
+              </g>
+              <!-- 라탄 바구니 본체 -->
+              <path d="M182 402 L202 302 h116 L338 402 q-78 22 -156 0 Z" fill="#C9A44E" />
+              <g fill="none" stroke-linecap="round">
+                <path class="strand-draw" style="animation-delay:.2s" d="M192 330 h136" stroke="#B08D3E" stroke-width="6" />
+                <path class="strand-draw" style="animation-delay:.45s" d="M188 356 h144" stroke="#B08D3E" stroke-width="6" />
+                <path class="strand-draw" style="animation-delay:.7s" d="M186 382 h148" stroke="#B08D3E" stroke-width="6" />
+                <path class="strand-draw" style="animation-delay:.95s" d="M214 306 v92 M242 304 v100 M270 304 v100 M298 306 v92" stroke="#8A6E2E" stroke-width="4.5" />
+              </g>
+              <path d="M196 302 h128" stroke="#1E3A2F" stroke-width="7" stroke-linecap="round" />
+              <ellipse cx="260" cy="412" rx="96" ry="7" fill="#8A6E2E" fill-opacity=".3" />
+              <!-- 실타래 -->
+              <g>
+                <circle cx="82" cy="438" r="30" fill="#B08D3E" />
+                <path d="M58 424 q24 12 48 2 M56 442 q26 10 52 -2 M66 414 q10 26 -2 50" stroke="#1E3A2F" stroke-width="3.5" fill="none" stroke-linecap="round" />
+              </g>
+              <!-- 왼손 : 날실을 잡은 손 -->
+              <g class="hand-l">
+                <path d="M52 348 q-16 -4 -20 -20 l-6 -30 q-1 -10 9 -12 l26 -4 q10 -1 13 8 l8 34 q3 16 -10 22 Z" fill="#B08D3E" />
+                <path d="M96 300 q26 -14 44 2 q10 9 4 22 l-10 22 q-6 12 -20 10 l-28 -4 q-14 -2 -15 -16 l-1 -18 q0 -12 12 -15 Z" fill="#EADFC0" />
+                <g class="fingers" stroke="#EADFC0" stroke-width="11" stroke-linecap="round" fill="none">
+                  <path d="M138 302 q18 -8 30 0" />
+                  <path d="M142 318 q18 -6 30 2" />
+                  <path d="M140 334 q16 -4 27 4" />
+                </g>
+                <path d="M132 296 q22 -12 44 -4" stroke="#B08D3E" stroke-width="5" fill="none" stroke-linecap="round" />
+              </g>
+              <!-- 오른손 : 바늘로 씨실을 꿰는 손 -->
+              <g class="hand-r">
+                <path d="M452 128 q16 -2 24 10 l16 26 q5 9 -3 15 l-23 14 q-9 5 -16 -3 l-16 -28 q-7 -14 3 -22 Z" fill="#2B4F3E" />
+                <path d="M404 168 q-24 16 -42 6 q-12 -6 -10 -20 l4 -24 q2 -13 16 -14 l28 -2 q14 -1 18 12 l4 17 q3 12 -8 18 Z" fill="#EADFC0" />
+                <g class="fingers" stroke="#EADFC0" stroke-width="11" stroke-linecap="round" fill="none">
+                  <path d="M360 158 q-16 10 -20 24" />
+                  <path d="M372 172 q-14 12 -16 26" />
+                  <path d="M388 178 q-10 13 -10 26" />
+                </g>
+                <line x1="352" y1="196" x2="322" y2="252" stroke="#8A8F98" stroke-width="4" stroke-linecap="round" />
+                <path d="M322 252 C 330 272, 332 286, 330 300" fill="none" stroke="#B08D3E" stroke-width="3.5" stroke-linecap="round" />
+              </g>
+            </svg>
+            <!-- 떠다니는 공예 조각들 -->
+            <div class="float-piece fp-1" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="15" fill="#8FB09C" fill-opacity=".8" stroke="#1E3A2F" stroke-width="2.5"/><circle cx="24" cy="24" r="6.5" fill="#EADFC0"/><line x1="24" y1="2" x2="24" y2="9" stroke="#1E3A2F" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+            <div class="float-piece fp-2" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M10 38 L15 20 h18 L38 38 Z" fill="#C9A44E"/><path d="M13 27 h22 M14 33 h20" stroke="#B08D3E" stroke-width="3" stroke-linecap="round"/><path d="M17 20 q7 -10 14 0" fill="none" stroke="#B08D3E" stroke-width="3.5" stroke-linecap="round"/></svg></div>
+            <div class="float-piece fp-3" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 42 c-8 -3 -10 -11 -7 -18 c1.6 -4 4 -6 4 -10 v-3 h6 v3 c0 4 2.4 6 4 10 c3 7 1 15 -7 18 Z" fill="#1E3A2F"/><path d="M24 11 q-1 -6 -6 -8 M24 11 q2 -6 7 -8" stroke="#2B4F3E" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
+            <div class="float-piece fp-4" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="26" r="14" fill="#B08D3E"/><path d="M13 19 q11 7 22 1 M12 28 q12 7 24 -1 M17 13 q6 12 1 26" stroke="#8A6E2E" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M34 14 q8 -6 12 -2 q-3 6 -9 7 q-4 0 -3 -5Z" fill="#2B4F3E"/></svg></div>
+            <div class="float-piece fp-5" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6" fill="#B08D3E"/><circle cx="24" cy="13" r="5.5" fill="#D9B95C"/><circle cx="24" cy="35" r="5.5" fill="#D9B95C"/><circle cx="13" cy="24" r="5.5" fill="#B08D3E"/><circle cx="35" cy="24" r="5.5" fill="#B08D3E"/><circle cx="24" cy="24" r="3.4" fill="#B08D3E"/></svg></div>
+            <p class="stage-caption">한 올 한 올, 손끝으로 엮는 중이에요</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. 클래스 4종 -->
+      <section class="block" id="classes">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">CLASSES</p>
+            <h2>네 가지 손작업 클래스</h2>
+            <p>모두 원데이로 완성할 수 있는 수업입니다. 재료와 도구는 공방에서 준비해 드리니, 가벼운 마음으로 오세요.</p>
+          </div>
+          <div class="class-grid">
+            <article class="class-card">
+              <div class="class-art rattan" aria-hidden="true">
+                <svg viewBox="0 0 120 120"><path d="M22 96 L32 52 h56 L98 96 Z" fill="#B08D3E"/><path d="M30 68 h60 M34 82 h52" stroke="#8A6E2E" stroke-width="5" stroke-linecap="round"/><path d="M40 52 q20 -24 40 0" fill="none" stroke="#8A6E2E" stroke-width="6" stroke-linecap="round"/><path d="M52 50 q-4 -22 -16 -30 M62 46 q2 -24 -4 -34 M74 50 q6 -20 18 -28" stroke="#2B4F3E" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="34" cy="18" r="6" fill="#B08D3E"/><circle cx="58" cy="10" r="6" fill="#D9B95C"/><circle cx="94" cy="20" r="6" fill="#8A6E2E"/></svg>
+              </div>
+              <div class="class-body">
+                <h3>라탄 클래스</h3>
+                <p class="en">RATTAN</p>
+                <p>등나무를 한 올 한 올 엮어 바구니, 트레이, 전등갓을 만듭니다. 엮을수록 단단해지는 결과물이 주는 만족감이 큰, 공방의 대표 클래스예요.</p>
+                <div class="class-meta"><span>바구니 · 트레이 · 전등갓</span><span>초보 환영</span><span>작품 당일 수령</span></div>
+              </div>
+            </article>
+            <article class="class-card">
+              <div class="class-art glass" aria-hidden="true">
+                <svg viewBox="0 0 120 120"><circle cx="60" cy="58" r="34" fill="#FFFEF7" fill-opacity=".45"/><path d="M60 24 a34 34 0 0 1 0 68 Z" fill="#B08D3E" fill-opacity=".85"/><path d="M60 24 a34 34 0 0 0 0 68 Z" fill="#2B4F3E" fill-opacity=".85"/><circle cx="60" cy="58" r="13" fill="#EADFC0"/><circle cx="60" cy="58" r="34" fill="none" stroke="#1E3A2F" stroke-width="3.5"/><line x1="60" y1="24" x2="60" y2="92" stroke="#1E3A2F" stroke-width="3"/><line x1="30" y1="44" x2="90" y2="72" stroke="#1E3A2F" stroke-width="2.5"/><line x1="10" y1="14" x2="24" y2="26" stroke="#1E3A2F" stroke-width="3" stroke-linecap="round"/><circle cx="8" cy="10" r="4" fill="#1E3A2F"/></svg>
+              </div>
+              <div class="class-body">
+                <h3>글라스아트 클래스</h3>
+                <p class="en">GLASS ART</p>
+                <p>색유리를 자르고 이어 붙여 썬캐처, 조명, 소품 접시를 만듭니다. 빛이 통과할 때마다 색이 살아나는, 창가에 걸어두기 좋은 작품이에요.</p>
+                <div class="class-meta"><span>썬캐처 · 무드등 · 접시</span><span>유리 컷팅 체험</span><span>작품 당일 수령</span></div>
+              </div>
+            </article>
+            <article class="class-card">
+              <div class="class-art ceramic" aria-hidden="true">
+                <svg viewBox="0 0 120 120"><path d="M38 98 c-10 -4 -13 -15 -9 -25 c2 -7 7 -10 7 -18 v-6 h48 v6 c0 8 5 11 7 18 c4 10 1 21 -9 25 Z" fill="#1E3A2F"/><path d="M34 74 h52" stroke="#1E3A2F" stroke-width="4" stroke-linecap="round"/><ellipse cx="60" cy="100" rx="30" ry="4" fill="#B08D3E" fill-opacity=".5"/><path d="M60 49 q-2 -20 -12 -30 M60 49 q3 -22 14 -30 M60 49 q0 -24 -1 -34" stroke="#2B4F3E" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="46" cy="16" r="5.5" fill="#B08D3E"/><circle cx="76" cy="16" r="5.5" fill="#D9B95C"/><circle cx="60" cy="10" r="5.5" fill="#8A6E2E"/></svg>
+              </div>
+              <div class="class-body">
+                <h3>발포세라믹 클래스</h3>
+                <p class="en">FOAMED CERAMIC</p>
+                <p>가볍고 단단한 발포세라믹으로 화분, 오브제, 인센스 홀더를 빚습니다. 흙의 질감은 살리고 무게는 줄여, 일상에서 쓰기 좋은 소품이 돼요.</p>
+                <div class="class-meta"><span>화분 · 오브제 · 홀더</span><span>채색 포함</span><span>건조 후 수령 안내</span></div>
+              </div>
+            </article>
+            <article class="class-card">
+              <div class="class-art daily" aria-hidden="true">
+                <svg viewBox="0 0 120 120"><rect x="30" y="34" width="60" height="52" rx="8" fill="#FFFEF7"/><rect x="30" y="34" width="60" height="52" rx="8" fill="none" stroke="#B08D3E" stroke-width="3"/><path d="M30 50 h60" stroke="#B08D3E" stroke-width="3"/><circle cx="44" cy="42" r="3" fill="#B08D3E"/><circle cx="56" cy="42" r="3" fill="#2B4F3E"/><path d="M40 66 q8 -8 14 0 q6 8 12 0 q6 -7 12 -1" fill="none" stroke="#1E3A2F" stroke-width="3.5" stroke-linecap="round"/><path d="M40 78 h26" stroke="#B08D3E" stroke-width="3.5" stroke-linecap="round"/><path d="M84 26 q10 -10 18 -4 q-2 10 -12 12 q-6 1 -6 -8Z" fill="#2B4F3E"/><path d="M28 92 q-8 8 -16 4 q2 -8 10 -10 q6 0 6 6Z" fill="#B08D3E"/></svg>
+              </div>
+              <div class="class-body">
+                <h3>데일리꾸 클래스</h3>
+                <p class="en">DAILY DECO</p>
+                <p>다이어리, 폰케이스, 탑꾸 등 매일 쓰는 물건을 내 취향으로 꾸미는 시간. 스티커와 파츠 고르는 재미가 가득한, 가장 가볍게 시작할 수 있는 클래스예요.</p>
+                <div class="class-meta"><span>다꾸 · 폰꾸 · 탑꾸</span><span>재료 무제한</span><span>친구·커플 추천</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 일정·가격표 -->
+      <section class="block alt" id="price">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">SCHEDULE &amp; PRICE</p>
+            <h2>일정 · 가격 안내</h2>
+            <p>모든 클래스 재료비가 포함된 가격입니다. 정원 마감 시 희망 날짜 조율이 필요할 수 있어요.</p>
+          </div>
+          <div class="table-card">
+            <table class="price">
+              <thead>
+                <tr><th>클래스</th><th>가격 (1인)</th><th>소요시간</th><th>정원</th><th>비고</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="name">라탄 클래스<small>바구니 · 트레이 · 전등갓 중 택 1</small></td>
+                  <td class="fee" data-label="가격">45,000원</td>
+                  <td data-label="소요시간">약 2시간</td>
+                  <td data-label="정원">최대 6명</td>
+                  <td data-label="비고">재료비 포함</td>
+                </tr>
+                <tr>
+                  <td class="name">글라스아트 클래스<small>썬캐처 · 무드등 · 접시 중 택 1</small></td>
+                  <td class="fee" data-label="가격">55,000원</td>
+                  <td data-label="소요시간">약 2시간 30분</td>
+                  <td data-label="정원">최대 6명</td>
+                  <td data-label="비고">재료비 포함</td>
+                </tr>
+                <tr>
+                  <td class="name">발포세라믹 클래스<small>화분 · 오브제 · 인센스 홀더 중 택 1</small></td>
+                  <td class="fee" data-label="가격">50,000원</td>
+                  <td data-label="소요시간">약 2시간</td>
+                  <td data-label="정원">최대 8명</td>
+                  <td data-label="비고">건조 후 픽업·택배</td>
+                </tr>
+                <tr>
+                  <td class="name">데일리꾸 클래스<small>다꾸 · 폰꾸 · 탑꾸</small></td>
+                  <td class="fee" data-label="가격">35,000원</td>
+                  <td data-label="소요시간">약 1시간 30분</td>
+                  <td data-label="정원">최대 8명</td>
+                  <td data-label="비고">파츠 재료 무제한</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ul class="price-notes">
+            <li>2인 이상 동시 신청 시 1인당 5,000원 할인 (데일리꾸 제외)</li>
+            <li>위 가격과 일정은 샘플 페이지용 예시이며 실제 공방 운영에 맞게 조정됩니다.</li>
+            <li>수업 3일 전까지 전액 환불, 이후 일정 변경 1회 가능합니다.</li>
+          </ul>
+
+          <div class="sched">
+            <h3>주간 운영 일정</h3>
+            <div class="sched-grid">
+              <div class="sched-item"><div class="day">월 · 화 · 목 · 금</div><p><b>1부</b> 11:00 · <b>2부</b> 14:00 · <b>3부</b> 18:00<br />전 클래스 예약 가능</p></div>
+              <div class="sched-item"><div class="day">수요일</div><p><b>정기 휴무</b><br />단체·출강 상담만 가능</p></div>
+              <div class="sched-item"><div class="day">토요일</div><p><b>1부</b> 11:00 · <b>2부</b> 14:00 · <b>3부</b> 17:00<br />주말 클래스는 조기 마감돼요</p></div>
+              <div class="sched-item"><div class="day">일요일</div><p><b>1부</b> 11:00 · <b>2부</b> 14:00<br />가족·커플 클래스 추천</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 단체·출강 안내 -->
+      <section class="block" id="group">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">GROUP &amp; OUTREACH</p>
+            <h2>단체 수업 · 출강 안내</h2>
+            <p>공방에서 여는 단체 수업부터, 찾아가서 여는 출강 수업까지. 인원과 장소에 맞춰 커리큘럼을 조정해 드립니다.</p>
+          </div>
+          <div class="group-grid">
+            <article class="group-card">
+              <div class="g-no">01</div>
+              <h3>단체 클래스 (공방 방문)</h3>
+              <p>모임, 동호회, 가족 행사로 공방 공간을 통째로 쓰는 수업입니다.</p>
+              <ul>
+                <li>8명부터 단체 예약 가능 (예시)</li>
+                <li>단체 할인 적용 (예시)</li>
+                <li>간단한 다과 준비 가능 (사전 협의)</li>
+              </ul>
+            </article>
+            <article class="group-card">
+              <div class="g-no">02</div>
+              <h3>기업 · 기관 워크숍</h3>
+              <p>팀워크 프로그램, 힐링 워크숍으로 인기 있는 출강형 수업입니다.</p>
+              <ul>
+                <li>규모에 맞춘 출강 진행 (예시)</li>
+                <li>재료·도구 전부 공방에서 지참</li>
+                <li>세금계산서 발행 (예시)</li>
+              </ul>
+            </article>
+            <article class="group-card">
+              <div class="g-no">03</div>
+              <h3>학교 · 복지관 출강</h3>
+              <p>방과후, 문화 프로그램 등 연령에 맞춘 난이도로 구성합니다.</p>
+              <ul>
+                <li>초등~성인 연령별 커리큘럼</li>
+                <li>출강 지역 협의 (예시)</li>
+                <li>회차별 정기 수업 협의 가능</li>
+              </ul>
+            </article>
+          </div>
+          <div class="steps">
+            <div class="step"><b>STEP 1 · 문의</b>날짜·인원·장소를 알려주세요</div>
+            <div class="step"><b>STEP 2 · 상담</b>클래스와 작품을 함께 정해요</div>
+            <div class="step"><b>STEP 3 · 견적</b>인원 기준 견적서를 보내드립니다</div>
+            <div class="step"><b>STEP 4 · 진행</b>당일 재료 준비부터 마무리까지</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. 작품 갤러리 -->
+      <section class="block alt" id="gallery">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">GALLERY · 예시</p>
+            <h2>작품 갤러리</h2>
+            <p>작품 사진이 들어갈 자리입니다(예시). 정식 제작 시 공방에서 직접 촬영한 작품과 수업 사진으로 채워집니다.</p>
+          </div>
+          <div class="gallery-grid">
+            <figure class="work">
+              <div class="work-art w1"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M22 92 L32 50 h56 L98 92 Z" fill="#B08D3E"/><path d="M30 66 h60 M34 79 h52" stroke="#8A6E2E" stroke-width="5" stroke-linecap="round"/><path d="M40 50 q20 -24 40 0" fill="none" stroke="#8A6E2E" stroke-width="6" stroke-linecap="round"/><ellipse cx="60" cy="100" rx="42" ry="4" fill="#8A6E2E" fill-opacity=".35"/></svg></div>
+              <figcaption><b>라탄 손잡이 바구니</b><span>라탄 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+            <figure class="work">
+              <div class="work-art w2"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="56" r="33" fill="#FFFEF7" fill-opacity=".4"/><path d="M60 23 a33 33 0 0 1 0 66 Z" fill="#2B4F3E" fill-opacity=".85"/><path d="M60 23 a33 33 0 0 0 0 66 Z" fill="#B08D3E" fill-opacity=".85"/><circle cx="60" cy="56" r="12" fill="#EADFC0"/><circle cx="60" cy="56" r="33" fill="none" stroke="#1E3A2F" stroke-width="3.5"/><line x1="60" y1="23" x2="60" y2="89" stroke="#1E3A2F" stroke-width="3"/><line x1="12" y1="12" x2="26" y2="24" stroke="#1E3A2F" stroke-width="3" stroke-linecap="round"/></svg></div>
+              <figcaption><b>햇살 썬캐처</b><span>글라스아트 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+            <figure class="work">
+              <div class="work-art w3"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 96 c-10 -4 -13 -15 -9 -25 c2 -7 7 -10 7 -18 v-6 h48 v6 c0 8 5 11 7 18 c4 10 1 21 -9 25 Z" fill="#1E3A2F"/><path d="M34 72 h52" stroke="#1E3A2F" stroke-width="4" stroke-linecap="round"/><path d="M60 47 q-2 -18 -11 -27 M60 47 q3 -20 13 -27" stroke="#2B4F3E" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="47" cy="17" r="5" fill="#B08D3E"/><circle cx="74" cy="17" r="5" fill="#D9B95C"/></svg></div>
+              <figcaption><b>테라코타 미니 화분</b><span>발포세라믹 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+            <figure class="work">
+              <div class="work-art w4"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="34" y="24" width="52" height="72" rx="10" fill="#DCE5D8" fill-opacity=".75" stroke="#1E3A2F" stroke-width="3"/><path d="M44 96 V62 q16 -18 32 0 v34" fill="#2B4F3E" fill-opacity=".55"/><circle cx="60" cy="46" r="8" fill="#D9B95C"/><path d="M28 104 h64" stroke="#8A6E2E" stroke-width="5" stroke-linecap="round"/></svg></div>
+              <figcaption><b>유리 테라리움</b><span>글라스아트 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+            <figure class="work">
+              <div class="work-art w5"><svg viewBox="0 0 120 120" aria-hidden="true"><path d="M38 30 h44 l8 34 a30 16 0 0 1 -60 0 Z" fill="#C9A44E"/><path d="M36 44 h48 M34 58 h52" stroke="#B08D3E" stroke-width="4.5" stroke-linecap="round"/><line x1="60" y1="8" x2="60" y2="30" stroke="#1E3A2F" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="82" r="7" fill="#D9B95C"/><ellipse cx="60" cy="102" rx="36" ry="4" fill="#8A6E2E" fill-opacity=".35"/></svg></div>
+              <figcaption><b>라탄 무드등</b><span>라탄 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+            <figure class="work">
+              <div class="work-art w6"><svg viewBox="0 0 120 120" aria-hidden="true"><rect x="28" y="32" width="64" height="56" rx="8" fill="#FFFEF7" stroke="#B08D3E" stroke-width="3"/><path d="M28 48 h64" stroke="#B08D3E" stroke-width="3"/><circle cx="42" cy="40" r="3" fill="#B08D3E"/><circle cx="54" cy="40" r="3" fill="#2B4F3E"/><path d="M38 66 q8 -8 14 0 q6 8 12 0 q6 -7 12 -1" fill="none" stroke="#1E3A2F" stroke-width="3.5" stroke-linecap="round"/><path d="M38 78 h26" stroke="#B08D3E" stroke-width="3.5" stroke-linecap="round"/><path d="M86 22 q8 -10 17 -5 q-1 9 -10 12 q-6 1 -7 -7Z" fill="#2B4F3E"/></svg></div>
+              <figcaption><b>봄날 다이어리 꾸미기</b><span>데일리꾸 클래스 · 작품 사진 자리 (예시)</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. 후기 -->
+      <section class="block" id="reviews">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">REVIEWS · 예시 후기</p>
+            <h2>다녀가신 분들의 이야기 (예시 후기)</h2>
+            <p>수강 후기 구획의 배치와 구성을 보여드리기 위한 예시 후기입니다.</p>
+          </div>
+          <div class="review-grid">
+            <article class="review">
+              <div class="stars" role="img" aria-label="별점 5점">★★★★★</div>
+              <p>"라탄 바구니 처음 만들어 봤는데, 선생님이 한 단계씩 같이 엮어주셔서 엉성할 틈이 없었어요. 집에 와서 바로 현관 트레이로 쓰는 중입니다."</p>
+              <p class="who"><b>박○린 님</b> · 라탄 클래스 (예시)</p>
+            </article>
+            <article class="review">
+              <div class="stars" role="img" aria-label="별점 5점">★★★★★</div>
+              <p>"회사 워크숍으로 출강 부탁드렸는데 20명이 다 다른 썬캐처를 만들었어요. 재료 준비부터 마무리까지 깔끔해서 내년에도 또 부르기로 했습니다."</p>
+              <p class="who"><b>최○원 님</b> · 기업 워크숍 출강 (예시)</p>
+            </article>
+            <article class="review">
+              <div class="stars" role="img" aria-label="별점 5점">★★★★★</div>
+              <p>"친구랑 데일리꾸 다녀왔어요. 파츠 종류가 진짜 많아서 고르는 것만 한참 걸렸고, 시간 가는 줄 몰랐습니다. 의정부에 이런 데가 있다니 자주 올 것 같아요."</p>
+              <p class="who"><b>정○희 님</b> · 데일리꾸 클래스 (예시)</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. 예약·문의 -->
+      <section class="block alt" id="booking">
+        <div class="wrap">
+          <div class="sec-head">
+            <p class="no">BOOKING</p>
+            <h2>예약 · 문의</h2>
+            <p>위치 안내와 온라인 클래스 신청 폼이 들어가는 구획입니다. (샘플 페이지로 실제 전송은 되지 않습니다)</p>
+          </div>
+          <div class="book-grid">
+            <div class="contact-card">
+              <h3>오시는 길 · 운영 안내</h3>
+              <p>공방 위치와 운영시간, 연락처가 표시되는 안내 카드 예시입니다.</p>
+              <div class="contact-btns">
+                <a class="btn btn-naver" href="https://map.naver.com/p/search/%EB%B8%94%EB%A0%88%EC%8B%B1%EA%B3%B5%EB%B0%A9" target="_blank" rel="noopener">네이버 지도에서 찾기</a>
+              </div>
+              <ul class="info-list">
+                <li><b>연락처</b><span>010-0000-0000 (예시)</span></li>
+                <li><b>위치</b><span>경기도 의정부시 (상세 주소 예시)</span></li>
+                <li><b>운영</b><span>월·화·목·금·토·일 11:00 – 20:00 · 수요일 휴무</span></li>
+                <li><b>주차</b><span>인근 공영주차장 이용</span></li>
+              </ul>
+            </div>
+
+            <div class="gform">
+              <div class="gform-head">
+                <h3>블레싱공방 클래스 신청</h3>
+                <p>원하시는 클래스와 날짜를 선택해 신청하는 폼 예시입니다.</p>
+                <p class="req-note">* 표시는 필수 입력 항목입니다</p>
+              </div>
+              <form class="app" id="applyForm" novalidate>
+                <div class="field">
+                  <label for="fName">이름 <span class="req">*</span></label>
+                  <input type="text" id="fName" name="name" placeholder="답변을 입력하세요" autocomplete="name" />
+                </div>
+                <div class="field">
+                  <label for="fPhone">연락처 <span class="req">*</span></label>
+                  <input type="tel" id="fPhone" name="phone" placeholder="010-0000-0000" autocomplete="tel" />
+                </div>
+                <div class="field">
+                  <label>희망 클래스 <span class="req">*</span></label>
+                  <div class="radio-row" role="radiogroup" aria-label="희망 클래스">
+                    <label><input type="radio" name="class" value="라탄 클래스" /> 라탄</label>
+                    <label><input type="radio" name="class" value="글라스아트 클래스" /> 글라스아트</label>
+                    <label><input type="radio" name="class" value="발포세라믹 클래스" /> 발포세라믹</label>
+                    <label><input type="radio" name="class" value="데일리꾸 클래스" /> 데일리꾸</label>
+                    <label><input type="radio" name="class" value="단체·출강 문의" /> 단체·출강</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="fDate">희망 날짜 <span class="req">*</span></label>
+                  <input type="date" id="fDate" name="date" />
+                  <p class="hint">수요일은 정기 휴무일이라 선택할 수 없습니다.</p>
+                </div>
+                <div class="field">
+                  <label for="fPeople">인원 <span class="req">*</span></label>
+                  <select id="fPeople" name="people">
+                    <option value="">선택하세요</option>
+                    <option>1명</option><option>2명</option><option>3명</option>
+                    <option>4명</option><option>5명</option><option>6명</option>
+                    <option>7명 이상 (단체)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="fMsg">메시지</label>
+                  <textarea id="fMsg" name="message" rows="3" placeholder="궁금한 점이나 요청 사항을 적어주세요 (선택)"></textarea>
+                </div>
+                <p class="form-error" id="formError" role="alert">필수 항목을 모두 입력해 주세요.</p>
+                <div class="submit-row">
+                  <button type="submit" class="submit-btn">신청하기</button>
+                  <small>샘플 페이지로 실제 전송은 되지 않습니다</small>
+                </div>
+              </form>
+              <div class="confirm" id="confirmBox" role="status">
+                <div class="check" aria-hidden="true">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 12.5 L9.5 18 L20 6.5" stroke="#1E3A2F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <h3>샘플 페이지라 실제로 전송되지는 않았어요</h3>
+                <p>실제 홈페이지에서는 이 신청이 사장님께 바로 전달됩니다. 이 디자인으로 만들고 싶으시면 아래 ‘이 디자인으로 내 홈페이지 만들기’를 눌러 주세요.</p>
+                <div class="summary" id="confirmSummary"></div>
+                <button type="button" class="btn btn-line" id="againBtn">다른 신청 작성하기</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <section class="getsite-banner" aria-label="홈페이지 제작 안내">
+      <div class="wrap getsite-inner">
+        <div>
+          <h2>이 샘플이 마음에 드세요?</h2>
+          <p>이 디자인 그대로, 내 공방·가게·학원을 위한 홈페이지를 만들 수 있어요. 아래 버튼을 누르면 정식 주문 페이지로 이동합니다.</p>
+        </div>
+        <a class="getsite-btn" href="https://getsite-my.web.app/?sample=outreach-blessing-atelier#start" target="_blank" rel="noopener">이 디자인으로 내 홈페이지 만들기</a>
+      </div>
+    </section>
+
+    <footer class="site">
+      <div class="wrap">
+        <div>
+          <div class="brand serif">블레싱공방</div>
+          <p style="margin:6px 0 0;">의정부 라탄 · 글라스아트 · 발포세라믹 · 데일리꾸 원데이 클래스</p>
+        </div>
+        <div style="text-align:right;">
+          <p style="margin:0;">SAMPLE — 홈페이지 제작 샘플 페이지입니다</p>
+          <p style="margin:6px 0 0;">제작: <a class="credit-link" href="https://getsite-my.web.app" target="_blank" rel="noopener">getsite.my</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        var form = document.getElementById('applyForm');
+        var confirmBox = document.getElementById('confirmBox');
+        var summary = document.getElementById('confirmSummary');
+        var error = document.getElementById('formError');
+        var dateInput = document.getElementById('fDate');
+
+        var today = new Date();
+        var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+        dateInput.min = today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+
+        function fmtDate(v) {
+          if (!v) return '';
+          var p = v.split('-');
+          var d = new Date(+p[0], +p[1] - 1, +p[2]);
+          var days = ['일', '월', '화', '수', '목', '금', '토'];
+          return p[0] + '년 ' + (+p[1]) + '월 ' + (+p[2]) + '일 (' + days[d.getDay()] + ')';
+        }
+
+        function isWednesday(v) {
+          if (!v) return false;
+          var p = v.split('-');
+          var d = new Date(+p[0], +p[1] - 1, +p[2]);
+          return d.getDay() === 3;
+        }
+
+        dateInput.addEventListener('change', function () {
+          if (isWednesday(dateInput.value)) {
+            error.textContent = '수요일은 정기 휴무일입니다. 수요일 외의 다른 날짜를 선택해 주세요.';
+            error.classList.add('show');
+          } else {
+            error.classList.remove('show');
+          }
+        });
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var name = document.getElementById('fName').value.trim();
+          var phone = document.getElementById('fPhone').value.trim();
+          var cls = form.querySelector('input[name="class"]:checked');
+          var date = dateInput.value;
+          var people = document.getElementById('fPeople').value;
+          var msg = document.getElementById('fMsg').value.trim();
+
+          if (!name || !phone || !cls || !date || !people) {
+            error.textContent = '필수 항목(이름·연락처·희망 클래스·희망 날짜·인원)을 모두 입력해 주세요.';
+            error.classList.add('show');
+            error.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            var first = !name ? 'fName' : !phone ? 'fPhone' : !date ? 'fDate' : !people ? 'fPeople' : null;
+            if (first && document.getElementById(first)) document.getElementById(first).focus({ preventScroll: true });
+            else if (!cls) { var r0 = form.querySelector('input[name="class"]'); if (r0) r0.focus({ preventScroll: true }); }
+            return;
+          }
+          if (isWednesday(date)) {
+            error.textContent = '수요일은 정기 휴무일입니다. 수요일 외의 다른 날짜를 선택해 주세요.';
+            error.classList.add('show');
+            error.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            dateInput.focus();
+            return;
+          }
+          error.classList.remove('show');
+
+          var rows = [
+            ['이름', name],
+            ['연락처', phone],
+            ['희망 클래스', cls.value],
+            ['희망 날짜', fmtDate(date)],
+            ['인원', people]
+          ];
+          if (msg) rows.push(['메시지', msg]);
+          summary.innerHTML = rows.map(function (r) {
+            var div = document.createElement('div');
+            var b = document.createElement('b'); b.textContent = r[0];
+            var s = document.createElement('span'); s.textContent = r[1];
+            div.appendChild(b); div.appendChild(s);
+            return div.outerHTML;
+          }).join('');
+
+          form.style.display = 'none';
+          document.querySelector('.gform-head').style.display = 'none';
+          confirmBox.classList.add('show');
+          confirmBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          var _h=confirmBox.querySelector('h3'); if(_h){_h.setAttribute('tabindex','-1'); _h.focus({preventScroll:true});}
+        });
+
+        document.getElementById('againBtn').addEventListener('click', function () {
+
+          form.reset();
+          confirmBox.classList.remove('show');
+          form.style.display = '';
+          document.querySelector('.gform-head').style.display = '';
+          document.getElementById('fName').focus();
+        });
+      })();
+    </script>
+  </body>
+</html>

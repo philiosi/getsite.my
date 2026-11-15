@@ -11,3 +11,7 @@ backups/
 .hallmark/
 .env
 .env.*
+
+# getsite-samples: customer work-order pages stay out of this public repo
+!deploy/samples/getsite-samples/public/
+deploy/samples/getsite-samples/public/WO-*/

@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="또도스 카페 홈페이지 제작 샘플입니다. getsite.my가 만든 예시 페이지로, 가격·일정·후기는 예시입니다.">
+<meta name="theme-color" content="#faf5ec">
+<meta property="og:type" content="website">
+<meta property="og:title" content="또도스 카페 — 홈페이지 제작 샘플">
+<meta property="og:description" content="또도스 카페를 위해 만든 홈페이지 샘플입니다. 이 디자인 그대로 제작을 신청할 수 있습니다.">
+<meta property="og:url" content="https://getsite-samples.web.app/outreach/todos-cafe/">
+<meta property="og:image" content="https://getsite-samples.web.app/outreach/todos-cafe/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%238a5a35%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2222%22%20text-anchor%3D%22middle%22%20font-size%3D%2221%22%20fill%3D%22white%22%3E%EB%98%90%3C%2Ftext%3E%3C%2Fsvg%3E">
+<title>또도스 카페 — 주말만 여는 조용한 카페 (샘플)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet" />
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root{
+    --bg:#faf5ec;
+    --bg-soft:#f3ead9;
+    --surface:#fffdf7;
+    --surface-2:#f7efe0;
+    --ink:#3b2c1e;
+    --ink-soft:#6f5c48;
+    --muted:#6e5a46;
+    --brown:#8a5a35;
+    --brown-deep:#5d3c22;
+    --brown-ink:#4a2f1a;
+    --tan:#c99e6d;
+    --tan-soft:#e8d5b8;
+    --line:#e6d9c4;
+    --line-strong:#d8c5a4;
+    --accent:#b3793f;
+    --form-accent:#8a5a35;
+    --shadow:0 18px 40px rgba(93,60,34,.12);
+    --radius:18px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#211912;
+      --bg-soft:#2a2016;
+      --surface:#2e2418;
+      --surface-2:#33281b;
+      --ink:#f2e7d5;
+      --ink-soft:#d8c6ab;
+      --muted:#b39d7f;
+      --brown:#d09a5f;
+      --brown-deep:#eec491;
+      --brown-ink:#f6e8d2;
+      --tan:#c99e6d;
+      --tan-soft:#4a3823;
+      --line:#453522;
+      --line-strong:#5a452c;
+      --accent:#d99f5e;
+      --form-accent:#d09a5f;
+      --shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans KR", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:"Noto Serif KR","Noto Sans KR",serif}
+  a{color:inherit}
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  img,svg{display:block;max-width:100%}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* ---------- SAMPLE banner ---------- */
+  .sample-bar{
+    position:sticky;top:0;z-index:50;
+    background:var(--brown-ink);
+    color:#fdf6e9;
+    text-align:center;
+    padding:9px 16px;
+    font-size:13px;letter-spacing:.02em;
+    display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  }
+  .sample-bar strong{
+    background:#fdf6e9;color:var(--brown-ink);
+    font-weight:700;font-size:12px;letter-spacing:.22em;
+    padding:3px 10px 3px 12px;border-radius:999px;
+  }
+  .sample-bar .made-by{
+    color:#fdf6e9;text-decoration:none;font-weight:500;white-space:nowrap;
+    border-bottom:1px solid rgba(253,246,233,.55);padding-bottom:1px;
+  }
+  .sample-bar .made-by:hover{border-bottom-color:#fdf6e9}
+  @media (prefers-color-scheme: dark){.sample-bar .made-by{color:#f2e7d5;border-bottom-color:rgba(242,231,213,.55)}}
+  @media (prefers-color-scheme: dark){
+    .sample-bar{background:#120d08;color:#f2e7d5}
+    .sample-bar strong{background:#f2e7d5;color:#120d08}
+  }
+
+  /* ---------- Header / nav ---------- */
+  header.site{
+    border-bottom:1px solid var(--line);
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(6px);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding-block:14px;
+  }
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+  .brand-mark{
+    width:38px;height:38px;border-radius:50%;
+    border:1.5px solid var(--brown);
+    display:grid;place-items:center;
+    font-family:"Noto Serif KR",serif;font-weight:700;font-size:17px;color:var(--brown);
+    flex:none;
+  }
+  .brand-name{font-family:"Noto Serif KR",serif;font-weight:700;font-size:19px;line-height:1.15}
+  .brand-sub{font-size:11.5px;color:var(--muted);letter-spacing:.06em}
+  nav.menu{display:flex;gap:4px;flex-wrap:wrap}
+  nav.menu a{
+    text-decoration:none;font-size:14px;color:var(--ink-soft);
+    padding:9px 11px;border-radius:999px;min-height:36px;display:inline-flex;align-items:center;
+  }
+  nav.menu a:hover{background:var(--surface-2);color:var(--ink)}
+  @media (max-width:640px){
+    nav.menu{display:none}
+  }
+
+  /* ---------- Hero — 주말 아침, 창가 햇살 (풀블리드 포토) ---------- */
+  .hero{
+    position:relative;overflow:hidden;isolation:isolate;
+    min-height:min(88svh,760px);
+    display:flex;align-items:flex-end;
+    background:#e9d3ac;
+  }
+  .hero-photo{position:absolute;inset:0;z-index:-3;overflow:hidden}
+  .hero-photo img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 58%;
+    animation:kenburns 30s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes kenburns{
+    from{transform:scale(1.02) translate(0,0)}
+    to{transform:scale(1.14) translate(-1.6%,-2.2%)}
+  }
+  /* 창가로 비스듬히 스미는 아침 햇살 */
+  .hero-rays{
+    position:absolute;inset:0;z-index:-2;pointer-events:none;
+    background:
+      linear-gradient(112deg, transparent 52%, rgba(255,241,205,.38) 63%, rgba(255,241,205,.10) 72%, transparent 82%),
+      linear-gradient(112deg, transparent 30%, rgba(255,236,190,.20) 40%, transparent 52%),
+      radial-gradient(ellipse 55% 42% at 68% 12%, rgba(255,226,160,.55), rgba(255,226,160,0) 70%);
+    animation:raybreathe 9s ease-in-out infinite alternate;
+  }
+  @keyframes raybreathe{from{opacity:.55}to{opacity:1}}
+  /* 왼쪽 크림 베일 + 아래쪽 페이드 */
+  .hero-veil{
+    position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:
+      linear-gradient(90deg, rgba(250,245,236,.94) 0%, rgba(250,245,236,.78) 34%, rgba(250,245,236,.28) 58%, rgba(250,245,236,0) 78%),
+      linear-gradient(0deg, var(--bg) 0%, rgba(250,245,236,0) 26%);
+  }
+  @media (prefers-color-scheme: dark){
+    .hero-veil{background:
+      linear-gradient(90deg, rgba(33,25,18,.93) 0%, rgba(33,25,18,.75) 34%, rgba(33,25,18,.30) 58%, rgba(33,25,18,0) 78%),
+      linear-gradient(0deg, var(--bg) 0%, rgba(33,25,18,0) 26%)}
+  }
+  /* 커피 김 — 잔 위에서 천천히 오르는 루프 */
+  .steam{
+    position:absolute;left:31.5%;bottom:34%;width:110px;height:210px;
+    z-index:0;pointer-events:none;
+  }
+  .steam path{
+    fill:none;stroke:#fffaf0;stroke-width:7;stroke-linecap:round;
+    filter:blur(4px);opacity:0;transform-origin:50% 100%;
+    animation:steamrise 5.2s ease-in-out infinite;
+  }
+  .steam .s2{animation-delay:1.7s;stroke-width:5.5}
+  .steam .s3{animation-delay:3.4s;stroke-width:6}
+  @keyframes steamrise{
+    0%{opacity:0;transform:translateY(16px) translateX(0) scaleY(.72)}
+    32%{opacity:.85}
+    68%{opacity:.5}
+    100%{opacity:0;transform:translateY(-30px) translateX(9px) scaleY(1.12)}
+  }
+  @media (max-width:700px){
+    .hero-photo img{object-position:36% 58%}
+    .steam{left:24%;bottom:36%;width:84px;height:160px}
+  }
+  .hero-inner{position:relative;z-index:1;width:100%;padding-block:120px 64px}
+  /* 천천히 스며드는 페이드인 */
+  .fade-slow{opacity:1}
+  html.js .fade-slow{animation:herofade .6s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:var(--fd,0s)}
+  @keyframes herofade{
+    from{opacity:0;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .hand{font-family:"Nanum Pen Script","Noto Serif KR",cursive;font-weight:400}
+  .hero-script{
+    font-size:clamp(27px,3.6vw,36px);color:var(--brown);
+    line-height:1.1;margin:0 0 6px;transform:rotate(-1.6deg);transform-origin:left bottom;
+  }
+  .weekend-chip{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--line-strong);border-radius:999px;
+    padding:7px 14px;font-size:13px;font-weight:500;color:var(--brown);
+    background:color-mix(in srgb, var(--surface) 88%, transparent);
+  }
+  .weekend-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:dotpulse 3.2s ease-in-out infinite}
+  @keyframes dotpulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{
+    font-size:clamp(40px,6.4vw,62px);line-height:1.2;font-weight:700;
+    margin:18px 0 16px;letter-spacing:-.01em;
+    text-shadow:0 1px 0 rgba(250,245,236,.35);
+  }
+  .hero h1 em{font-style:normal;color:var(--brown)}
+  .hero p.lead{font-size:17px;color:var(--ink-soft);margin:0 0 28px;max-width:32em}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:48px;padding:12px 22px;border-radius:999px;
+    font-size:15px;font-weight:500;text-decoration:none;cursor:pointer;border:1px solid transparent;
+    font-family:inherit;
+  }
+  .btn-primary{background:var(--brown);color:#fff8ec}
+  .btn-primary:hover{background:var(--brown-deep)}
+  @media (prefers-color-scheme: dark){.btn-primary{color:#241809}}
+  .btn-ghost{background:color-mix(in srgb, var(--surface) 82%, transparent);border-color:var(--line-strong);color:var(--ink)}
+  .btn-ghost:hover{background:var(--surface-2)}
+  .hero-meta{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;font-size:13.5px;color:var(--muted)}
+  .hero-meta b{color:var(--ink);font-weight:500}
+  /* 손글씨 메모 카드 — 사진 위에 살짝 겹쳐 붙인 종이 */
+  .hero-note{
+    position:absolute;right:26px;bottom:34px;z-index:2;
+    background:#fffaf0;color:#5d3c22;
+    padding:14px 20px 12px;max-width:250px;
+    transform:rotate(-2.6deg);
+    box-shadow:0 14px 30px rgba(74,47,26,.28);
+    border-radius:3px 14px 3px 14px;
+  }
+  .hero-note::before{
+    content:"";position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(-2deg);
+    width:74px;height:22px;background:rgba(232,213,184,.85);border-radius:2px;
+  }
+  .hero-note .hand{font-size:24px;line-height:1.25;display:block}
+  .hero-note span.sub{display:block;margin-top:5px;font-size:12px;color:#6e5a46;letter-spacing:.04em}
+  @media (max-width:900px){.hero-note{display:none}}
+  @media (prefers-color-scheme: dark){.hero-note{background:#f7ecd7}}
+
+  /* ---------- 스크롤 리빌 (스태거 페이드업) ---------- */
+  html.js .rv{
+    opacity:0;transform:translateY(30px);
+    transition:opacity 1.05s ease var(--d,0s),transform 1.05s cubic-bezier(.22,.61,.36,1) var(--d,0s);
+  }
+  html.js .rv.inview{opacity:1;transform:translateY(0)}
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-photo img,.steam path,.hero-rays,.weekend-chip .dot{animation:none}
+    html.js .fade-slow{animation:none;opacity:1}
+    html.js .rv{opacity:1;transform:none;transition:none}
+  }
+
+  /* ---------- Sections ---------- */
+  section.block{padding:64px 0}
+  section.block.alt{background:var(--bg-soft)}
+  .sec-head{max-width:640px;margin-bottom:34px}
+  .sec-head .no{font-size:13px;color:var(--brown);font-weight:700;letter-spacing:.14em}
+  .sec-head h2{font-size:clamp(26px,4vw,34px);margin:8px 0 10px;line-height:1.3}
+  .sec-head p{color:var(--ink-soft);margin:0}
+
+  /* Space */
+  .space-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  @media (max-width:760px){.space-grid{grid-template-columns:1fr}}
+  .space-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px;
+  }
+  .space-card h3{margin:0 0 8px;font-size:19px}
+  .space-card p{margin:0;color:var(--ink-soft);font-size:15px}
+  .space-visual{
+    border-radius:var(--radius);border:1px solid var(--line);
+    min-height:230px;position:relative;overflow:hidden;
+    display:flex;align-items:flex-end;padding:18px;
+    color:#5d3c22;
+  }
+  .space-visual span{
+    background:rgba(255,251,242,.88);padding:6px 12px;border-radius:999px;font-size:13px;font-weight:500;
+  }
+  .sv-1{background:
+    linear-gradient(180deg, rgba(93,60,34,0) 55%, rgba(93,60,34,.22)),
+    url("img/photo-1.jpg") center 62% / cover no-repeat,
+    linear-gradient(160deg,#efdcae,#dfba82 60%,#c99e6d)}
+  .sv-2{background:
+    repeating-linear-gradient(90deg, rgba(93,60,34,.14) 0 2px, transparent 2px 54px),
+    linear-gradient(200deg,#f3e6cb,#e2c491 65%,#caa26e)}
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  @media (max-width:640px){.facts{grid-template-columns:1fr}}
+  .fact{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+  .fact b{display:block;font-family:"Noto Serif KR",serif;font-size:21px;color:var(--brown)}
+  .fact span{font-size:13px;color:var(--muted)}
+
+  /* Menu */
+  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 48px}
+  @media (max-width:760px){.menu-grid{grid-template-columns:1fr}}
+  .menu-cat h3{
+    font-size:17px;margin:0 0 6px;padding-bottom:10px;border-bottom:2px solid var(--brown);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .menu-cat h3 small{font-family:"Noto Sans KR",sans-serif;font-size:12px;color:var(--muted);font-weight:400}
+  .menu-item{display:flex;align-items:baseline;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .menu-item:last-child{border-bottom:none}
+  .menu-item .name{font-weight:500}
+  .menu-item .desc{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+  .menu-item .dots{flex:1;border-bottom:1px dotted var(--line-strong);transform:translateY(-4px)}
+  .menu-item .price{font-family:"Noto Serif KR",serif;font-weight:600;color:var(--brown);white-space:nowrap}
+  .menu-note{margin-top:22px;font-size:13.5px;color:var(--muted)}
+
+  /* Hours & location */
+  .hours-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch}
+  @media (max-width:760px){.hours-grid{grid-template-columns:1fr}}
+  .weekend-card{
+    background:var(--brown-ink);color:#fdf3e0;border-radius:var(--radius);
+    padding:34px 30px;position:relative;overflow:hidden;
+  }
+  @media (prefers-color-scheme: dark){.weekend-card{background:#171008;border:1px solid var(--line)}}
+  .weekend-card .big{
+    font-family:"Noto Serif KR",serif;font-size:clamp(30px,5vw,42px);font-weight:700;line-height:1.25;margin:6px 0 4px;
+  }
+  .weekend-card .big em{font-style:normal;color:var(--tan)}
+  .weekend-card p{color:#e8d5b5;margin:0 0 20px;font-size:15px}
+  .day-rows{border-top:1px solid rgba(253,243,224,.22)}
+  .day-row{display:flex;justify-content:space-between;gap:14px;padding:13px 2px;border-bottom:1px solid rgba(253,243,224,.22);font-size:15px}
+  .day-row .closed{opacity:.65}
+  .day-row b{font-weight:500}
+  .loc-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+  .loc-card h3{margin:0 0 14px;font-size:19px}
+  .loc-line{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  .loc-line:last-of-type{border-bottom:none}
+  .loc-line .k{flex:none;width:64px;color:var(--muted);font-size:13.5px;padding-top:2px}
+  .map-art{
+    margin:18px 0;border-radius:12px;border:1px solid var(--line);height:120px;position:relative;overflow:hidden;
+    background:
+      linear-gradient(0deg, transparent 49%, rgba(138,90,53,.16) 49%, rgba(138,90,53,.16) 51%, transparent 51%),
+      linear-gradient(90deg, transparent 49%, rgba(138,90,53,.16) 49%, rgba(138,90,53,.16) 51%, transparent 51%),
+      linear-gradient(150deg,var(--surface-2),var(--tan-soft));
+    background-size:34px 34px,34px 34px,cover;
+  }
+  .map-pin{
+    position:absolute;left:50%;top:44%;transform:translate(-50%,-100%);
+    width:26px;height:26px;border-radius:50% 50% 50% 0;rotate:-45deg;
+    background:var(--brown);border:2px solid #fff8ec;
+    box-shadow:0 6px 14px rgba(93,60,34,.35);
+  }
+  .map-pin::after{content:"";position:absolute;inset:7px;border-radius:50%;background:#fff8ec}
+  .map-label{
+    position:absolute;left:50%;top:calc(44% + 8px);transform:translateX(-50%);
+    background:var(--surface);border:1px solid var(--line-strong);border-radius:999px;
+    font-size:12px;padding:3px 10px;color:var(--ink);white-space:nowrap;
+  }
+
+  /* Gallery */
+  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:760px){.gallery{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:420px){.gallery{grid-template-columns:1fr}}
+  .tile{
+    border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;background:var(--surface);
+  }
+  .tile .art{height:190px;position:relative}
+  .tile figcaption{padding:13px 16px;font-size:14px;display:flex;justify-content:space-between;gap:8px}
+  .tile figcaption span{color:var(--muted);font-size:12.5px;white-space:nowrap}
+  .g1{background:radial-gradient(circle at 50% 62%, #fff6e2 0 34px, #e9c184 35px 52px, #b3793f 53px 74px, #8a5a35 75px),linear-gradient(160deg,#a06a3c,#7c4f27)}
+  .g2{background:linear-gradient(105deg, rgba(255,244,214,.95) 0 30%, rgba(255,244,214,0) 55%),linear-gradient(200deg,#e8cf9f,#cfa96f)}
+  .g2::after{content:"";position:absolute;left:0;right:0;bottom:0;height:52px;background:linear-gradient(180deg,transparent,rgba(93,60,34,.35))}
+  .g3{background:repeating-linear-gradient(0deg, rgba(93,60,34,.13) 0 2px, transparent 2px 30px),linear-gradient(170deg,#f1e3c6,#dec08d)}
+  .g4{background:radial-gradient(circle at 24% 78%, #7d8c5a 0 20px, transparent 21px),radial-gradient(circle at 34% 66%, #93a46e 0 26px, transparent 27px),radial-gradient(circle at 78% 30%, rgba(255,240,205,.9) 0 34px, transparent 35px),linear-gradient(180deg,#eedcae,#d9b77e)}
+  .g5{background:linear-gradient(180deg,#f7ecd2 0 58%,#e3c491 58%),radial-gradient(ellipse 90px 30px at 50% 58%, #fff8ea 98%, transparent),radial-gradient(circle at 50% 46%, #d99a55 0 20px, #b3793f 21px 30px, transparent 31px)}
+  .g6{background:linear-gradient(90deg, rgba(93,60,34,.22) 0 10px, transparent 10px 70px, rgba(93,60,34,.22) 70px 80px, transparent 80px),linear-gradient(190deg,#f3e5c3,#dbb87f)}
+
+  /* Contact */
+  .contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;align-items:start}
+  @media (max-width:860px){.contact-grid{grid-template-columns:1fr}}
+  .contact-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+  .contact-card h3{margin:0 0 10px;font-size:19px}
+  .contact-card p{color:var(--ink-soft);font-size:15px;margin:0 0 18px}
+  .contact-link{
+    display:flex;align-items:center;gap:14px;text-decoration:none;
+    border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px;min-height:56px;
+    background:var(--bg);
+  }
+  .contact-link .ic{
+    width:40px;height:40px;flex:none;border-radius:12px;display:grid;place-items:center;
+    background:var(--tan-soft);color:var(--brown);
+  }
+  .contact-link b{display:block;font-size:15px;line-height:1.35}
+  .contact-link span{font-size:13px;color:var(--muted)}
+  .contact-link .arrow{margin-left:auto;color:var(--muted)}
+
+  /* Google-Form-style inquiry form */
+  .gform{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    box-shadow:0 4px 18px rgba(93,60,34,.08);
+  }
+  .gform-top{height:10px;background:var(--form-accent)}
+  .gform-body{padding:26px 26px 30px}
+  .gform h3{font-family:"Noto Sans KR",sans-serif;font-size:24px;font-weight:500;margin:0 0 6px}
+  .gform .gdesc{font-size:14px;color:var(--ink-soft);margin:0 0 4px}
+  .gform .greq{font-size:13px;color:#b3261e;margin:0 0 8px}
+  @media (prefers-color-scheme: dark){.gform .greq{color:#f2b8b5}}
+  .gfield{padding:18px 0 6px;border-bottom:1px solid transparent}
+  .gfield label{display:block;font-size:15px;font-weight:500;margin-bottom:4px}
+  .gfield label .req{color:#b3261e}
+  @media (prefers-color-scheme: dark){.gfield label .req{color:#f2b8b5}}
+  .gfield .hint{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+  .gfield input[type="text"],.gfield input[type="tel"],.gfield input[type="date"],.gfield select,.gfield textarea{
+    width:100%;border:none;border-bottom:1px solid var(--line-strong);border-radius:4px 4px 0 0;
+    background:color-mix(in srgb, var(--bg-soft) 45%, transparent);
+    padding:10px 10px;font:inherit;font-size:15px;color:var(--ink);min-height:44px;
+  }
+  .gfield textarea{resize:vertical;min-height:84px;border:1px solid var(--line-strong);border-radius:6px;background:transparent}
+  .gfield input:focus,.gfield select:focus,.gfield textarea:focus{outline:none;border-bottom:2px solid var(--form-accent)}
+  .gfield textarea:focus{border:1px solid var(--form-accent)}
+  .gfield :is(input,select,textarea):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  .g2col{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+  @media (max-width:520px){.g2col{grid-template-columns:1fr}}
+  .gform-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+  .g-submit{
+    background:var(--form-accent);color:#fff8ec;border:none;border-radius:6px;
+    padding:11px 26px;font:inherit;font-size:14.5px;font-weight:500;cursor:pointer;min-height:44px;
+  }
+  .g-submit:hover{filter:brightness(1.08)}
+  @media (prefers-color-scheme: dark){.g-submit{color:#241809}}
+  .g-clear{background:none;border:none;color:var(--brown);font:inherit;font-size:14px;cursor:pointer;padding:10px 8px;min-height:44px}
+  .gform-foot{font-size:12px;color:var(--muted);margin-top:18px}
+  .g-error{display:none;background:#fdecea;color:#7a1d17;border-radius:8px;padding:12px 14px;font-size:14px;margin-top:16px}
+  @media (prefers-color-scheme: dark){.g-error{background:#4a2320;color:#f6cfc9}}
+  .g-error.show{display:block}
+  .g-done{display:none;text-align:center;padding:14px 4px 6px}
+  .g-done.show{display:block}
+  .g-done .check{
+    width:58px;height:58px;margin:0 auto 14px;border-radius:50%;
+    background:var(--tan-soft);color:var(--brown);display:grid;place-items:center;
+  }
+  .g-done h4{font-size:20px;margin:0 0 8px;font-family:"Noto Sans KR",sans-serif;font-weight:700}
+  .g-done p{color:var(--ink-soft);font-size:14.5px;margin:0 auto 10px;max-width:36em}
+  .g-done .summary{
+    text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;
+    padding:16px 18px;font-size:14px;margin:16px 0;
+  }
+  .g-done .summary div{display:flex;gap:12px;padding:5px 0}
+  .g-done .summary .k{flex:none;width:74px;color:var(--muted)}
+  .g-again{
+    background:transparent;border:1px solid var(--line-strong);border-radius:6px;color:var(--ink);
+    padding:10px 20px;font:inherit;font-size:14px;cursor:pointer;min-height:44px;
+  }
+
+  /* ---------- 주문 연결 배너 (푸터 바로 위) ---------- */
+  .cta-banner{
+    background:var(--brown-ink);color:#fdf3e0;
+    padding:58px 0 62px;text-align:center;
+  }
+  @media (prefers-color-scheme: dark){.cta-banner{background:#171008;border-top:1px solid var(--line)}}
+  .cta-banner .hand{font-size:clamp(24px,3vw,30px);color:var(--tan);display:block;transform:rotate(-1.4deg)}
+  .cta-banner h2{
+    font-size:clamp(27px,4.4vw,38px);line-height:1.3;margin:10px 0 12px;font-weight:700;
+  }
+  .cta-banner p{color:#e8d5b5;margin:0 auto 28px;max-width:34em;font-size:15.5px}
+  .cta-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:9px;
+    min-height:54px;padding:14px 30px;border-radius:999px;
+    background:#fdf6e9;color:#4a2f1a;
+    font-size:16px;font-weight:700;text-decoration:none;
+    box-shadow:0 12px 26px rgba(0,0,0,.28);
+  }
+  .cta-btn:hover{background:#fffdf7}
+  .cta-banner .cta-note{margin-top:16px;font-size:13px;color:#c9b18c}
+
+  footer.site{
+    border-top:1px solid var(--line);padding:34px 0 44px;margin-top:0;
+    color:var(--muted);font-size:13.5px;
+  }
+  .foot-flex{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .foot-flex b{color:var(--ink);font-family:"Noto Serif KR",serif;font-size:15px}
+
+  /* Outreach sample: accessible navigation and demo disclosure */
+  :is(a,button,input,select,textarea):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+  section[id],main[id],.gform[id]{scroll-margin-top:var(--anchor-offset,100px)}
+  .sample-bar{background:#30231d;color:#fff3eb;gap:4px 10px;font-size:12px;letter-spacing:0;line-height:1.5}
+  .sample-bar a{color:inherit;white-space:nowrap}
+  .summary{overflow-wrap:anywhere}
+  .sample-bar a:focus-visible{outline-color:currentColor}.cta-btn:focus-visible{outline-color:#f3e3c8}
+  .g-done h4:focus{outline:none}
+  @media(max-width:760px){.sample-bar{position:static;padding:7px 12px}.sample-bar span{white-space:nowrap}.sample-bar a{line-height:18px}}
+
+  :root{--focus:var(--brown)}
+  .example{display:block;color:var(--muted);font-size:12px}
+  .day-row{white-space:nowrap}
+  .gallery .tile{min-width:0}
+  @media(max-width:760px){
+    .nav{flex-wrap:wrap;gap:8px}.nav .menu{display:flex;flex-basis:100%;width:100%;min-width:0;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;padding:4px;margin:-4px}
+    .menu::-webkit-scrollbar{display:none}nav.menu a{flex:none;min-height:44px}
+    .hero-inner{padding-block:64px 48px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .tile .art{height:140px}.tile figcaption{display:block;padding:10px;font-size:13px}.tile figcaption span{display:block}
+    .weekend-card{padding:26px 20px}.day-row{gap:8px;font-size:14px}
+    .loc-card,.contact-card{padding:20px}.cta-btn{padding-inline:20px;font-size:14px}
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-bar"><span>홈페이지 제작 샘플 · 가격·일정·후기는 예시입니다</span><a href="https://getsite-my.web.app" target="_blank" rel="noopener">getsite.my</a></div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="또도스 카페 처음으로">
+      <span class="brand-mark">또</span>
+      <span>
+        <span class="brand-name">또도스 카페</span><br />
+        <span class="brand-sub">TODOS CAFE · GUWOL-DONG</span>
+      </span>
+    </a>
+    <nav class="menu" aria-label="페이지 메뉴">
+      <a href="#space">공간</a>
+      <a href="#menu">메뉴</a>
+      <a href="#hours">운영시간·위치</a>
+      <a href="#gallery">갤러리</a>
+      <a href="#contact">문의</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 1. 히어로 — 주말 아침, 김 오르는 커피와 창가 햇살 -->
+  <section class="hero">
+    <div class="hero-photo" aria-hidden="true">
+      <img src="img/photo-2.jpg" alt="" fetchpriority="high" />
+    </div>
+    <div class="hero-rays" aria-hidden="true"></div>
+    <svg class="steam" viewBox="0 0 110 210" aria-hidden="true">
+      <path class="s1" d="M38 200 C26 168 50 150 38 118 C28 92 44 74 38 44 C35 26 42 14 40 4" />
+      <path class="s2" d="M58 202 C48 174 68 156 58 126 C49 100 64 82 58 54" />
+      <path class="s3" d="M76 200 C68 176 84 160 76 134 C68 110 82 94 76 68 C73 52 79 40 77 28" />
+    </svg>
+    <div class="hero-veil" aria-hidden="true"></div>
+
+    <div class="wrap hero-inner">
+      <p class="hand hero-script fade-slow" style="--fd:0.15s">토요일 아침, 창가에 앉아 천천히 —</p>
+      <span class="weekend-chip fade-slow" style="--fd:0.4s"><span class="dot"></span>토요일 · 일요일에만 열어요</span>
+      <h1 class="fade-slow" style="--fd:0.4s">주말만 여는<br /><em>조용한 카페,</em><br />또도스입니다.</h1>
+      <p class="lead fade-slow" style="--fd:0.4s">구월동 골목 안쪽, 한 주의 끝에서만 문을 여는 작은 카페예요. 평일의 소란을 잠시 내려놓고, 커피 한 잔과 함께 천천히 머물다 가는 곳입니다.</p>
+      <div class="hero-cta fade-slow" style="--fd:0.4s">
+        <a class="btn btn-primary" href="#menu">메뉴 보기</a>
+        <a class="btn btn-ghost" href="#contact">방문 문의하기</a>
+      </div>
+      <div class="hero-meta fade-slow" style="--fd:0.4s">
+        <div><b>운영</b>　토·일 11:00 – 19:00</div>
+        <div><b>위치</b>　인천 구월동 골목</div>
+        <div><b>분위기</b>　조용히 머무는 공간</div>
+      </div>
+    </div>
+
+    <aside class="hero-note fade-slow" style="--fd:0.4s" aria-label="창가 자리 안내">
+      <span class="hand">창가 자리, 아침 햇살이<br />가장 먼저 닿는 곳</span>
+      <span class="sub">WINDOW SEAT · 구월동 골목 안쪽</span>
+    </aside>
+  </section>
+
+  <!-- 2. 공간 소개 -->
+  <section class="block alt" id="space">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="no">01 — SPACE</div>
+        <h2>천천히 머무는 주말의 공간</h2>
+        <p>또도스는 주말 이틀만 여는 대신, 그 이틀만큼은 누구도 서두르지 않는 공간이 되려고 합니다.</p>
+      </div>
+      <div class="space-grid">
+        <div class="space-visual sv-1 rv" style="--d:0s"><span>햇살 드는 창가</span></div>
+        <div class="space-card rv" style="--d:.12s">
+          <h3>골목 끝, 낮은 소리의 카페</h3>
+          <p>큰 간판도, 시끄러운 음악도 없습니다. 골목을 따라 걷다 보면 크림색 벽과 나무 문이 먼저 보이는 작은 카페예요. 책을 읽거나, 노트북을 펼치거나, 아무것도 하지 않아도 괜찮은 자리들을 마련해 두었습니다.</p>
+        </div>
+        <div class="space-card rv" style="--d:.24s">
+          <h3>주말에만 굽는 디저트</h3>
+          <p>디저트는 주말 아침에 조금씩만 준비합니다. 그날의 케이크와 구움과자는 재료가 떨어지면 그대로 마감해요. 그래서 매주 조금씩 다른 라인업으로 만나게 됩니다.</p>
+        </div>
+        <div class="space-visual sv-2 rv" style="--d:.36s"><span>원목 테이블과 낮은 조명</span></div>
+      </div>
+      <div class="facts">
+        <div class="fact rv" style="--d:0s"><b>12석</b><small class="example">예시</small><span>작게, 여유 있게 배치한 좌석</span></div>
+        <div class="fact rv" style="--d:.12s"><b>주 2일</b><small class="example">예시</small><span>토·일 주말에만 운영</span></div>
+        <div class="fact rv" style="--d:.24s"><b>노트북 OK</b><small class="example">예시</small><span>콘센트 자리 · 잔잔한 음악</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 메뉴 · 가격 -->
+  <section class="block" id="menu">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="no">02 — MENU</div>
+        <h2>메뉴와 가격</h2>
+        <p>많지 않은 메뉴를 정성껏 내는 것이 또도스의 방식입니다. 가격은 샘플 표기이며 실제 메뉴와 다를 수 있습니다.</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-cat rv" style="--d:0s">
+          <h3>커피 <small>COFFEE</small></h3>
+          <div class="menu-item"><div><span class="name">아메리카노</span><span class="desc">고소하고 깔끔한 주말 블렌드</span></div><span class="dots"></span><span class="price">4,500</span></div>
+          <div class="menu-item"><div><span class="name">카페라떼</span><span class="desc">부드러운 우유와 에스프레소의 균형</span></div><span class="dots"></span><span class="price">5,000</span></div>
+          <div class="menu-item"><div><span class="name">바닐라라떼</span><span class="desc">천연 바닐라빈 시럽</span></div><span class="dots"></span><span class="price">5,500</span></div>
+          <div class="menu-item"><div><span class="name">아인슈페너</span><span class="desc">주말 한정, 쫀쫀한 크림</span></div><span class="dots"></span><span class="price">6,000</span></div>
+        </div>
+        <div class="menu-cat rv" style="--d:.14s">
+          <h3>음료 <small>NON-COFFEE</small></h3>
+          <div class="menu-item"><div><span class="name">말차라떼</span><span class="desc">제주 말차를 직접 개어 내는 라떼</span></div><span class="dots"></span><span class="price">6,000</span></div>
+          <div class="menu-item"><div><span class="name">유자차</span><span class="desc">직접 담근 유자청</span></div><span class="dots"></span><span class="price">5,500</span></div>
+          <div class="menu-item"><div><span class="name">자몽 에이드</span><span class="desc">생자몽을 짜서 만드는 에이드</span></div><span class="dots"></span><span class="price">6,000</span></div>
+          <div class="menu-item"><div><span class="name">오늘의 티</span><span class="desc">계절 허브티, 직원에게 물어보세요</span></div><span class="dots"></span><span class="price">5,000</span></div>
+        </div>
+        <div class="menu-cat rv" style="--d:.28s">
+          <h3>디저트 <small>DESSERT</small></h3>
+          <div class="menu-item"><div><span class="name">바스크 치즈케이크</span><span class="desc">주말 아침에 굽는 시그니처</span></div><span class="dots"></span><span class="price">6,500</span></div>
+          <div class="menu-item"><div><span class="name">휘낭시에</span><span class="desc">플레인 · 솔티카라멜</span></div><span class="dots"></span><span class="price">3,000</span></div>
+          <div class="menu-item"><div><span class="name">레몬 파운드</span><span class="desc">상큼한 글레이즈드 파운드</span></div><span class="dots"></span><span class="price">4,500</span></div>
+        </div>
+        <div class="menu-cat rv" style="--d:.42s">
+          <h3>주말 한정 <small>WEEKEND ONLY</small></h3>
+          <div class="menu-item"><div><span class="name">오늘의 케이크</span><span class="desc">그날 아침 매장에서 안내</span></div><span class="dots"></span><span class="price">6,000~</span></div>
+          <div class="menu-item"><div><span class="name">원두 200g</span><span class="desc">주말 블렌드, 집에서도 또도스처럼</span></div><span class="dots"></span><span class="price">14,000</span></div>
+          <div class="menu-item"><div><span class="name">드립백 세트 (5개입)</span><span class="desc">선물 포장 가능</span></div><span class="dots"></span><span class="price">9,000</span></div>
+        </div>
+      </div>
+      <p class="menu-note rv">※ 모든 음료는 디카페인으로 변경할 수 있습니다(추가 500원). 디저트는 조기 소진될 수 있어요.</p>
+    </div>
+  </section>
+
+  <!-- 4. 운영시간 · 위치 -->
+  <section class="block alt" id="hours">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="no">03 — HOURS &amp; LOCATION</div>
+        <h2>운영시간과 위치</h2>
+        <p>또도스는 주말에만 문을 엽니다. 평일에는 열지 않으니, 방문 전에 요일을 한 번만 확인해 주세요.</p>
+      </div>
+      <div class="hours-grid">
+        <div class="weekend-card rv" style="--d:0s">
+          <div style="font-size:13px;letter-spacing:.16em;color:#e8d5b5">OPENING HOURS</div>
+          <div class="big">주말만 운영합니다<br /><em>토 · 일 11:00 – 19:00</em></div>
+          <p>평일(월–금)은 휴무입니다. 공휴일이 평일이면 별도로 안내합니다.</p>
+          <div class="day-rows">
+            <div class="day-row"><b>토요일</b><span>11:00 – 19:00 (라스트 오더 18:30)</span></div>
+            <div class="day-row"><b>일요일</b><span>11:00 – 19:00 (라스트 오더 18:30)</span></div>
+            <div class="day-row"><b>월 – 금요일</b><span class="closed">휴무</span></div>
+          </div>
+        </div>
+        <div class="loc-card rv" style="--d:.16s">
+          <h3>찾아오시는 길</h3>
+          <div class="loc-line"><span class="k">주소</span><span>인천광역시 남동구 구월동 골목 안쪽<br /><span style="color:var(--muted);font-size:13.5px">상세 주소는 샘플 표기입니다</span></span></div>
+          <div class="loc-line"><span class="k">지하철</span><span>인천 1호선 예술회관역 · 인천시청역에서 도보 약 10분</span></div>
+          <div class="loc-line"><span class="k">주차</span><span>매장 앞 주차는 어려워요. 인근 공영주차장을 이용해 주세요</span></div>
+          <div class="map-art" role="img" aria-label="또도스 카페 위치를 표시한 약도 일러스트">
+            <div class="map-pin"></div>
+            <div class="map-label">또도스 카페 · 구월동</div>
+          </div>
+          <a class="btn btn-primary" href="https://map.naver.com/p/search/%EB%98%90%EB%8F%84%EC%8A%A4%20%EC%B9%B4%ED%8E%98" target="_blank" rel="noopener" style="width:100%">지도에서 찾기</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 갤러리 -->
+  <section class="block" id="gallery">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="no">04 — GALLERY</div>
+        <h2>또도스의 주말 풍경</h2>
+        <p>가게 사진이 들어갈 자리입니다(예시). 실제 제작 시 매장 사진으로 교체됩니다.</p>
+      </div>
+      <div class="gallery">
+        <figure class="tile rv" style="margin:0;--d:0s"><div class="art g1"></div><figcaption>시그니처 라떼 <span>Latte</span></figcaption></figure>
+        <figure class="tile rv" style="margin:0;--d:.1s"><div class="art g2"></div><figcaption>오후의 창가 <span>Window</span></figcaption></figure>
+        <figure class="tile rv" style="margin:0;--d:.2s"><div class="art g3"></div><figcaption>책이 있는 선반 <span>Books</span></figcaption></figure>
+        <figure class="tile rv" style="margin:0;--d:.3s"><div class="art g4"></div><figcaption>식물과 햇살 <span>Plants</span></figcaption></figure>
+        <figure class="tile rv" style="margin:0;--d:.4s"><div class="art g5"></div><figcaption>주말의 디저트 <span>Dessert</span></figcaption></figure>
+        <figure class="tile rv" style="margin:0;--d:.5s"><div class="art g6"></div><figcaption>골목에서 본 매장 <span>Alley</span></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 문의 -->
+  <section class="block alt" id="contact">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div class="no">05 — CONTACT</div>
+        <h2>문의하기</h2>
+        <p>단체 방문, 대관, 케이크 예약은 미리 알려 주시면 주말이 더 여유로워집니다.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card rv" style="--d:0s">
+          <h3>바로 연락하기</h3>
+          <p>연락처와 문의 양식이 배치되는 예시입니다.</p>
+          
+          <div class="contact-link">
+            <span class="ic" aria-hidden="true">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            </span>
+            <span><b>전화 문의</b><span>010-0000-0000 (예시)</span></span>
+          </div>
+          <p style="margin:14px 0 0;font-size:13.5px">※ 문의 양식은 샘플이며 작성한 내용은 전송되지 않습니다.</p>
+        </div>
+
+        <div class="gform rv" id="inquiryForm" style="--d:.16s">
+          <div class="gform-top"></div>
+          <div class="gform-body">
+            <form id="inqForm" novalidate>
+              <h3>또도스 카페 방문·예약 문의</h3>
+              <p class="gdesc">주말 방문 예약, 단체·대관, 홀케이크 주문 문의를 남겨 주세요. 샘플 양식으로 전송되지는 않습니다.</p>
+              <p class="greq">* 표시는 필수 질문입니다</p>
+
+              <div class="gfield">
+                <label for="fName">이름 <span class="req">*</span></label>
+                <input type="text" id="fName" name="name" placeholder="답변 입력" autocomplete="name" required />
+              </div>
+              <div class="gfield">
+                <label for="fPhone">연락처 <span class="req">*</span></label>
+                <div class="hint">답장을 받을 수 있는 휴대폰 번호를 입력해 주세요.</div>
+                <input type="tel" id="fPhone" name="phone" placeholder="010-0000-0000" autocomplete="tel" required />
+              </div>
+              <div class="g2col">
+                <div class="gfield">
+                  <label for="fDate">희망 날짜 <span class="req">*</span></label>
+                  <div class="hint">또도스는 토·일만 운영합니다.</div>
+                  <input type="date" id="fDate" name="date" required />
+                </div>
+                <div class="gfield">
+                  <label for="fPeople">인원 <span class="req">*</span></label>
+                  <select id="fPeople" name="people" required>
+                    <option value="">선택</option>
+                    <option>1명</option>
+                    <option>2명</option>
+                    <option>3명</option>
+                    <option>4명</option>
+                    <option>5명 이상 (단체)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="gfield">
+                <label for="fMsg">메시지</label>
+                <div class="hint">문의 내용을 자유롭게 적어 주세요. (예: 케이크 픽업, 조용한 자리 요청)</div>
+                <textarea id="fMsg" name="message" placeholder="답변 입력"></textarea>
+              </div>
+
+              <div class="g-error" id="formError" role="alert"></div>
+
+              <div class="gform-actions">
+                <button type="submit" class="g-submit">제출</button>
+                <button type="button" class="g-clear" id="clearBtn">양식 지우기</button>
+              </div>
+              <p class="gform-foot">샘플 폼입니다. 제출 내용은 이 화면에서만 확인되며 외부로 전송되지 않습니다.</p>
+            </form>
+
+            <div class="g-done" id="formDone" aria-live="polite">
+              <div class="check" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
+              </div>
+              <h4>샘플 페이지라 실제로 전송되지는 않았어요</h4><p>실제 홈페이지에서는 이 신청이 사장님께 바로 전달됩니다. 이 디자인으로 만들고 싶으시면 아래 ‘이 디자인으로 내 홈페이지 만들기’를 눌러 주세요.</p>
+              <div class="summary">
+                <div><span class="k">이름</span><span id="sumName">-</span></div>
+                <div><span class="k">연락처</span><span id="sumPhone">-</span></div>
+                <div><span class="k">희망 날짜</span><span id="sumDate">-</span></div>
+                <div><span class="k">인원</span><span id="sumPeople">-</span></div>
+                <div><span class="k">메시지</span><span id="sumMsg">-</span></div>
+              </div>
+              <button type="button" class="g-again" id="againBtn">새 문의 작성하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- 주문 연결 배너 — 샘플이 마음에 들면 정식 주문으로 -->
+<section class="cta-banner" aria-label="홈페이지 제작 신청 안내">
+  <div class="wrap">
+    <span class="hand">이 분위기, 내 가게에도 —</span>
+    <h2>이 샘플이 마음에 드세요?</h2>
+    <p>또도스 카페처럼, 내 가게의 분위기를 담은 홈페이지를 만들 수 있습니다. 아래 버튼을 누르면 제작 신청 페이지로 이동합니다.</p>
+    <a class="cta-btn" href="https://getsite-my.web.app/?sample=outreach-todos-cafe#start" target="_blank" rel="noopener">이 디자인으로 내 홈페이지 만들기 <span aria-hidden="true">→</span></a>
+    <div class="cta-note">신청은 getsite.my 제작 신청 페이지에서 진행됩니다.</div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap foot-flex">
+    <div><b>또도스 카페</b> · 인천 구월동 골목, 주말만 여는 조용한 카페</div>
+    <div>토·일 11:00 – 19:00 · 월–금 휴무</div>
+  </div>
+  <div class="wrap" style="margin-top:10px">이 페이지는 getsite.my 제작 샘플입니다. 실제 매장 정보와 다를 수 있습니다. · <a href="https://getsite-my.web.app" target="_blank" rel="noopener" style="color:var(--brown);font-weight:500">제작: getsite.my</a></div>
+</footer>
+
+<script>
+(function(){
+  /* 스크롤 스태거 페이드업 — 카드가 화면에 들어올 때 하나씩 천천히 */
+  var items = document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){
+    for(var i=0;i<items.length;i++) items[i].classList.add('inview');
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        en.target.classList.add('inview');
+        io.unobserve(en.target);
+      }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+<script>
+(function(){
+  var form = document.getElementById('inqForm');
+  var done = document.getElementById('formDone');
+  var err = document.getElementById('formError');
+  var nameEl = document.getElementById('fName');
+  var phoneEl = document.getElementById('fPhone');
+  var dateEl = document.getElementById('fDate');
+  var peopleEl = document.getElementById('fPeople');
+  var msgEl = document.getElementById('fMsg');
+
+  function showError(msg){
+    err.textContent = msg;
+    err.classList.add('show');
+    err.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function hideError(){ err.classList.remove('show'); err.textContent=''; }
+
+  function fmtDate(v){
+    if(!v) return '-';
+    var p = v.split('-');
+    if(p.length !== 3) return v;
+    var d = new Date(Number(p[0]), Number(p[1])-1, Number(p[2]));
+    var days = ['일','월','화','수','목','금','토'];
+    return p[0] + '년 ' + Number(p[1]) + '월 ' + Number(p[2]) + '일 (' + days[d.getDay()] + ')';
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    hideError();
+    var name = nameEl.value.trim();
+    var phone = phoneEl.value.trim();
+    var date = dateEl.value;
+    var people = peopleEl.value;
+    var msg = msgEl.value.trim();
+
+    if(!name){ showError('이름을 입력해 주세요.'); nameEl.focus(); return; }
+    if(!phone){ showError('연락처를 입력해 주세요.'); phoneEl.focus(); return; }
+    if(phone.replace(/[^0-9]/g,'').length < 10){ showError('연락처를 정확히 입력해 주세요. (숫자 10자리 이상)'); phoneEl.focus(); return; }
+    if(!date){ showError('희망 날짜를 선택해 주세요.'); dateEl.focus(); return; }
+    var dp = date.split('-');
+    var d = new Date(Number(dp[0]), Number(dp[1])-1, Number(dp[2]));
+    var day = d.getDay();
+    if(day !== 0 && day !== 6){
+      showError('또도스는 주말(토·일)에만 운영합니다. 선택하신 날짜는 평일이에요 — 토요일이나 일요일로 다시 선택해 주세요.');
+      dateEl.focus(); return;
+    }
+    if(!people){ showError('인원을 선택해 주세요.'); peopleEl.focus(); return; }
+
+    document.getElementById('sumName').textContent = name;
+    document.getElementById('sumPhone').textContent = phone;
+    document.getElementById('sumDate').textContent = fmtDate(date);
+    document.getElementById('sumPeople').textContent = people;
+    document.getElementById('sumMsg').textContent = msg ? msg : '(작성 안 함)';
+
+    form.style.display = 'none';
+    done.classList.add('show');
+    done.scrollIntoView({behavior:'smooth', block:'center'});
+    var _h=done.querySelector('h3,h4'); if(_h){_h.setAttribute('tabindex','-1'); _h.focus({preventScroll:true});}
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    form.reset();
+    hideError();
+    nameEl.focus();
+  });
+
+  document.getElementById('againBtn').addEventListener('click', function(){
+    form.reset();
+    hideError();
+    done.classList.remove('show');
+    form.style.display = '';
+    form.scrollIntoView({behavior:'smooth', block:'center'});
+    nameEl.focus({preventScroll:true});
+  });
+})();
+</script>
+<script>
+(function(){function offset(){var nodes=document.querySelectorAll('.sample-bar,header.site'),h=12;nodes.forEach(function(el){var pos=getComputedStyle(el).position;if(pos==='sticky'||pos==='fixed')h+=el.getBoundingClientRect().height});document.documentElement.style.setProperty('--anchor-offset',h+'px')}offset();window.addEventListener('resize',offset);if(document.fonts)document.fonts.ready.then(offset)})();
+</script>
+</body>
+</html>
