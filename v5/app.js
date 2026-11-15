@@ -43,9 +43,12 @@ const json = async (url, required) => {
   if (!r.ok) { if (required) throw new Error(`${url} ${r.status}`); return {}; }
   return r.json();
 };
-let data; let sections; let manifest; let parts;
+let data; let sections; let manifest; let parts; let outreach;
 try {
-  [data, { sections }, manifest, parts] = await Promise.all([json('./data/samples.json', true), json('./data/sections.json', true), json('./assets/samples/manifest.json').catch(() => ({})), json('./data/parts.json').catch(() => null)]);
+  [data, { sections }, manifest, parts, outreach] = await Promise.all([json('./data/samples.json', true), json('./data/sections.json', true), json('./assets/samples/manifest.json').catch(() => ({})), json('./data/parts.json').catch(() => null), json('./data/outreach.json').catch(() => ({}))]);
+  // Outreach samples are only reachable through ?sample=; the public cards and the step 1 grid keep using data.samples.
+  data.pool = [...data.samples, ...(Array.isArray(outreach?.samples) ? outreach.samples : [])];
+  if (!Array.isArray(outreach?.samples)) console.warn('[v5] outreach.json did not load; ?sample= links open the normal form');
   // Without the catalog the page still works: every section has no candidates and is sent as "새로 구성",
   // and notes are still kept (an empty catalog, not none).
   if (!parts?.bySection) {
@@ -60,7 +63,7 @@ try {
   $('sampleGrid').replaceWith(p);
   throw e;
 }
-const store = createAppStore({ sampleIds: data.samples.map((s) => s.id), parts, samples: data.samples });
+const store = createAppStore({ sampleIds: data.pool.map((s) => s.id), parts, samples: data.pool });
 
 // #step=N in the URL wins over the saved state, so a link to a step works; back/forward follow it too.
 const stepFromHash = () => { const m = /^#step=([1-5])$/.exec(location.hash); return m ? Number(m[1]) : null; };
@@ -77,6 +80,25 @@ renderProcess({ stepsEl: $('steps'), panels: [1, 2, 3, 4, 5].map((n) => $(`panel
 document.querySelectorAll('[data-go-step]').forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); store.setStep(Number(a.dataset.goStep)); $('process').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }));
 
 mountLookup({ input: $('lookupInput'), button: $('lookupBtn'), out: $('lookupResult'), toast });
+
+/* A link from an outreach sample: ?sample=<id>#start. A known id picks that sample, fills the site name and
+   purpose, and opens step 2 with the sample's sections; the customer checks and submits as usual.
+   A missing or unknown id changes nothing. The query is dropped afterwards so a reload keeps the customer's edits. */
+(() => {
+  let id;
+  try { id = new URLSearchParams(location.search).get('sample'); } catch { return; }
+  if (id === null) return;
+  const sample = data.pool.find((x) => x.id === id);
+  if (sample) {
+    store.startFromSample(sample);
+    $('process').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    toast(`이 샘플로 신청합니다: ${sample.title}`);
+  }
+  try {
+    const rest = new URLSearchParams(location.search); rest.delete('sample'); // other parameters (utm_*) stay
+    history.replaceState(null, '', location.pathname + (rest.size ? `?${rest}` : '') + (sample ? '#process' : location.hash));
+  } catch { /* sandboxed frame */ }
+})();
 
 /* Test hook. No customer data here. */
 window.__getsite4 = { store, data, sections, manifest, parts };

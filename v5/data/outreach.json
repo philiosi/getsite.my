@@ -1,0 +1,70 @@
+{
+  "_note": "Outreach samples. Not shown in the public sample cards or the step 1 grid; a link ?sample=<id>#start from an outreach sample picks one. To add a sample, add one entry here (id: outreach-<slug>) and add the id to the sampleId list in v3/backend/firestore.rules. topic and sectionIds are the order form's own values (topic must be one of the five public topics; concept is atelier/brand/studio, chosen like the public sample of the same topic: class→atelier, place→brand; sectionIds are ids from sections.json); the other fields are the sample's description.",
+  "samples": [
+    {
+      "id": "outreach-todos-cafe",
+      "title": "또도스 카페",
+      "siteName": "또도스 카페",
+      "purpose": "주말 카페, 방문 전환",
+      "url": "https://getsite-samples.web.app/outreach/todos-cafe/",
+      "topic": "place",
+      "concept": "brand",
+      "badge": "아웃리치 샘플",
+      "hero": "김 오르는 커피 실사 사진 풀블리드, 30초 Ken Burns, 김 3줄 루프, 햇빛 모션",
+      "sections": ["히어로 — 김 오르는 커피 사진 + Ken Burns", "공간 소개", "메뉴·가격", "운영시간·위치 (주말만 운영 강조, 네이버 지도)", "갤러리", "문의"],
+      "sectionIds": ["hero", "about", "services", "gallery", "contact"],
+      "palette": ["#FDF6E9", "#FFF8EC", "#8A5A35", "#5D3C22", "#B3793F"],
+      "paletteName": "크림·브라운",
+      "motion": "Lv.2 — Ken Burns + 김 루프 + 스크롤 리빌"
+    },
+    {
+      "id": "outreach-blessing-atelier",
+      "title": "블레싱공방",
+      "siteName": "블레싱공방",
+      "purpose": "원데이 클래스 예약",
+      "url": "https://getsite-samples.web.app/outreach/blessing-atelier/",
+      "topic": "class",
+      "concept": "atelier",
+      "badge": "아웃리치 샘플",
+      "hero": "위빙 라인 드로잉 + 손으로 라탄 바구니 짜는 장면, 떠다니는 공예 조각 5개",
+      "sections": ["히어로 — 손으로 짜는 위빙 장면", "클래스 4종 (라탄·글라스아트·폼 세라믹·일상 데코)", "일정·가격표", "단체·출강", "갤러리", "후기", "예약·문의 (전화 연결, 네이버 플레이스)"],
+      "sectionIds": ["hero", "featured", "services", "gallery", "trust", "booking"],
+      "palette": ["#1E3A2F", "#2B4F3E", "#F2EBDD", "#EADFC0", "#B08D3E", "#C9A44E"],
+      "paletteName": "딥 포레스트 그린·리넨·브라스",
+      "motion": "Lv.2 — 위빙 라인 드로잉 + 회전 원형 레터링 + 플로팅 공예 조각"
+    },
+    {
+      "id": "outreach-hansol-pilates",
+      "title": "한솔 필라테스",
+      "siteName": "한솔 필라테스",
+      "purpose": "1:1 개인수업 필라테스 체험 신청 전환",
+      "url": "https://getsite-samples.web.app/outreach/hansol-pilates/",
+      "topic": "class",
+      "concept": "atelier",
+      "badge": "아웃리치 샘플",
+      "hero": "호흡 헤일로 10초 루프 + 호흡 라인 scaleX + 리포머 라인 드로잉 (SVG stroke-dashoffset 9초)",
+      "sections": ["히어로 — 호흡·리포머 무드", "개인수업이란", "프로그램·가격 (체험 30,000원, 베이직 10회 700,000원, 스탠다드 20회 1,300,000원, 프리미엄 30회 1,800,000원)", "원장 소개", "후기", "위치·체험 신청"],
+      "sectionIds": ["hero", "about", "services", "story", "trust", "booking"],
+      "palette": ["#FFFFFF", "#E9EFE6", "#7D9A84", "#375243", "#4F6F5A"],
+      "paletteName": "화이트·세이지 그린",
+      "motion": "Lv.2 — 호흡 스케일 루프 + 라인 드로잉 + 스크롤 리빌",
+      "note": "이 샘플은 다크모드를 끄고 항상 라이트 테마로 고정했다. getsite-my 쪽에서 다크모드로 바꾸지 말 것."
+    },
+    {
+      "id": "outreach-romi-bungee-yoga",
+      "title": "로미 번지앤요가",
+      "siteName": "로미 번지앤요가",
+      "purpose": "체험권 전환 (11월 한정 체험 3회 30,000원)",
+      "url": "https://getsite-samples.web.app/outreach/romi-bungee-yoga/",
+      "topic": "class",
+      "concept": "atelier",
+      "badge": "아웃리치 샘플",
+      "hero": "번지 점프 일러스트 + 탄성 코드 스트레치, 착지 스쿼시, 떠오르는 버블 10개, 코랄 마퀴 틱커, 체험 종료 카운트다운 (2026-11-23까지)",
+      "sections": ["히어로 — 번지 바운스 + 체험권 (3회 30,000원, 11/16–11/23, 선착 10명)", "프로그램 4종 비교 (번지·플라잉·필라테스·요가)", "체험 혜택", "시간표", "등록 혜택", "위치·문의 (네이버 예약, 문자)"],
+      "sectionIds": ["hero", "featured", "services", "booking", "contact"],
+      "palette": ["#FF5A3C", "#FFF6EE", "#FFF3EB", "#2E2320", "#FFC24B"],
+      "paletteName": "코랄·크림",
+      "motion": "Lv.2 — 번지 바운스 + 카운트다운 + 스프링 팝인"
+    }
+  ]
+}

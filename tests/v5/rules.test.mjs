@@ -50,4 +50,10 @@ test('firestore: the Daol sample (studio) is accepted with all 13 sections; an u
   await assertFails(create(v4({ sampleId: 'daol-x' })));
 });
 
+test('firestore: the four outreach samples are accepted with their own topic; an unlisted outreach id is refused', async () => {
+  const set = { 'outreach-todos-cafe': 'place', 'outreach-blessing-atelier': 'class', 'outreach-hansol-pilates': 'class', 'outreach-romi-bungee-yoga': 'class' };
+  for (const [id, topic] of Object.entries(set)) { const o = withRefs(REFS, ['hero', 'about', 'services', 'booking']); o.data.topic = topic; o.data.sampleId = id; await assertSucceeds(create(o)); }
+  await assertFails(create(v4({ sampleId: 'outreach-unknown' })));
+});
+
 test.after(() => env.cleanup());

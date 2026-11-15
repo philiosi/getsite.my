@@ -5,7 +5,7 @@ import { sanitizeText } from '../v3/order/brief.js';
 import { CATALOG_VERSION, ALL_GALLERIES } from '../v3/catalog.js';
 
 const galleryName = (id) => id === 'auto' ? '제작자에게 맡기기' : ALL_GALLERIES.find((x) => x.id === id)?.name || '';
-const sampleOf = (state, data) => data.samples.find((x) => x.id === state.sampleId);
+const sampleOf = (state, data) => (data.pool || data.samples).find((x) => x.id === state.sampleId);
 /** The picks that go out: one per chosen section (gallery excluded), each a (section, ref) pair from the
     catalog, else the automatic one; notes cleaned. Without the catalog every section reads "새로 구성". */
 export function picksOut(state, parts, samples) {
@@ -45,7 +45,7 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
   return {
     schema: 'v4', displayNo: identity.displayNo, catalogVersion: CATALOG_VERSION, email, siteName, oneLiner, name,
     topic: sample.topic, sampleId: sample.id, sections: [...state.sections], galleryLayout: state.gallery,
-    picks: Object.fromEntries(Object.entries(picksOut(state, parts, data.samples)).map(([id, p]) => [id, encodePick(p)])), galleryNote: state.sections.includes('gallery') ? cleanNote(state.galleryNote) : '', partsVersion: String(parts?.version || 'none').slice(0, 20),
+    picks: Object.fromEntries(Object.entries(picksOut(state, parts, (data.pool || data.samples))).map(([id, p]) => [id, encodePick(p)])), galleryNote: state.sections.includes('gallery') ? cleanNote(state.galleryNote) : '', partsVersion: String(parts?.version || 'none').slice(0, 20),
     ref1: refs[0], ref2: refs[1], ref3: refs[2], materials: state.materials, estimate,
     status: '샘플 제작 대기', briefStatus: 'pending', opMail: 'pending', custMail: 'pending', driveFolderUrl: '',
     brief: { schema: 'getsite.brief.v2', catalogVersion: CATALOG_VERSION,
@@ -60,7 +60,7 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
 
 /** Per-section lines: the screen used as the reference, what to keep, the note. */
 export function sectionLines(state, data, sections, parts, { notes = true } = {}) {
-  const picks = picksOut(state, parts, data.samples);
+  const picks = picksOut(state, parts, (data.pool || data.samples));
   const lines = [];
   state.sections.forEach((id, i) => {
     const label = sections.find((s) => s.id === id)?.label || id;
@@ -73,7 +73,7 @@ export function sectionLines(state, data, sections, parts, { notes = true } = {}
     }
     const p = picks[id];
     if (!p) { lines.push(`${no} ${label}`); return; }
-    lines.push(p.ref === 'new' ? `${no} ${label}` : `${no} ${label}: ${pickLabel(label, p, data.samples, parts)} 참고`);
+    lines.push(p.ref === 'new' ? `${no} ${label}` : `${no} ${label}: ${pickLabel(label, p, (data.pool || data.samples), parts)} 참고`);
     const motion = motionPart(parts, p);
     if (motion?.video) lines.push(`   안내: ${parts.motion?.videoNote || '영상 옵션과 함께 제작합니다.'}${state.extras.video ? '' : ' (지금은 영상 옵션이 꺼져 있습니다)'}`);
     if (p.keep.length) lines.push(`   반영할 점: ${p.keep.map((k) => KEEP_LABELS[k]).join(', ')}`);

@@ -115,7 +115,7 @@ export function createFlow({ scroll, bar, store, data, sections, manifest, parts
     if (state.gallery !== drawnGallery) paintChips(state);
     drawnSample = state.sampleId;
     drawnGallery = state.gallery;
-    const chosen = data.samples.find((s) => s.id === state.sampleId);
+    const chosen = (data.pool || data.samples).find((s) => s.id === state.sampleId);
     bar.textContent = '';
     bar.append(h('span', '', order.length ? `${order.length}개 섹션을 위에서부터 이어 봅니다` : '왼쪽에서 섹션을 고르면 여기에 순서대로 이어집니다'));
     bar.append(h('b', '', chosen ? chosen.title : '샘플 미선택'));

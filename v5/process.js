@@ -117,7 +117,7 @@ function renderPanel1(el, { store, data, manifest, go }) {
   el.append(head, rail, grid, foot);
   const paint = (s) => {
     picks.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.sample === s.sampleId)));
-    const chosen = data.samples.find((x) => x.id === s.sampleId);
+    const chosen = (data.pool || data.samples).find((x) => x.id === s.sampleId);
     hint.textContent = chosen ? `선택: ${chosen.title}` : '샘플을 하나 고르세요';
     next.disabled = !chosen;
   };

@@ -36,7 +36,7 @@ export function renderPanel2(el, { store, data, go }) {
   // The next button stays reachable while the form is incomplete: pressing it shows the errors and moves focus to the first one.
   const foot = h('div', 'panel-foot'); const next = button('다음: 프로토타입 구성안', () => { Object.keys(inputs).forEach((k) => { touched[k] = true; }); paint(store.get()); const valid = validForm(store.get().form); const first = Object.keys(inputs).find((k) => !valid[k]); if (first) inputs[first].input.focus(); else go(3); }, 'btn btn-ink');
   foot.append(button('이전', () => go(1)), next); el.append(head, note, grid, foot);
-  function paint(s) { const chosen = data.samples.find((x) => x.id === s.sampleId); line.textContent = chosen ? `선택한 샘플: ${chosen.title}` : '샘플을 선택해 주세요.'; note.hidden = !!chosen; const valid = validForm(s.form); for (const [key, { input, wrap }] of Object.entries(inputs)) { if (input.value !== s.form[key]) input.value = s.form[key]; const bad = !!touched[key] && !valid[key]; wrap.classList.toggle('is-err', bad); input.setAttribute('aria-invalid', String(bad)); if (bad) input.setAttribute('aria-describedby', `${input.id}-error`); else input.removeAttribute('aria-describedby'); } next.setAttribute('aria-disabled', String(!formOk(s.form))); }
+  function paint(s) { const chosen = (data.pool || data.samples).find((x) => x.id === s.sampleId); line.textContent = chosen ? `선택한 샘플: ${chosen.title}` : '샘플을 선택해 주세요.'; note.hidden = !!chosen; const valid = validForm(s.form); for (const [key, { input, wrap }] of Object.entries(inputs)) { if (input.value !== s.form[key]) input.value = s.form[key]; const bad = !!touched[key] && !valid[key]; wrap.classList.toggle('is-err', bad); input.setAttribute('aria-invalid', String(bad)); if (bad) input.setAttribute('aria-describedby', `${input.id}-error`); else input.removeAttribute('aria-describedby'); } next.setAttribute('aria-disabled', String(!formOk(s.form))); }
   paint(store.get()); store.subscribe((s, p) => { if (p.order?.saved && !s.order) Object.keys(touched).forEach((k) => delete touched[k]); paint(s); });
 }
 
@@ -174,7 +174,7 @@ export function renderPanel4(el, ctx) {
       fixBtn.hidden = saved;
 
       if (isGallery) {
-        const sample = data.samples.find((x) => x.id === s.sampleId);
+        const sample = (data.pool || data.samples).find((x) => x.id === s.sampleId);
         const layoutLabel = gallery(s);
         const setLabel = workSet(sample);
         const mediaKey = `gallery:${layoutLabel}:${setLabel}`;
@@ -191,7 +191,7 @@ export function renderPanel4(el, ctx) {
         const pick = s.picks?.[id];
         const ref = pick?.ref || 'new';
         const part = parts && ref !== 'new' ? findPart(parts, id, ref) : null;
-        const partSample = part ? data.samples.find((x) => x.id === part.sampleId) : null;
+        const partSample = part ? (data.pool || data.samples).find((x) => x.id === part.sampleId) : null;
         const alt = part ? `${partSample?.title || '샘플'}의 ${label} 화면` : '';
         const mediaKey = part ? `part:${part.ref}:${alt}` : 'new';
         if (drawnMediaKey !== mediaKey) {
@@ -211,7 +211,7 @@ export function renderPanel4(el, ctx) {
             media.append(empty);
           }
         }
-        srcEl.textContent = part ? `${pickLabel(label, pick, data.samples, parts)} 참고` : '제작 때 새로 만듭니다';
+        srcEl.textContent = part ? `${pickLabel(label, pick, (data.pool || data.samples), parts)} 참고` : '제작 때 새로 만듭니다';
         // The video scene: what the option means and whether it is on.
         videoEl.hidden = !part?.video;
         if (part?.video) videoEl.textContent = `${parts.motion?.videoNote || '영상 옵션과 함께 제작합니다.'}${s.extras.video ? '' : ' 지금은 영상 옵션이 꺼져 있어, 켜야 이 장면으로 제작됩니다.'}`;
@@ -257,7 +257,7 @@ export function renderPanel4(el, ctx) {
   el.append(head, sum, picksSec, priceHead, table, optionHead, options, calc, actions, quote, foot);
 
   function paint(s) {
-    const sample = data.samples.find((x) => x.id === s.sampleId);
+    const sample = (data.pool || data.samples).find((x) => x.id === s.sampleId);
     boxes['샘플'].textContent = sample ? `${sample.title} · ${data.topics.find((t) => t.id === sample.topic)?.name || sample.topic}` : '없음';
     boxes['기본 정보'].textContent = `${s.form.siteName} · ${s.form.oneLiner} · ${s.form.email}`;
     // The same cleaned values the order sends (a blank note reads as none).
@@ -350,7 +350,7 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
   const foot = h('div', 'panel-foot'); const submit = button('이대로 샘플 제작 요청', send, 'btn btn-ink'); submit.dataset.submit = ''; const again = button('새 요청 시작', () => { error = ''; notice = ''; store.reset(); }, 'btn btn-line'); again.hidden = true; foot.append(button('이전', () => go(4)), again, submit); const guide = h('p', 'guide-link'); guide.append(link('주문 후 진행 과정 보기 ↗', GUIDE_URL), h('span', '', '접수부터 샘플 확인, 결제와 최종 제작까지 7단계로 안내합니다.'));
   el.append(head, consent, guide, status, result, foot);
   function paint(s) {
-    const sample = data.samples.find((x) => x.id === s.sampleId); recap.textContent = `${sample?.title || '샘플 미선택'} · ${s.form.siteName || '사이트 이름 미입력'} · ${total(s.extras).toLocaleString('ko-KR')}원 (VAT 별도)`; check.checked = s.consent; const done = doneSteps(s);
+    const sample = (data.pool || data.samples).find((x) => x.id === s.sampleId); recap.textContent = `${sample?.title || '샘플 미선택'} · ${s.form.siteName || '사이트 이름 미입력'} · ${total(s.extras).toLocaleString('ko-KR')}원 (VAT 별도)`; check.checked = s.consent; const done = doneSteps(s);
     const saved = !!s.order?.saved;
     submit.hidden = saved; again.hidden = !saved; again.disabled = busy || retrying; submit.disabled = busy || !done[1] || !done[2] || !done[3] || !s.consent; consent.hidden = saved; guide.hidden = saved;
     const text = busy ? (uploadStatus || '서버에 저장 중입니다…') : error || (saved ? notice || '접수되었습니다.' : '');

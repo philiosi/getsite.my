@@ -158,6 +158,14 @@ export function createAppStore({ sampleIds = null, parts = null, samples = [] } 
     setTopic: (topic) => store.set({ topic }),
     pickSample: (sampleId) => edit({ sampleId, picks: picksFor(s().sections, sampleId, s().sampleId) }),
     setField: (k, v) => edit({ form: { ...s().form, [k]: v } }),
+    /** A link from an outreach sample: the sample, its name and purpose, and its sections in one edit, then step 2.
+        The customer still checks and edits everything; nothing is submitted. */
+    startFromSample(sample) {
+      const ids = Array.isArray(sample.sectionIds) ? sample.sectionIds.filter((id) => SECTION_IDS.includes(id)) : [];
+      const sections = ids.length ? [...new Set(ids)] : s().sections;
+      const picks = picksFor(sections, sample.id, s().sampleId);
+      edit({ sampleId: sample.id, form: { ...s().form, siteName: str(sample.siteName, 80), oneLiner: str(sample.purpose, 200) }, sections, picks, step: 2, ...videoFor(picks, sections) });
+    },
     setMaterials: (materials) => edit({ materials }),
     toggleSection(id) {
       const cur = s().sections;
