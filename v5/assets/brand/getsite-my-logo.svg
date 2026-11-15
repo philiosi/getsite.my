@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="180" viewBox="0 0 800 180" fill="none" role="img" aria-label="getsite.my">
+  <title>getsite.my</title>
+  <!-- Icon: rounded square -->
+  <rect x="8" y="16" width="148" height="148" rx="40" fill="#0B1220"/>
+  <!-- G body: fully round / circular G, same geometry as the dark version.
+       The letter itself carries the website parts. -->
+  <path d="M 111 76 C 105 65, 95 58, 83 58 C 64 58, 49 73.5, 49 93 C 49 112.5, 64 128, 83 128 C 99 128, 111 118, 114 104" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- G crossbar as a green CTA button pill -->
+  <path d="M 83 104 H 114" stroke="#22C55E" stroke-width="13" stroke-linecap="round"/>
+  <!-- Browser window dots pierced into the top band of the round G -->
+  <circle cx="66" cy="62.8" r="3.5" fill="#0B1220"/>
+  <circle cx="79" cy="58.9" r="3.5" fill="#0B1220"/>
+  <circle cx="92" cy="59.6" r="3.5" fill="#0B1220"/>
+  <!-- .my dot -->
+  <circle cx="124" cy="132" r="9.5" fill="#22C55E"/>
+  <!-- Wordmark - enlarged, extra-bold, high contrast for visibility -->
+  <text x="176" y="124" font-family="Inter, Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', Arial, sans-serif" font-size="86" font-weight="900" letter-spacing="-1.2" fill="#020617">getsite<tspan fill="#15803D">.my</tspan></text>
+</svg>

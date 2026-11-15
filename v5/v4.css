@@ -71,6 +71,20 @@ p { margin: 0; }
 .topbar { position: sticky; top: 0; z-index: 50; background: color-mix(in oklch, var(--paper) 90%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
 .topbar-in { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); height: 64px; display: flex; align-items: center; gap: 18px; }
 .brand { font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.04em; text-decoration: none; }
+/* Logo: the white-background file on a light page, the dark-background file on a dark one (same switch as the palette). */
+.brand { display: inline-flex; align-items: center; line-height: 0; }
+.brand img { display: block; height: 32px; width: auto; }
+.foot-logo { display: block; margin-bottom: 14px; line-height: 0; }
+.foot-logo img { display: block; height: 28px; width: auto; }
+.foot-mail { color: var(--ink-2); font-weight: 600; text-underline-offset: 3px; }
+.foot-mail:hover { color: var(--ink); }
+.logo-dark { display: none !important; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none !important; }
+  :root:not([data-theme="light"]) .logo-dark { display: block !important; }
+}
+:root[data-theme="dark"] .logo-light { display: none !important; }
+:root[data-theme="dark"] .logo-dark { display: block !important; }
 .nav { margin-left: auto; display: flex; gap: 2px; align-items: center; }
 .nav a { color: var(--ink-2); text-decoration: none; font-size: 14px; font-weight: 600; padding: 7px 10px; border-radius: 999px; }
 .nav a:hover { background: var(--paper-2); color: var(--ink); }
