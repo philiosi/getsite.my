@@ -484,6 +484,20 @@
       @media (prefers-reduced-transparency: reduce) {
         .hero-tabs { backdrop-filter: none; background: var(--card); }
       }
+    
+      /* ---------- 스크롤 등장 효과 (rise + fade + blur-in, 제목은 단어별 마스크 등장) ----------
+         숨김 상태는 JS가 <html>에 .rv-on을 붙였을 때만 적용된다. JS가 없거나
+         prefers-reduced-motion이면 모든 내용이 처음부터 그대로 보인다. */
+      html.rv-on [data-rv]{opacity:0;transform:translate3d(0,34px,0);filter:blur(8px);
+        transition:opacity .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s),transform .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s),filter .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s)}
+      html.rv-on [data-rv].rv-in{opacity:1;transform:none;filter:none}
+      html.rv-on [data-rv] img{transform:scale(1.07);transition:transform 1.6s cubic-bezier(.22,1,.36,1) var(--rv-d,0s)}
+      html.rv-on [data-rv].rv-in img{transform:none}
+      html.rv-on [data-rv="split"]{opacity:1;transform:none;filter:none}
+      .rv-m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.16em;margin-bottom:-.16em}
+      .rv-w{display:inline-block;transition:transform .95s cubic-bezier(.16,1,.3,1),opacity .7s ease;transition-delay:calc(var(--rv-d,0s) + var(--rv-i,0) * 55ms)}
+      html.rv-on [data-rv="split"]:not(.rv-in) .rv-w{transform:translate3d(0,115%,0);opacity:0}
+      @media print{html.rv-on [data-rv],html.rv-on [data-rv] img,html.rv-on [data-rv] .rv-w{opacity:1 !important;transform:none !important;filter:none !important}}
     </style>
   </head>
   <body>
@@ -507,8 +521,8 @@
       <main id="main">
       <div class="hero">
         <div class="hero-stage" id="heroStage">
-          <!-- 샘플 3 -->
-          <div class="scene scene-3 active" data-scene="3" id="hero-panel-3" aria-labelledby="hero-tab-3" role="tabpanel" aria-label="샘플 3 히어로">
+          <!-- 샘플 1 (표시 번호, 내부 id는 3) -->
+          <div class="scene scene-3 active" data-scene="3" id="hero-panel-3" aria-labelledby="hero-tab-3" role="tabpanel" aria-label="샘플 1 히어로">
             <div class="scene-inner">
               <svg class="sunrise" viewBox="0 0 400 130" fill="none" aria-hidden="true">
                 <path class="sun-arc" d="M110 108 A 90 90 0 0 1 290 108" stroke="var(--plum-soft)" stroke-width="1.6" />
@@ -551,8 +565,8 @@
             </div>
           </div>
 
-          <!-- 샘플 1 -->
-          <div class="scene scene-1" data-scene="1" id="hero-panel-1" aria-labelledby="hero-tab-1" inert aria-hidden="true" role="tabpanel" aria-label="샘플 1 히어로">
+          <!-- 샘플 3 (표시 번호, 내부 id는 1) -->
+          <div class="scene scene-1" data-scene="1" id="hero-panel-1" aria-labelledby="hero-tab-1" inert aria-hidden="true" role="tabpanel" aria-label="샘플 3 히어로">
             <div class="ripple r1"></div><div class="ripple r2"></div><div class="ripple r3"></div>
             <div class="scene-inner">
               <div class="breath-wrap" aria-hidden="true">
@@ -574,12 +588,12 @@
           </div>
 
           <div class="hero-tabs" role="tablist" aria-label="히어로 모션 샘플 선택">
-            <button type="button" role="tab" id="hero-tab-3" aria-controls="hero-panel-3" tabindex="0" aria-selected="true" data-target="3">샘플 3</button>
+            <button type="button" role="tab" id="hero-tab-3" aria-controls="hero-panel-3" tabindex="0" aria-selected="true" data-target="3">샘플 1</button>
             <button type="button" role="tab" id="hero-tab-2" aria-controls="hero-panel-2" tabindex="-1" aria-selected="false" data-target="2">샘플 2</button>
-            <button type="button" role="tab" id="hero-tab-1" aria-controls="hero-panel-1" tabindex="-1" aria-selected="false" data-target="1">샘플 1</button>
+            <button type="button" role="tab" id="hero-tab-1" aria-controls="hero-panel-1" tabindex="-1" aria-selected="false" data-target="1">샘플 3</button>
           </div>
         </div>
-        <p class="hero-note" id="heroNote" aria-live="polite"><strong>샘플 3 · 중앙 정렬 미니멀</strong> — 일출 라인과 연꽃 드로잉만으로 조용하게 머무는 히어로입니다.</p>
+        <p class="hero-note" id="heroNote" aria-live="polite"><strong>샘플 1 · 중앙 정렬 미니멀</strong> — 일출 라인과 연꽃 드로잉만으로 조용하게 머무는 히어로입니다.</p>
       </div>
 
       <!-- 2. 스테이라란 -->
@@ -776,9 +790,9 @@
     <script>
       (function () {
         var notes = {
-          "1": "<strong>샘플 1 · 실크 파동 + 호흡 원</strong> — 부드럽게 퍼지는 파동 배경 위에서 10초 호흡 루프가 돕니다.",
+          "1": "<strong>샘플 3 · 실크 파동 + 호흡 원</strong> — 부드럽게 퍼지는 파동 배경 위에서 10초 호흡 루프가 돕니다.",
           "2": "<strong>샘플 2 · 느린 푸시인</strong> — 스튜디오 사진에 천천히 다가가는 Ken Burns와 빛의 변화로 공간의 분위기를 전합니다.",
-          "3": "<strong>샘플 3 · 중앙 정렬 미니멀</strong> — 일출 라인과 연꽃 드로잉만으로 조용하게 머무는 히어로입니다."
+          "3": "<strong>샘플 1 · 중앙 정렬 미니멀</strong> — 일출 라인과 연꽃 드로잉만으로 조용하게 머무는 히어로입니다."
         };
         var tabs = document.querySelectorAll(".hero-tabs button");
         var sceneEls = document.querySelectorAll(".scene");
@@ -1006,6 +1020,88 @@
             }
           });
         }
+      })();
+    </script>
+      <script>
+      /* 스크롤 등장 효과: 화면에 들어올 때 한 번만 떠오른다. 외부 라이브러리 없음. */
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var ITEMS = ".sec-head > *, .philosophy, .value-card, .workshop-card, .sched-card, .teacher, .review, .gallery-photo, .loc-body, .cards > .card, .menu-col, .info-card, .gallery > figure, .contact-card";
+        var els = Array.prototype.slice.call(document.querySelectorAll(ITEMS));
+        if (!els.length) return;
+        function splitWords(el, counter) {
+          Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+            if (node.nodeType === 3) {
+              var frag = document.createDocumentFragment();
+              node.textContent.split(/(\s+)/).forEach(function (part) {
+                if (!part) return;
+                if (!part.trim()) { frag.appendChild(document.createTextNode(" ")); return; }
+                var mask = document.createElement("span");
+                mask.className = "rv-m";
+                mask.setAttribute("aria-hidden", "true");
+                var w = document.createElement("span");
+                w.className = "rv-w";
+                w.style.setProperty("--rv-i", counter.n++);
+                w.textContent = part;
+                mask.appendChild(w);
+                frag.appendChild(mask);
+              });
+              el.replaceChild(frag, node);
+            } else if (node.nodeType === 1 && node.tagName !== "BR") {
+              splitWords(node, counter);
+            }
+          });
+        }
+        els.forEach(function (el) {
+          if (el.tagName === "H2") {
+            el.setAttribute("aria-label", el.textContent.replace(/\s+/g, " ").trim());
+            splitWords(el, { n: 0 });
+            el.setAttribute("data-rv", "split");
+          } else {
+            el.setAttribute("data-rv", "");
+          }
+        });
+        document.documentElement.classList.add("rv-on");
+        function show(el, order) {
+          var delay = Math.min(order, 5) * 100;
+          el.style.setProperty("--rv-d", delay + "ms");
+          el.classList.add("rv-in");
+          /* 끝나면 표식을 걷어 원래의 hover 전환이 다시 동작하게 한다 */
+          setTimeout(function () {
+            el.removeAttribute("data-rv");
+            el.classList.remove("rv-in");
+            el.style.removeProperty("--rv-d");
+          }, delay + 2600);
+        }
+        var io = new IntersectionObserver(function (entries) {
+          var hit = entries.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+          hit.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+          hit.forEach(function (el, i) { io.unobserve(el); show(el, i); });
+        }, { rootMargin: "0px 0px -12% 0px", threshold: 0 });
+        els.forEach(function (el) { io.observe(el); });
+        /* 안전장치: 아직 숨어 있는 대상을 조건에 맞으면 바로 보여 준다 */
+        function flush(test) {
+          var i = 0;
+          Array.prototype.slice.call(document.querySelectorAll("[data-rv]:not(.rv-in)")).forEach(function (el) {
+            if (!test || test(el)) { io.unobserve(el); show(el, i++); }
+          });
+        }
+        /* 키보드 포커스가 숨은 영역 안으로 들어오면 그 영역을 즉시 표시 */
+        document.addEventListener("focusin", function (e) {
+          flush(function (el) { return el.contains(e.target); });
+        });
+        /* 페이지 맨 아래에 닿으면 화면 안에 남은 대상을 모두 표시 (아래쪽 여백 때문에 관찰되지 않는 경우) */
+        function atBottom() {
+          if (window.innerHeight + window.pageYOffset < document.documentElement.scrollHeight - 4) return;
+          flush(function (el) { return el.getBoundingClientRect().top < window.innerHeight; });
+        }
+        window.addEventListener("scroll", atBottom, { passive: true });
+        window.addEventListener("resize", atBottom);
+        /* 도중에 '동작 줄이기'를 켜면 효과를 끄고 전부 표시 */
+        var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        function onMq() { if (mq.matches) { document.documentElement.classList.remove("rv-on"); io.disconnect(); } }
+        if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq);
       })();
     </script>
   </body>

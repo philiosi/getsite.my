@@ -512,6 +512,20 @@
         .hello-underline path{stroke-dashoffset:0}
         .steam i{opacity:.5}
       }
+    
+      /* ---------- 스크롤 등장 효과 (rise + fade + blur-in, 제목은 단어별 마스크 등장) ----------
+         숨김 상태는 JS가 <html>에 .rv-on을 붙였을 때만 적용된다. JS가 없거나
+         prefers-reduced-motion이면 모든 내용이 처음부터 그대로 보인다. */
+      html.rv-on [data-rv]{opacity:0;transform:translate3d(0,34px,0);filter:blur(8px);
+        transition:opacity .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s),transform .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s),filter .95s cubic-bezier(.22,1,.36,1) var(--rv-d,0s)}
+      html.rv-on [data-rv].rv-in{opacity:1;transform:none;filter:none}
+      html.rv-on [data-rv] img{transform:scale(1.07);transition:transform 1.6s cubic-bezier(.22,1,.36,1) var(--rv-d,0s)}
+      html.rv-on [data-rv].rv-in img{transform:none}
+      html.rv-on [data-rv="split"]{opacity:1;transform:none;filter:none}
+      .rv-m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.16em;margin-bottom:-.16em}
+      .rv-w{display:inline-block;transition:transform .95s cubic-bezier(.16,1,.3,1),opacity .7s ease;transition-delay:calc(var(--rv-d,0s) + var(--rv-i,0) * 55ms)}
+      html.rv-on [data-rv="split"]:not(.rv-in) .rv-w{transform:translate3d(0,115%,0);opacity:0}
+      @media print{html.rv-on [data-rv],html.rv-on [data-rv] img,html.rv-on [data-rv] .rv-w{opacity:1 !important;transform:none !important;filter:none !important}}
     </style>
   </head>
   <body>
@@ -538,14 +552,14 @@
       <section class="hero" aria-label="OLC 커피 소개">
         <div class="hero-stage" id="hero-stage">
 
-          <!-- 샘플1: Komorebi (세 번째) -->
+          <!-- 샘플3(표시 번호): Komorebi — 내부 id는 1 -->
           <div class="motion-layer layer-komorebi" id="panel-1" role="tabpanel" aria-labelledby="tab-1" data-layer="1" aria-hidden="true" inert>
             <div class="sun-spot s1"></div><div class="sun-spot s2"></div><div class="sun-spot s3"></div><div class="sun-spot s4"></div>
             <div class="leaf-shadow l1"></div><div class="leaf-shadow l2"></div><div class="leaf-shadow l3"></div>
           </div>
 
-          <!-- 샘플2: 은행나무 낙엽 + 스팀 (기본 표시) -->
-          <div class="motion-layer layer-ginkgo is-active" id="panel-2" role="tabpanel" aria-labelledby="tab-2" data-layer="2" aria-hidden="false">
+          <!-- 샘플2: 은행나무 낙엽 + 스팀 -->
+          <div class="motion-layer layer-ginkgo" id="panel-2" role="tabpanel" aria-labelledby="tab-2" data-layer="2" aria-hidden="true" inert>
             <span class="gleaf" style="left:6%;animation-duration:13s;animation-delay:0s"><svg width="34" height="34" viewBox="0 0 48 48"><path d="M24 30.5C15.5 30.5 8 25 6.2 17 5 11.2 8 5.8 13.2 5 17.6 4.3 21.2 7 24 11.5 26.8 7 30.4 4.3 34.8 5 40 5.8 43 11.2 41.8 17 40 25 32.5 30.5 24 30.5Z" fill="#D98E1F"/><path d="M24 28.5 14.8 10M24 28.5 24 13.5M24 28.5 33.2 10" stroke="rgba(96,54,0,.16)" stroke-width="1.1" fill="none"/><path d="M24 29.5V43" stroke="#D98E1F" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></span>
             <span class="gleaf" style="left:18%;animation-duration:17s;animation-delay:2.5s"><svg width="24" height="24" viewBox="0 0 48 48"><path d="M24 30.5C15.5 30.5 8 25 6.2 17 5 11.2 8 5.8 13.2 5 17.6 4.3 21.2 7 24 11.5 26.8 7 30.4 4.3 34.8 5 40 5.8 43 11.2 41.8 17 40 25 32.5 30.5 24 30.5Z" fill="#E8A83E"/><path d="M24 28.5 14.8 10M24 28.5 24 13.5M24 28.5 33.2 10" stroke="rgba(96,54,0,.16)" stroke-width="1.1" fill="none"/><path d="M24 29.5V43" stroke="#E8A83E" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></span>
             <span class="gleaf" style="left:33%;animation-duration:15s;animation-delay:5s"><svg width="40" height="40" viewBox="0 0 48 48"><path d="M24 30.5C15.5 30.5 8 25 6.2 17 5 11.2 8 5.8 13.2 5 17.6 4.3 21.2 7 24 11.5 26.8 7 30.4 4.3 34.8 5 40 5.8 43 11.2 41.8 17 40 25 32.5 30.5 24 30.5Z" fill="#C77F14"/><path d="M24 28.5 14.8 10M24 28.5 24 13.5M24 28.5 33.2 10" stroke="rgba(96,54,0,.16)" stroke-width="1.1" fill="none"/><path d="M24 29.5V43" stroke="#C77F14" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg></span>
@@ -566,8 +580,8 @@
             </div>
           </div>
 
-          <!-- 샘플3: 타이포그래피 — 문구 지운 깨끗한 사진 위에 원본 그래픽과 같은 자리·내용으로 라이브 타이포 모션 + 은행잎 -->
-          <div class="motion-layer layer-fullbleed has-photo" id="panel-3" role="tabpanel" aria-labelledby="tab-3" data-layer="3" aria-hidden="true" inert>
+          <!-- 샘플1(표시 번호, 기본 표시): 타이포그래피 — 내부 id는 3 — 문구 지운 깨끗한 사진 위에 원본 그래픽과 같은 자리·내용으로 라이브 타이포 모션 + 은행잎 -->
+          <div class="motion-layer layer-fullbleed has-photo is-active" id="panel-3" role="tabpanel" aria-labelledby="tab-3" data-layer="3" aria-hidden="false">
             <div class="fullbleed-frame" aria-hidden="true">
               <span class="photo-tag">사진 자리 · 카페 전경 사진이 들어갈 자리</span>
             </div>
@@ -633,12 +647,12 @@
                 <div class="tabs-head">
                   <span class="tabs-title">히어로 모션 샘플 — 골라서 비교해 보세요</span>
                   <div class="tablist" role="tablist" aria-label="히어로 모션 샘플 선택">
-                    <button type="button" class="tab-btn" role="tab" id="tab-2" aria-selected="true" aria-controls="panel-2" tabindex="0" data-sample="2">샘플2<small><span class="m-hide">은행나무 </span>낙엽</small></button>
-                    <button type="button" class="tab-btn" role="tab" id="tab-3" aria-selected="false" aria-controls="panel-3" tabindex="-1" data-sample="3">샘플3<small>타이포<span class="m-hide">그래피</span></small></button>
-                    <button type="button" class="tab-btn" role="tab" id="tab-1" aria-selected="false" aria-controls="panel-1" tabindex="-1" data-sample="1">샘플1<small>Komorebi</small></button>
+                    <button type="button" class="tab-btn" role="tab" id="tab-3" aria-selected="true" aria-controls="panel-3" tabindex="0" data-sample="3">샘플1<small>타이포<span class="m-hide">그래피</span></small></button>
+                    <button type="button" class="tab-btn" role="tab" id="tab-2" aria-selected="false" aria-controls="panel-2" tabindex="-1" data-sample="2">샘플2<small><span class="m-hide">은행나무 </span>낙엽</small></button>
+                    <button type="button" class="tab-btn" role="tab" id="tab-1" aria-selected="false" aria-controls="panel-1" tabindex="-1" data-sample="1">샘플3<small>Komorebi</small></button>
                   </div>
                 </div>
-                <p class="tab-caption" id="tabCaption" aria-live="polite"><b>샘플2 · 은행나무 낙엽</b> — 은행잎이 천천히 흩날리고, 갓 내린 커피에서는 김이 오릅니다. 카페 앞 은행나무와 커피 한 잔을 함께 보여주는 모션입니다.</p>
+                <p class="tab-caption" id="tabCaption" aria-live="polite"><b>샘플1 · 타이포그래피</b> — 깨끗한 매장 사진 위에 로고와 'Hello Yangju' 손글씨, 밑줄, 주소가 차례로 살아 움직이고 은행잎이 흩날리는 모션입니다.</p>
               </div>
             </div>
           </div>
@@ -821,9 +835,9 @@
     <script>
       (function () {
         var captions = {
-          "1": "<b>샘플1 · Komorebi</b> — 나뭇잎 사이로 비치는 햇살 반점이 천천히 흐릅니다. 통창 햇살이 자랑인 공간의 무드를 그대로 전하는 모션입니다.",
+          "1": "<b>샘플3 · Komorebi</b> — 나뭇잎 사이로 비치는 햇살 반점이 천천히 흐릅니다. 통창 햇살이 자랑인 공간의 무드를 그대로 전하는 모션입니다.",
           "2": "<b>샘플2 · 은행나무 낙엽</b> — 은행잎이 천천히 흩날리고, 갓 내린 커피에서는 김이 오릅니다. 카페 앞 은행나무와 커피 한 잔을 함께 보여주는 모션입니다.",
-          "3": "<b>샘플3 · 타이포그래피</b> — 깨끗한 매장 사진 위에 로고와 'Hello Yangju' 손글씨, 밑줄, 주소가 차례로 살아 움직이고 은행잎이 흩날리는 모션입니다."
+          "3": "<b>샘플1 · 타이포그래피</b> — 깨끗한 매장 사진 위에 로고와 'Hello Yangju' 손글씨, 밑줄, 주소가 차례로 살아 움직이고 은행잎이 흩날리는 모션입니다."
         };
         var buttons = Array.prototype.slice.call(document.querySelectorAll(".tab-btn"));
         var layers = Array.prototype.slice.call(document.querySelectorAll(".motion-layer"));
@@ -861,6 +875,88 @@
             }
           });
         });
+      })();
+    </script>
+      <script>
+      /* 스크롤 등장 효과: 화면에 들어올 때 한 번만 떠오른다. 외부 라이브러리 없음. */
+      (function () {
+        if (!("IntersectionObserver" in window)) return;
+        if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var ITEMS = ".sec-head > *, .philosophy, .value-card, .workshop-card, .sched-card, .teacher, .review, .gallery-photo, .loc-body, .cards > .card, .menu-col, .info-card, .gallery > figure, .contact-card";
+        var els = Array.prototype.slice.call(document.querySelectorAll(ITEMS));
+        if (!els.length) return;
+        function splitWords(el, counter) {
+          Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+            if (node.nodeType === 3) {
+              var frag = document.createDocumentFragment();
+              node.textContent.split(/(\s+)/).forEach(function (part) {
+                if (!part) return;
+                if (!part.trim()) { frag.appendChild(document.createTextNode(" ")); return; }
+                var mask = document.createElement("span");
+                mask.className = "rv-m";
+                mask.setAttribute("aria-hidden", "true");
+                var w = document.createElement("span");
+                w.className = "rv-w";
+                w.style.setProperty("--rv-i", counter.n++);
+                w.textContent = part;
+                mask.appendChild(w);
+                frag.appendChild(mask);
+              });
+              el.replaceChild(frag, node);
+            } else if (node.nodeType === 1 && node.tagName !== "BR") {
+              splitWords(node, counter);
+            }
+          });
+        }
+        els.forEach(function (el) {
+          if (el.tagName === "H2") {
+            el.setAttribute("aria-label", el.textContent.replace(/\s+/g, " ").trim());
+            splitWords(el, { n: 0 });
+            el.setAttribute("data-rv", "split");
+          } else {
+            el.setAttribute("data-rv", "");
+          }
+        });
+        document.documentElement.classList.add("rv-on");
+        function show(el, order) {
+          var delay = Math.min(order, 5) * 100;
+          el.style.setProperty("--rv-d", delay + "ms");
+          el.classList.add("rv-in");
+          /* 끝나면 표식을 걷어 원래의 hover 전환이 다시 동작하게 한다 */
+          setTimeout(function () {
+            el.removeAttribute("data-rv");
+            el.classList.remove("rv-in");
+            el.style.removeProperty("--rv-d");
+          }, delay + 2600);
+        }
+        var io = new IntersectionObserver(function (entries) {
+          var hit = entries.filter(function (e) { return e.isIntersecting; }).map(function (e) { return e.target; });
+          hit.sort(function (a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; });
+          hit.forEach(function (el, i) { io.unobserve(el); show(el, i); });
+        }, { rootMargin: "0px 0px -12% 0px", threshold: 0 });
+        els.forEach(function (el) { io.observe(el); });
+        /* 안전장치: 아직 숨어 있는 대상을 조건에 맞으면 바로 보여 준다 */
+        function flush(test) {
+          var i = 0;
+          Array.prototype.slice.call(document.querySelectorAll("[data-rv]:not(.rv-in)")).forEach(function (el) {
+            if (!test || test(el)) { io.unobserve(el); show(el, i++); }
+          });
+        }
+        /* 키보드 포커스가 숨은 영역 안으로 들어오면 그 영역을 즉시 표시 */
+        document.addEventListener("focusin", function (e) {
+          flush(function (el) { return el.contains(e.target); });
+        });
+        /* 페이지 맨 아래에 닿으면 화면 안에 남은 대상을 모두 표시 (아래쪽 여백 때문에 관찰되지 않는 경우) */
+        function atBottom() {
+          if (window.innerHeight + window.pageYOffset < document.documentElement.scrollHeight - 4) return;
+          flush(function (el) { return el.getBoundingClientRect().top < window.innerHeight; });
+        }
+        window.addEventListener("scroll", atBottom, { passive: true });
+        window.addEventListener("resize", atBottom);
+        /* 도중에 '동작 줄이기'를 켜면 효과를 끄고 전부 표시 */
+        var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        function onMq() { if (mq.matches) { document.documentElement.classList.remove("rv-on"); io.disconnect(); } }
+        if (mq.addEventListener) mq.addEventListener("change", onMq); else if (mq.addListener) mq.addListener(onMq);
       })();
     </script>
   </body>
