@@ -425,3 +425,39 @@ footer.site { margin-top: 96px; border-top: 1px solid var(--line); padding: 28px
 .g-auto { border: 1px solid var(--line-2); background: var(--paper); border-radius: 999px; padding: 10px 16px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); white-space: nowrap; min-height: 44px; }
 .g-auto[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); }
 .g-auto[aria-pressed="true"]::before { content: "✓ "; }
+
+/* ---------- designbookmark components (2026-11-17) ----------
+   Motion only. Colours stay on the v5 tokens (--paper/--ink/--line, hero --blue);
+   nothing here introduces a new palette. Springs use the v3 spring helper
+   (damping 1.0, response 0.4s); the CSS parts use the site --ease. */
+
+/* ② Tab pill: the sliding pill behind the active topic in the sample rail. */
+.s-pill { position: absolute; top: 6px; left: 0; height: 36px; width: 0; border-radius: 999px; background: var(--paper); z-index: 0; pointer-events: none; }
+.s-rail button { position: relative; z-index: 1; }
+.s-rail button[aria-pressed="true"], .s-rail button[aria-pressed="true"]:hover { background: transparent; color: var(--ink); }
+
+/* ③ Step progress: a line above the five step cards. */
+.steps-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.steps-track { flex: 1; height: 4px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.steps-track b { display: block; height: 100%; width: 20%; background: var(--ink); border-radius: 99px; transition: width .4s var(--ease); }
+.steps-progress-label { font-size: 13px; font-weight: 700; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* ④ Springy input: focus lifts the field a touch on the site spring. */
+.field input[type="text"], .field input[type="email"], .field input[type="url"], .field textarea, .field select, .lookup-row input { transition: border-color .4s var(--ease), box-shadow .4s var(--ease), transform .4s var(--ease); }
+.field input:focus, .field textarea:focus, .field select:focus, .lookup-row input:focus { border-color: var(--ink); transform: translateY(-1px); }
+
+/* ⑤ Section summary above the step-3 list. */
+.sec-summary { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; font-size: 14px; font-weight: 700; }
+.sec-summary .sec-count { font-variant-numeric: tabular-nums; }
+.sec-badge { font-size: 12px; font-weight: 700; border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 9px; color: var(--ink-2); }
+.sec-badge.is-extra { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.sec-extra-note { font-size: 12.5px; color: var(--ink-3); font-weight: 500; }
+
+/* ⑥ Loading to success: spinner inside the submit button. */
+.btn .btn-spin { display: none; width: 14px; height: 14px; flex: none; border-radius: 50%; border: 2px solid color-mix(in oklch, currentColor 30%, transparent); border-top-color: currentColor; }
+.btn.is-loading .btn-spin { display: inline-block; animation: btn-spin .8s linear infinite; }
+@keyframes btn-spin { to { transform: rotate(360deg); } }
+
+/* ⑦ Lookup: the full order code with its copy button. */
+.lookup-code { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lookup-code code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; background: var(--paper-2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; overflow-wrap: anywhere; word-break: break-all; }

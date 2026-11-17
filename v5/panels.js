@@ -30,7 +30,18 @@ export function renderPanel2(el, { store, data, go }) {
     if (key !== 'name') input.required = true;
     input.autocomplete = { email: 'email', name: 'name', siteName: 'organization', oneLiner: 'off' }[key];
     const err = h('div', 'ferr', error); err.id = `${input.id}-error`;
-    input.addEventListener('input', () => store.setField(key, input.value)); input.addEventListener('blur', () => { touched[key] = true; paint(store.get()); });
+    let lastPulse = 0;
+    input.addEventListener('input', () => {
+      store.setField(key, input.value);
+      // Springy input (designbookmark): a small pulse on the field while typing,
+      // throttled so fast typing does not pile animations up.
+      const now = performance.now();
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && now - lastPulse > 150) {
+        lastPulse = now;
+        input.animate([{ transform: 'translateY(-1px) scale(1.01)' }, { transform: 'translateY(-1px)' }], { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+      }
+    });
+    input.addEventListener('blur', () => { touched[key] = true; paint(store.get()); });
     wrap.append(lab, input, err); grid.append(wrap); inputs[key] = { input, wrap };
   }
   // The next button stays reachable while the form is incomplete: pressing it shows the errors and moves focus to the first one.
@@ -311,7 +322,7 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
   const SR_ONLY = 'position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0';
   status.style.cssText = SR_ONLY;
   const result = h('div'); result.tabIndex = -1; result.setAttribute('role', 'region'); result.setAttribute('aria-label', '접수 결과');
-  let busy = false; let error = ''; let lastStatus = ''; let drawnKey = null; let drawnUploads = null; let uploadStatus = ''; let notice = ''; let retrying = false;
+  let busy = false; let error = ''; let lastStatus = ''; let drawnKey = null; let drawnUploads = null; let uploadStatus = ''; let notice = ''; let retrying = false; let successAt = 0; // ms when the receipt first appeared (for the button's success beat)
   /** Upload progress text, then the outcome: the order is accepted either way. */
   const outcome = (uploads) => { const bad = uploads.filter((u) => !u.ok).length; return bad ? `접수되었습니다. 참고 이미지 ${uploads.length - bad}개를 올렸고 ${bad}개는 올리지 못했습니다.` : `접수되었습니다. 참고 이미지 ${uploads.length}개를 모두 올렸습니다.`; };
   async function send() { if (busy || store.get().order?.saved) return; const done = doneSteps(store.get()); if (!done[1] || !done[2] || !done[3] || !store.get().consent) return; busy = true; error = ''; notice = ''; paint(store.get());
@@ -347,12 +358,40 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
       if (cur?.key === order.key) { const uploads = cur.uploads.map((item) => updated.find((u) => u.name === item.name) || item); notice = outcome(uploads); store.setOrder({ ...cur, uploads }); }
     } finally { retrying = false; paint(store.get()); }
   }
-  const foot = h('div', 'panel-foot'); const submit = button('이대로 샘플 제작 요청', send, 'btn btn-ink'); submit.dataset.submit = ''; const again = button('새 요청 시작', () => { error = ''; notice = ''; store.reset(); }, 'btn btn-line'); again.hidden = true; foot.append(button('이전', () => go(4)), again, submit); const guide = h('p', 'guide-link'); guide.append(link('주문 후 진행 과정 보기 ↗', GUIDE_URL), h('span', '', '접수부터 샘플 확인, 결제와 최종 제작까지 7단계로 안내합니다.'));
+  const foot = h('div', 'panel-foot'); const submit = button('이대로 샘플 제작 요청', send, 'btn btn-ink'); submit.dataset.submit = '';
+  // Loading to success (designbookmark): the label is a span so the spinner can sit beside it.
+  const submitLabel = h('span', 'btn-label', submit.textContent);
+  const submitSpin = h('span', 'btn-spin'); submitSpin.setAttribute('aria-hidden', 'true');
+  submit.textContent = ''; submit.append(submitLabel, submitSpin);
+  const again = button('새 요청 시작', () => { error = ''; notice = ''; store.reset(); }, 'btn btn-line'); again.hidden = true; foot.append(button('이전', () => go(4)), again, submit); const guide = h('p', 'guide-link'); guide.append(link('주문 후 진행 과정 보기 ↗', GUIDE_URL), h('span', '', '접수부터 샘플 확인, 결제와 최종 제작까지 7단계로 안내합니다.'));
   el.append(head, consent, guide, status, result, foot);
   function paint(s) {
     const sample = (data.pool || data.samples).find((x) => x.id === s.sampleId); recap.textContent = `${sample?.title || '샘플 미선택'} · ${s.form.siteName || '사이트 이름 미입력'} · ${total(s.extras).toLocaleString('ko-KR')}원 (VAT 별도)`; check.checked = s.consent; const done = doneSteps(s);
     const saved = !!s.order?.saved;
-    submit.hidden = saved; again.hidden = !saved; again.disabled = busy || retrying; submit.disabled = busy || !done[1] || !done[2] || !done[3] || !s.consent; consent.hidden = saved; guide.hidden = saved;
+    // Loading → success on the button itself: busy shows a spinner and "접수 중…";
+    // the saved receipt first shows "접수 완료 ✓" on the button for a beat
+    // before the button hands over to the receipt below.
+    if (busy) {
+      submit.hidden = false; submit.disabled = true;
+      submit.classList.add('is-loading'); submit.classList.remove('is-success');
+      submitLabel.textContent = '접수 중…';
+    } else if (saved) {
+      if (!successAt) { successAt = Date.now(); setTimeout(() => paint(store.get()), 950); }
+      if (Date.now() - successAt < 900) {
+        submit.hidden = false; submit.disabled = true;
+        submit.classList.remove('is-loading'); submit.classList.add('is-success');
+        submitLabel.textContent = '접수 완료 ✓';
+      } else {
+        submit.hidden = true;
+        submit.classList.remove('is-success');
+      }
+    } else {
+      successAt = 0; submit.hidden = false;
+      submit.classList.remove('is-loading', 'is-success');
+      submitLabel.textContent = '이대로 샘플 제작 요청';
+      submit.disabled = !done[1] || !done[2] || !done[3] || !s.consent;
+    }
+    again.hidden = !saved; again.disabled = busy || retrying; consent.hidden = saved; guide.hidden = saved;
     const text = busy ? (uploadStatus || '서버에 저장 중입니다…') : error || (saved ? notice || '접수되었습니다.' : '');
     status.style.cssText = text ? '' : SR_ONLY; status.className = `status ${busy || retrying ? 'ing' : error ? 'err' : 'ok'}`;
     if (text !== lastStatus) { status.textContent = text; if (error && !busy) status.append(' ', button('다시 시도', send, 'btn btn-line btn-sm')); lastStatus = text; }
@@ -393,6 +432,22 @@ export function renderPanel5(el, { store, data, sections, parts = null, toast, g
 
 export function mountLookup({ input, button: trigger, out }) {
   let seq = 0;
-  async function lookup() { const parsed = parseLookup(input.value); out.textContent = ''; if (!parsed) { out.textContent = '전체 의뢰 코드를 입력해 주세요.'; return; } if (parsed.short) { out.textContent = '전체 의뢰 코드가 필요합니다. 접수 완료 화면이나 안내 메일의 코드 전체를 붙여 넣으세요.'; return; } const mine = ++seq; out.textContent = '조회 중입니다…'; trigger.disabled = true; try { const order = await api().loadOrder(parsed.key); if (mine !== seq) return; out.textContent = ''; if (!order) { out.textContent = '해당 코드의 주문을 찾을 수 없습니다'; return; } const dl = h('dl'); const add = (title, value) => { const dd = h('dd'); if (value instanceof Node) dd.append(value); else dd.textContent = value || '없음'; dl.append(h('dt', '', title), dd); }; let date = order.createdAt; if (typeof date?.toDate === 'function') date = date.toDate(); if (date instanceof Date) date = Number.isNaN(date.getTime()) ? '' : date.toLocaleString('ko-KR'); else if (date) date = String(date); add('의뢰번호', order.displayNo); add('사이트 이름', order.siteName); add('상태', order.status); add('접수 시각', date); add('Drive 폴더', DRIVE_URL_RE.test(order.driveFolderUrl || '') ? link('폴더 열기', order.driveFolderUrl) : '준비 중'); add('주문 페이지', link('주문 페이지 열기', orderPageLink(parsed.key))); out.append(dl); } catch { if (mine === seq) out.textContent = '조회에 실패했습니다. 다시 시도해 주세요.'; } finally { if (mine === seq) trigger.disabled = false; } }
+  async function lookup() { const parsed = parseLookup(input.value); out.textContent = ''; if (!parsed) { out.textContent = '전체 의뢰 코드를 입력해 주세요.'; return; } if (parsed.short) { out.textContent = '전체 의뢰 코드가 필요합니다. 접수 완료 화면이나 안내 메일의 코드 전체를 붙여 넣으세요.'; return; } const mine = ++seq; out.textContent = '조회 중입니다…'; trigger.disabled = true; try { const order = await api().loadOrder(parsed.key); if (mine !== seq) return; out.textContent = ''; if (!order) { out.textContent = '해당 코드의 주문을 찾을 수 없습니다'; return; } const dl = h('dl'); const add = (title, value) => { const dd = h('dd'); if (value instanceof Node) dd.append(value); else dd.textContent = value || '없음'; dl.append(h('dt', '', title), dd); }; let date = order.createdAt; if (typeof date?.toDate === 'function') date = date.toDate(); if (date instanceof Date) date = Number.isNaN(date.getTime()) ? '' : date.toLocaleString('ko-KR'); else if (date) date = String(date); add('의뢰번호', order.displayNo); add('사이트 이름', order.siteName); add('상태', order.status); add('접수 시각', date); add('Drive 폴더', DRIVE_URL_RE.test(order.driveFolderUrl || '') ? link('폴더 열기', order.driveFolderUrl) : '준비 중'); add('주문 페이지', link('주문 페이지 열기', orderPageLink(parsed.key)));
+    // Copy button for the full order code (designbookmark Copy button): the button
+    // itself flips to "복사됨 ✓" and back, so the code can be kept without retyping.
+    const codeRow = h('span', 'lookup-code');
+    const codeEl = h('code', '', parsed.key);
+    const copyBtn = h('button', 'btn btn-line btn-sm', '복사');
+    copyBtn.type = 'button';
+    let copyT = null;
+    copyBtn.addEventListener('click', async () => {
+      clearTimeout(copyT);
+      try { await navigator.clipboard.writeText(parsed.key); copyBtn.textContent = '복사됨 ✓'; }
+      catch { copyBtn.textContent = '복사 실패'; }
+      copyT = setTimeout(() => { copyBtn.textContent = '복사'; }, 2500);
+    });
+    codeRow.append(codeEl, copyBtn);
+    add('의뢰 코드', codeRow);
+    out.append(dl); } catch { if (mine === seq) out.textContent = '조회에 실패했습니다. 다시 시도해 주세요.'; } finally { if (mine === seq) trigger.disabled = false; } }
   trigger.addEventListener('click', lookup); input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); lookup(); } });
 }

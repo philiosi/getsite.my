@@ -1,5 +1,7 @@
 /* Topic rail and sample cards. A card is a link to the real site (new tab); its second
    action hands the sample to step 1. */
+import { Spring } from '../v3/core/spring.js';
+
 const h = (tag, cls, text) => { const el = document.createElement(tag); if (cls) el.className = cls; if (text != null) el.textContent = text; return el; };
 
 export const assetFor = (manifest, sampleId, name) => {
@@ -24,6 +26,46 @@ export function renderSamples({ grid, rail, count, data, manifest, store, onStar
   });
 
   grid.textContent = '';
+  // Sliding pill behind the active topic (designbookmark Tab pill). The pill lives
+  // inside the rail so it scrolls with the buttons on small screens; the buttons
+  // stay transparent and the pill carries the paper background (see v4.css).
+  const pill = h('span', 's-pill');
+  pill.setAttribute('aria-hidden', 'true');
+  rail.prepend(pill);
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pillX = new Spring({ value: 0, damping: 1, response: 0.4 });
+  const pillW = new Spring({ value: 0, damping: 1, response: 0.4 });
+  const applyPill = () => { pill.style.transform = `translateX(${pillX.value}px)`; pill.style.width = `${pillW.value}px`; };
+  pillX.onChange = applyPill; pillW.onChange = applyPill;
+  let pillReady = false;
+  function movePill(animate) {
+    const active = buttons.find((b) => b.dataset.topic === store.get().topic);
+    if (!active) { pill.style.opacity = '0'; return; }
+    pill.style.opacity = '';
+    pill.style.top = `${active.offsetTop}px`;
+    pill.style.height = `${active.offsetHeight}px`;
+    const x = active.offsetLeft, w = active.offsetWidth;
+    if (animate && !reducedMotion) { pillX.to(x); pillW.to(w); }
+    else { pillX.set(x); pillW.set(w); }
+  }
+  addEventListener('resize', () => movePill(false));
+  if (document.fonts?.ready) document.fonts.ready.then(() => movePill(false)).catch(() => {});
+
+  /* Rail scroll: when a topic is picked, bring the active button fully into view
+     so the neighbours that were hidden off the side flow in. The pill moves on
+     its spring; the rail scrolls on its own smooth scroll. The active button is
+     centred (clamped at both ends) so neighbours peek in from both sides.
+     Manual scrollLeft math — not scrollIntoView — so the page itself never
+     moves vertically. */
+  function revealTab(animate, topic) {
+    const active = buttons.find((b) => b.dataset.topic === topic);
+    if (!active) return;
+    const max = rail.scrollWidth - rail.clientWidth;
+    if (max <= 0) return; // every tab already fits
+    const target = active.offsetLeft + active.offsetWidth / 2 - rail.clientWidth / 2;
+    rail.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: animate && !reducedMotion ? 'smooth' : 'auto' });
+  }
+
   const cards = data.samples.map((s) => {
     const card = h('article', 's-card');
     card.dataset.sample = s.id;
@@ -63,6 +105,9 @@ export function renderSamples({ grid, rail, count, data, manifest, store, onStar
     cards.forEach((c) => { const show = state.topic === 'all' || c.dataset.topic === state.topic; c.classList.toggle('is-hidden', !show); if (show) n++; });
     const t = topics.find((x) => x.id === state.topic);
     count.textContent = state.topic === 'all' ? `샘플 ${n}개` : `${t?.name || ''} 샘플 ${n}개 · ${t?.hint || ''}`;
+    movePill(pillReady);
+    revealTab(pillReady, state.topic);
+    pillReady = true;
   }
   paint(store.get());
   /* Filtering shortens the grid. If the reader is already down among the cards, the next

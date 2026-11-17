@@ -1,5 +1,7 @@
 /* The live page's hero intro and stack-and-fan motion, moved as-is (the user asked to keep it).
    Only the wrapper changed: it is a module function instead of an inline IIFE. */
+import { Spring } from '../v3/core/spring.js';
+
 export function mountHero() {
   const $ = (id) => document.getElementById(id);
   var stage=$("sfStage"); if(!stage)return;
@@ -128,5 +130,23 @@ export function mountHero() {
         io2.observe(introEl);
       }else{introStarted=true;runIntro()}
     }else{inView=true;introStarted=true;runIntro()}
+  }
+
+  /* Magnetic hero CTAs (designbookmark): desktop pointer only. Each button pulls
+     a few px toward the cursor on a critically-damped spring (damping 1.0,
+     response 0.4s) and eases back on leave. The `translate` property composes
+     with the existing hover `transform`, so the intro reveal is untouched. */
+  if (!reduced && matchMedia('(pointer: fine)').matches && ctaEl) {
+    ctaEl.querySelectorAll('.btn').forEach(function (btn) {
+      var apply = function () { btn.style.translate = sx.value + 'px ' + sy.value + 'px'; };
+      var sx = new Spring({ value: 0, damping: 1, response: 0.4, onChange: apply });
+      var sy = new Spring({ value: 0, damping: 1, response: 0.4, onChange: apply });
+      btn.addEventListener('pointermove', function (e) {
+        var r = btn.getBoundingClientRect();
+        sx.to(Math.max(-8, Math.min(8, (e.clientX - (r.left + r.width / 2)) * 0.35)));
+        sy.to(Math.max(-6, Math.min(6, (e.clientY - (r.top + r.height / 2)) * 0.35)));
+      });
+      btn.addEventListener('pointerleave', function () { sx.to(0); sy.to(0); });
+    });
   }
 }

@@ -29,6 +29,15 @@ export function renderProcess({ stepsEl, panels, store, data, sections, manifest
   // goToSection(id): step 3, that section's tile opened and focused (set by renderPanel3).
   const ctx = { store, data, sections, manifest, parts, toast, go, goToSection: () => go(3) };
 
+  // Progress line above the step cards (designbookmark Step progress).
+  const prog = h('div', 'steps-progress');
+  const track = h('div', 'steps-track');
+  const progFill = h('b'); progFill.setAttribute('aria-hidden', 'true');
+  const progLabel = h('span', 'steps-progress-label');
+  track.append(progFill);
+  prog.append(track, progLabel);
+  stepsEl.parentNode.insertBefore(prog, stepsEl);
+
   // step cards
   stepsEl.textContent = '';
   const cards = STEPS.map((st) => {
@@ -56,6 +65,8 @@ export function renderProcess({ stepsEl, panels, store, data, sections, manifest
 
   function paint(state, prev) {
     const done = doneSteps(state);
+    progFill.style.width = `${(state.step / 5) * 100}%`;
+    progLabel.textContent = `${state.step} / 5 · ${STEPS[state.step - 1].title}`;
     cards.forEach((c, i) => {
       const n = i + 1;
       c.setAttribute('aria-selected', String(state.step === n));
@@ -135,13 +146,27 @@ function renderPanel3(el, ctx) {
 
   // left: options + stack
   const left = h('div');
+  // Count summary above the list (designbookmark Checkbox list): the base covers
+  // 7 sections; past that the badge says how many extra there are. No amount is
+  // shown here — extra-section pricing is set by the final quote (step 4), and
+  // the site only fixes the extra-page unit price (100,000원/장).
+  const secSummary = h('p', 'sec-summary');
+  const secCount = h('span', 'sec-count');
+  const secBadge = h('span', 'sec-badge');
+  const secNote = h('span', 'sec-extra-note', '추가 비용은 확정 견적서로 안내합니다');
+  secSummary.append(secCount, secBadge, secNote);
   const list = h('div', 'sec-list');
   const boxes = sections.map((sec) => {
     const lab = h('label', 'sec-opt');
     const c = h('input'); c.type = 'checkbox'; c.value = sec.id;
     const t = h('div'); t.append(h('b', '', sec.label), h('small', '', sec.sub));
     lab.append(c, t);
-    c.addEventListener('change', () => store.toggleSection(sec.id));
+    c.addEventListener('change', () => {
+      store.toggleSection(sec.id);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        lab.animate([{ transform: 'scale(1.015)' }, { transform: 'scale(1)' }], { duration: 320, easing: 'cubic-bezier(.16,1,.3,1)' });
+      }
+    });
     list.append(lab);
     return c;
   });
@@ -150,7 +175,7 @@ function renderPanel3(el, ctx) {
   const ol = h('ol');
   const empty = h('p', 'empty', '아직 고른 섹션이 없습니다.');
   stack.append(ol, empty);
-  left.append(list, stack);
+  left.append(secSummary, list, stack);
 
   // right: the flow
   const flowBox = h('div', 'flow');
@@ -252,6 +277,12 @@ function renderPanel3(el, ctx) {
 
   function paint(s) {
     boxes.forEach((c) => { c.checked = s.sections.includes(c.value); });
+    const n = s.sections.length;
+    const extra = Math.max(0, n - 7);
+    secCount.textContent = `${n}개 섹션`;
+    secBadge.textContent = extra ? `기본 7개 + 추가 ${extra}개` : '기본 7개 포함';
+    secBadge.classList.toggle('is-extra', extra > 0);
+    secNote.hidden = !extra;
     // Remember which stack button had focus, so a reorder does not drop the keyboard user.
     const a = document.activeElement;
     const keep = a && ol.contains(a) ? { id: a.closest('li')?.dataset.id, act: a.dataset.act } : null;
