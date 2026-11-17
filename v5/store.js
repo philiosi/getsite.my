@@ -9,7 +9,9 @@ export const INITIAL = {
   step: 1,
   topic: 'all', // samples section filter
   sampleId: null,
-  form: { email: '', siteName: '', oneLiner: '', name: '' },
+  form: { email: '', siteName: '', oneLiner: '', name: '',
+    // Optional profile (2026-11-16): all optional, never block submission.
+    industry: '', linkThreads: '', linkInstagram: '', linkNaver: '', linkHomepage: '', menu: '', customers: '', mood: '' },
   materials: 'have',
   sections: ['hero', 'about', 'gallery', 'contact'],
   gallery: 'auto',
@@ -63,6 +65,16 @@ export function validForm(form) {
     siteName: f('siteName').length > 0 && f('siteName').length <= 80,
     oneLiner: f('oneLiner').length > 0 && f('oneLiner').length <= 200,
     name: f('name').length <= 40,
+    // Optional profile fields: empty is always valid; only length is capped, so a
+    // half-typed link never blocks the request.
+    industry: f('industry').length <= 20,
+    linkThreads: f('linkThreads').length <= 300,
+    linkInstagram: f('linkInstagram').length <= 300,
+    linkNaver: f('linkNaver').length <= 300,
+    linkHomepage: f('linkHomepage').length <= 300,
+    menu: f('menu').length <= 200,
+    customers: f('customers').length <= 200,
+    mood: f('mood').length <= 20,
   };
 }
 export const formOk = (form) => Object.values(validForm(form)).every(Boolean);
@@ -99,7 +111,8 @@ export function normalize(v, sampleIds = null, catalog = null) {
     step: Number.isInteger(v.step) && v.step >= 1 && v.step <= 5 ? v.step : 1,
     topic: typeof v.topic === 'string' ? v.topic : 'all',
     sampleId,
-    form: { email: str(v.form?.email, 120), siteName: str(v.form?.siteName, 80), oneLiner: str(v.form?.oneLiner, 200), name: str(v.form?.name, 40) },
+    form: { email: str(v.form?.email, 120), siteName: str(v.form?.siteName, 80), oneLiner: str(v.form?.oneLiner, 200), name: str(v.form?.name, 40),
+      industry: str(v.form?.industry, 20), linkThreads: str(v.form?.linkThreads, 300), linkInstagram: str(v.form?.linkInstagram, 300), linkNaver: str(v.form?.linkNaver, 300), linkHomepage: str(v.form?.linkHomepage, 300), menu: str(v.form?.menu, 200), customers: str(v.form?.customers, 200), mood: str(v.form?.mood, 20) },
     materials: v.materials === 'none' ? 'none' : 'have',
     sections,
     gallery: GALLERY_IDS.includes(v.gallery) ? v.gallery : 'auto',

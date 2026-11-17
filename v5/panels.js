@@ -44,9 +44,45 @@ export function renderPanel2(el, { store, data, go }) {
     input.addEventListener('blur', () => { touched[key] = true; paint(store.get()); });
     wrap.append(lab, input, err); grid.append(wrap); inputs[key] = { input, wrap };
   }
+  // Optional profile (2026-11-16): all optional, never block submission. Only public
+  // channel links; login info is never asked for.
+  const optSec = h('div', 'opt-sec');
+  const optHead = h('div', 'panel-head'); optHead.append(h('h3', '', '선택 입력 — 있으면 더 맞는 샘플을 만들어 드려요'));
+  const optNote = h('p', 'note', '전부 선택 입력입니다. 비워 두셔도 접수가 됩니다. 채널 링크는 공개된 주소만 적어 주세요. 로그인 정보는 절대 묻지 않습니다.');
+  optSec.append(optHead, optNote);
+  const optGrid = h('div', 'form-grid');
+  const makeSelect = (key, label, options) => {
+    const wrap = h('div', 'field'); const lab = h('label', 'flabel', label); const sel = h('select'); sel.id = `v4-${key}`; lab.htmlFor = sel.id;
+    for (const [value, text] of options) { const o = h('option', '', text); o.value = value; sel.append(o); }
+    sel.addEventListener('change', () => store.setField(key, sel.value));
+    wrap.append(lab, sel); optGrid.append(wrap); inputs[key] = { input: sel, wrap };
+  };
+  makeSelect('industry', '업종 (선택)', [['', '선택 안 함'], ['카페', '카페'], ['요가', '요가'], ['필라테스', '필라테스'], ['공방', '공방'], ['미용', '미용'], ['교육', '교육'], ['기타', '기타']]);
+  makeSelect('mood', '원하는 분위기 (선택)', [['', '선택 안 함'], ['차분한', '차분한'], ['밝은', '밝은'], ['고급스러운', '고급스러운'], ['따뜻한', '따뜻한'], ['모던한', '모던한']]);
+  for (const [key, label, placeholder, max, url] of [
+    ['linkThreads', '스레드 링크 (선택)', 'https://www.threads.net/@…', 300, true],
+    ['linkInstagram', '인스타그램 링크 (선택)', 'https://www.instagram.com/…', 300, true],
+    ['linkNaver', '네이버 플레이스 링크 (선택)', 'https://place.map.naver.com/…', 300, true],
+    ['linkHomepage', '홈페이지·카카오채널 링크 (선택)', 'https://…', 300, true],
+    ['menu', '대표 메뉴·상품 (선택)', '예: 시그니처 라떼, 원데이 클래스', 200, false],
+    ['customers', '주로 오는 손님 (선택)', '예: 20~30대 직장인, 가족 단위', 200, false]]) {
+    const wrap = h('div', 'field'); const lab = h('label', 'flabel', label); const input = h('input'); input.id = `v4-${key}`; lab.htmlFor = input.id; input.type = 'text'; if (url) input.inputMode = 'url'; input.placeholder = placeholder; input.maxLength = max; input.autocomplete = 'off';
+    let lastPulse = 0;
+    input.addEventListener('input', () => {
+      store.setField(key, input.value);
+      const now = performance.now();
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && now - lastPulse > 150) {
+        lastPulse = now;
+        input.animate([{ transform: 'translateY(-1px) scale(1.01)' }, { transform: 'translateY(-1px)' }], { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)' });
+      }
+    });
+    input.addEventListener('blur', () => { touched[key] = true; paint(store.get()); });
+    wrap.append(lab, input); optGrid.append(wrap); inputs[key] = { input, wrap };
+  }
+  optSec.append(optGrid);
   // The next button stays reachable while the form is incomplete: pressing it shows the errors and moves focus to the first one.
   const foot = h('div', 'panel-foot'); const next = button('다음: 프로토타입 구성안', () => { Object.keys(inputs).forEach((k) => { touched[k] = true; }); paint(store.get()); const valid = validForm(store.get().form); const first = Object.keys(inputs).find((k) => !valid[k]); if (first) inputs[first].input.focus(); else go(3); }, 'btn btn-ink');
-  foot.append(button('이전', () => go(1)), next); el.append(head, note, grid, foot);
+  foot.append(button('이전', () => go(1)), next); el.append(head, note, grid, optSec, foot);
   function paint(s) { const chosen = (data.pool || data.samples).find((x) => x.id === s.sampleId); line.textContent = chosen ? `선택한 샘플: ${chosen.title}` : '샘플을 선택해 주세요.'; note.hidden = !!chosen; const valid = validForm(s.form); for (const [key, { input, wrap }] of Object.entries(inputs)) { if (input.value !== s.form[key]) input.value = s.form[key]; const bad = !!touched[key] && !valid[key]; wrap.classList.toggle('is-err', bad); input.setAttribute('aria-invalid', String(bad)); if (bad) input.setAttribute('aria-describedby', `${input.id}-error`); else input.removeAttribute('aria-describedby'); } next.setAttribute('aria-disabled', String(!formOk(s.form))); }
   paint(store.get()); store.subscribe((s, p) => { if (p.order?.saved && !s.order) Object.keys(touched).forEach((k) => delete touched[k]); paint(s); });
 }

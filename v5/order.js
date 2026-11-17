@@ -40,10 +40,19 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
   const oneLiner = sanitizeText(state.form.oneLiner, 200);
   const name = sanitizeText(state.form.name, 40);
   if (!siteName || !oneLiner || !email) throw new Error('기본 정보를 확인해 주세요.');
+  // Optional profile: only listed values survive for the two selects; links and free text
+  // are cleaned and capped, never blocking the request.
+  const INDUSTRIES = ['카페', '요가', '필라테스', '공방', '미용', '교육', '기타'];
+  const MOODS = ['차분한', '밝은', '고급스러운', '따뜻한', '모던한'];
+  const industry = INDUSTRIES.includes(cleanText(state.form.industry)) ? cleanText(state.form.industry) : '';
+  const mood = MOODS.includes(cleanText(state.form.mood)) ? cleanText(state.form.mood) : '';
+  const profile = { industry,
+    links: { threads: sanitizeText(state.form.linkThreads, 300), instagram: sanitizeText(state.form.linkInstagram, 300), naverPlace: sanitizeText(state.form.linkNaver, 300), homepage: sanitizeText(state.form.linkHomepage, 300) },
+    menu: sanitizeText(state.form.menu, 200), customers: sanitizeText(state.form.customers, 200), mood };
   const extras = { pages: Math.min(20, Math.max(0, state.extras.pages | 0)), video: state.extras.video === true, revisions: Math.min(20, Math.max(0, state.extras.revisions | 0)) };
   const estimate = { ...extras, total: total(extras) };
   return {
-    schema: 'v4', displayNo: identity.displayNo, catalogVersion: CATALOG_VERSION, email, siteName, oneLiner, name,
+    schema: 'v4', displayNo: identity.displayNo, catalogVersion: CATALOG_VERSION, email, siteName, oneLiner, name, profile,
     topic: sample.topic, sampleId: sample.id, sections: [...state.sections], galleryLayout: state.gallery,
     picks: Object.fromEntries(Object.entries(picksOut(state, parts, (data.pool || data.samples))).map(([id, p]) => [id, encodePick(p)])), galleryNote: state.sections.includes('gallery') ? cleanNote(state.galleryNote) : '', partsVersion: String(parts?.version || 'none').slice(0, 20),
     ref1: refs[0], ref2: refs[1], ref3: refs[2], materials: state.materials, estimate,
@@ -54,7 +63,7 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
       sections: labelsOf(state, sections), gallery: { layoutId: state.gallery, name: galleryName(state.gallery) },
       // Reference notes and files live in the brief: firestore.rules is at its expression limit, and
       // ref-upload.gs (Apps Script) reads `files` to allow each upload. refNotes is aligned with ref1..ref3.
-      references: { customerLinks: refs.filter(Boolean), refNotes: notes, files: names.join(','), fileNote }, sampleScope: {}, customerText: { siteName, oneLiner, name } }
+      references: { customerLinks: refs.filter(Boolean), refNotes: notes, files: names.join(','), fileNote }, sampleScope: {}, customerText: { siteName, oneLiner, name }, profile }
   };
 }
 
@@ -82,12 +91,31 @@ export function sectionLines(state, data, sections, parts, { notes = true } = {}
   return lines;
 }
 
+/** Optional profile lines: only the fields the customer filled in. */
+export function profileLines(state) {
+  const clean = (s, n) => sanitizeText(s, n);
+  const lines = [];
+  const industry = clean(state.form.industry, 20);
+  if (industry) lines.push(`업종: ${industry}`);
+  const links = [['스레드', state.form.linkThreads], ['인스타그램', state.form.linkInstagram], ['네이버 플레이스', state.form.linkNaver], ['홈페이지·카카오채널', state.form.linkHomepage]]
+    .map(([label, v]) => [label, clean(v, 300)]).filter(([, v]) => v);
+  if (links.length) lines.push(`채널: ${links.map(([l, v]) => `${l} ${v}`).join(' / ')}`);
+  const menu = clean(state.form.menu, 200);
+  if (menu) lines.push(`대표 메뉴·상품: ${menu}`);
+  const customers = clean(state.form.customers, 200);
+  if (customers) lines.push(`주로 오는 손님: ${customers}`);
+  const mood = clean(state.form.mood, 20);
+  if (mood) lines.push(`원하는 분위기: ${mood}`);
+  return lines;
+}
+
 export function summaryText(state, data, sections, parts = null, { notes = true } = {}) {
   const sample = sampleOf(state, data);
   const clean = (s, n) => sanitizeText(s, n);
   return ['견적 및 제작 요청 요약', `샘플: ${sample?.title || '선택 없음'} (${sample?.topic || ''})`,
     `사이트 이름: ${clean(state.form.siteName, 80)}`, `목적: ${clean(state.form.oneLiner, 200)}`,
     `이메일: ${clean(state.form.email, 120)}`, `이름: ${clean(state.form.name, 40) || '없음'}`,
+    ...(profileLines(state).length ? ['추가 정보:', ...profileLines(state)] : []),
     '섹션별 구성:', ...(sectionLines(state, data, sections, parts, { notes }).length ? sectionLines(state, data, sections, parts, { notes }) : ['없음']),
     ...refLines(state, { notes }),
     `자료: ${state.materials === 'have' ? '있음' : '없음'}`,
@@ -153,10 +181,13 @@ export async function submitOrder({ state, data, sections, parts = null, onStatu
 export function stateFromDoc(doc, fallback) {
   const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
   const rx = (doc.brief && typeof doc.brief.references === 'object' && doc.brief.references) || {};
+  const pf = doc.profile && typeof doc.profile === 'object' ? doc.profile : {};
+  const lk = pf.links && typeof pf.links === 'object' ? pf.links : {};
   return {
     ...fallback,
     sampleId: typeof doc.sampleId === 'string' ? doc.sampleId : fallback.sampleId,
-    form: { email: str(doc.email, 120), siteName: str(doc.siteName, 80), oneLiner: str(doc.oneLiner, 200), name: str(doc.name, 40) },
+    form: { email: str(doc.email, 120), siteName: str(doc.siteName, 80), oneLiner: str(doc.oneLiner, 200), name: str(doc.name, 40),
+      industry: str(pf.industry, 20), linkThreads: str(lk.threads, 300), linkInstagram: str(lk.instagram, 300), linkNaver: str(lk.naverPlace, 300), linkHomepage: str(lk.homepage, 300), menu: str(pf.menu, 200), customers: str(pf.customers, 200), mood: str(pf.mood, 20) },
     sections: Array.isArray(doc.sections) ? doc.sections.filter((x) => typeof x === 'string') : fallback.sections,
     gallery: typeof doc.galleryLayout === 'string' ? doc.galleryLayout : fallback.gallery,
     picks: doc.picks && typeof doc.picks === 'object' ? Object.fromEntries(Object.entries(doc.picks).map(([id, v]) => [id, decodePick(v)]).filter(([, p]) => p)) : fallback.picks,
