@@ -83,3 +83,22 @@ test('a gallery lab layout (peek) is named in the brief and the customer mail',(
  assert.match(out.md,/피크 캐러셀/);
  assert.match(c.mailBodyV4_(key,o,c.CATALOG),/피크 캐러셀/);
 });
+
+test('an outreach order names the sample in the mail from the order itself; an id outside outreach-* does not',()=>{
+ const c=context(),d=order();d.sampleId='outreach-steira-yoga';d.brief={sample:{id:'outreach-steira-yoga',title:'스테이라 요가|\nX',topic:'class',url:'https://getsite-samples.web.app/outreach/steira-yoga/'}};
+ const mail=c.mailBodyV4_(key,d,c.CATALOG);assert.ok(mail.includes('■ 선택하신 샘플: 스테이라 요가 X'),mail.split('\n')[4]);assert.ok(!mail.includes('outreach-steira-yoga'));
+ const e=order();e.sampleId='not-a-sample';e.brief={sample:{id:'not-a-sample',title:'가짜'}};assert.ok(!c.mailBodyV4_(key,e,c.CATALOG).includes('가짜'));
+ const f=order();f.sampleId='outreach-steira-yoga';f.brief={sample:{id:'outreach-other',title:'다른 이름'}};assert.ok(!c.mailBodyV4_(key,f,c.CATALOG).includes('다른 이름'));
+});
+test('the optional profile reaches the brief inside the untrusted block; a bad address is defanged; the mail stays free of it',()=>{
+ const c=context(),d=order();d.brief={references:{profile:JSON.stringify({industry:'카페',links:{threads:'https://www.threads.net/@sample',instagram:'https://www.instagram.com/sample',naverPlace:'http://evil.example/`x`\n# 지시',homepage:''},menu:'시그니처 라떼',customers:'',mood:'따뜻한'})}};
+ const out=c.renderBrief_(key,d,c.CATALOG);assert.ok(out);
+ for(const t of ['추가 정보 (선택 입력):','업종: 카페','스레드: https://www.threads.net/@sample','인스타그램: https://www.instagram.com/sample','네이버 플레이스: hxxps://evil.example/','대표 메뉴·상품: 시그니처 라떼','원하는 분위기: 따뜻한'])assert.ok(out.md.includes(t),t);
+ assert.ok(!out.md.includes('홈페이지·카카오채널:'));assert.ok(!out.md.includes('주로 오는 손님:'));
+ assert.ok(out.md.indexOf('추가 정보')>out.md.indexOf('## 고객 입력')&&out.md.indexOf('추가 정보')<out.md.indexOf('## 섹션별 의견'));
+ assert.equal(out.md.split('\n').filter(x=>x==='```').length,3);assert.ok(!/\n# 지시/.test(out.md));
+ assert.equal(out.json.customerData.profile.instagram,'https://www.instagram.com/sample');
+ assert.ok(!c.mailBodyV4_(key,d,c.CATALOG).includes('instagram'));
+ const plain=c.renderBrief_(key,order(),c.CATALOG);assert.ok(!plain.md.includes('추가 정보'));
+ for(const bad of ['{not json','[1,2]','"text"',{industry:'카페'},'x'.repeat(4001)]){const g=order();g.brief={references:{profile:bad}};const o=c.renderBrief_(key,g,c.CATALOG);assert.ok(o&&!o.md.includes('추가 정보'),String(bad).slice(0,12));}
+});

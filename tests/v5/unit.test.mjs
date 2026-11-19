@@ -29,7 +29,7 @@ const load = async (f) => JSON.parse(await readFile(new URL(`../../v5/data/${f}`
 test('outreach registry: ids, topics and section ids are valid; public samples are untouched', async () => {
   const pub = await load('samples.json'); const out = (await load('outreach.json')).samples;
   const topics = pub.topics.map((t) => t.id);
-  assert.deepEqual(out.map((s) => s.id), ['outreach-todos-cafe', 'outreach-blessing-atelier', 'outreach-hansol-pilates', 'outreach-romi-bungee-yoga']);
+  assert.deepEqual(out.map((s) => s.id), ['outreach-todos-cafe', 'outreach-blessing-atelier', 'outreach-hansol-pilates', 'outreach-romi-bungee-yoga', 'outreach-steira-yoga', 'outreach-olc-coffee']);
   for (const s of out) {
     assert.match(s.id, /^outreach-[a-z0-9-]{1,30}$/);
     assert.ok(topics.includes(s.topic), `${s.id} topic`);
@@ -60,4 +60,34 @@ test('startFromSample picks the sample, fills name and purpose, sets its section
   assert.deepEqual(s.sections, hansol.sectionIds);
   assert.deepEqual(Object.keys(s.picks).sort(), hansol.sectionIds.filter((id) => id !== 'gallery').sort());
   st.setField('siteName', '내 이름'); assert.equal(st.get().form.siteName, '내 이름', 'the field stays editable');
+});
+
+/* 2026-11-20 regression: the document buildOrder sends must carry exactly the keys firestore.rules lists.
+   A new top-level key (profile) once made every order fail at submit while all other tests stayed green. */
+import { buildOrder } from '../../v5/order.js';
+import { newOrderIdentity } from '../../v3/order/api.js';
+test('buildOrder sends exactly the key sets firestore.rules allows, and the optional profile rides in brief.references', async () => {
+  const rules = await readFile(new URL('../../v3/backend/firestore.rules', import.meta.url), 'utf8');
+  const list = (re) => rules.match(re)[1].split(',').map((x) => x.trim().replace(/'/g, ''));
+  const top = list(/function validV4\(d\) \{\s*let keys = \[([^\]]+)\]/);
+  const brief = list(/b\.keys\(\)\.hasOnly\(\[([^\]]+)\]\)/);
+  const pub = await load('samples.json'); const out = (await load('outreach.json')).samples;
+  const parts = await load('parts.json'); const sections = (await load('sections.json')).sections; const pool = [...pub.samples, ...out];
+  for (const sample of pool) {
+    const st = createAppStore({ sampleIds: pool.map((s) => s.id), parts, samples: pool });
+    st.startFromSample({ siteName: '가게', purpose: '소개', sectionIds: ['hero', 'about'], ...sample });
+    st.setField('email', 'a@b.co'); st.setField('industry', '카페'); st.setField('linkInstagram', 'https://www.instagram.com/sample'); st.setField('linkNaver', 'https://place.map.naver.com/123'); st.setField('linkThreads', 'https://www.threads.net/@sample');
+    const doc = buildOrder({ state: st.get(), data: { ...pub, pool }, sections, parts, identity: newOrderIdentity() });
+    assert.deepEqual([...Object.keys(doc), 'createdAt'].sort(), [...top].sort(), sample.id + ' top-level keys');
+    assert.ok(Object.keys(doc.brief).every((k) => brief.includes(k)), sample.id + ' brief keys');
+    assert.equal(doc.sampleId, sample.id); assert.ok(rules.includes("'" + sample.id + "'"), sample.id + ' in the rules list');
+    assert.equal(typeof doc.brief.references.profile, 'string', 'one string: a map costs rule expressions');
+    assert.deepEqual(JSON.parse(doc.brief.references.profile).links, { threads: 'https://www.threads.net/@sample', instagram: 'https://www.instagram.com/sample', naverPlace: 'https://place.map.naver.com/123', homepage: '' });
+    assert.equal(JSON.parse(doc.brief.references.profile).industry, '카페');
+    const bare = createAppStore({ sampleIds: pool.map((s) => s.id), parts, samples: pool }); bare.startFromSample({ siteName: '가게', purpose: '소개', sectionIds: ['hero', 'about'], ...sample }); bare.setField('email', 'a@b.co');
+    for (const k of ['industry', 'mood', 'linkThreads', 'linkInstagram', 'linkNaver', 'linkHomepage', 'menu', 'customers']) bare.setField(k, '');
+    assert.ok(!('profile' in buildOrder({ state: bare.get(), data: { ...pub, pool }, sections, parts, identity: newOrderIdentity() }).brief.references), 'an empty profile is not sent');
+    const back = stateFromDoc(doc, st.get());
+    assert.equal(back.form.linkInstagram, 'https://www.instagram.com/sample'); assert.equal(back.form.industry, '카페');
+  }
 });

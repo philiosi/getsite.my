@@ -65,6 +65,38 @@
       "palette": ["#FF5A3C", "#FFF6EE", "#FFF3EB", "#2E2320", "#FFC24B"],
       "paletteName": "코랄·크림",
       "motion": "Lv.2 — 번지 바운스 + 카운트다운 + 스프링 팝인"
+    },
+    {
+      "id": "outreach-steira-yoga",
+      "title": "스테이라 요가",
+      "siteName": "스테이라 요가",
+      "purpose": "명상·요가 클래스 체험 신청 전환",
+      "url": "https://getsite-samples.web.app/outreach/steira-yoga/",
+      "topic": "class",
+      "concept": "atelier",
+      "badge": "아웃리치 샘플",
+      "hero": "안정된 상태에 머무는 시간, 히어로 모션 3종 탭 비교",
+      "sections": ["히어로 — 안정된 상태에 머무는 시간", "스테이라란", "명상 워크숍 (4주 과정)", "수업·시간표", "선생님 소개", "갤러리", "후기", "체험 신청·문의"],
+      "sectionIds": ["hero", "about", "featured", "services", "story", "gallery", "trust", "booking"],
+      "palette": ["#6B4E5E", "#F7F3EC", "#C9A48F", "#9A7B8C", "#4A3441"],
+      "paletteName": "플럼·크림",
+      "motion": "Lv.2 — 히어로 모션 3종 탭 비교 + 스크롤 리빌"
+    },
+    {
+      "id": "outreach-olc-coffee",
+      "title": "OLC 커피",
+      "siteName": "OLC 커피",
+      "purpose": "동네 카페, 방문 전환",
+      "url": "https://getsite-samples.web.app/outreach/olc-coffee/",
+      "topic": "place",
+      "concept": "brand",
+      "badge": "아웃리치 샘플",
+      "hero": "햇살과 식물이 있는 자리, 히어로 모션 3종 탭 비교",
+      "sections": ["히어로 — 햇살과 식물이 있는 자리", "공간 소개", "메뉴 (커피·차·에이드·디저트)", "운영시간·위치", "카페의 하루 (갤러리)", "문의"],
+      "sectionIds": ["hero", "about", "services", "gallery", "contact"],
+      "palette": ["#D98E1F", "#FFF6E0", "#2B1D14", "#E8A83E", "#C77F14"],
+      "paletteName": "앰버·크림",
+      "motion": "Lv.2 — 히어로 모션 3종 탭 비교 + 스크롤 리빌"
     }
   ]
 }

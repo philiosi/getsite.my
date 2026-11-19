@@ -49,10 +49,11 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
   const profile = { industry,
     links: { threads: sanitizeText(state.form.linkThreads, 300), instagram: sanitizeText(state.form.linkInstagram, 300), naverPlace: sanitizeText(state.form.linkNaver, 300), homepage: sanitizeText(state.form.linkHomepage, 300) },
     menu: sanitizeText(state.form.menu, 200), customers: sanitizeText(state.form.customers, 200), mood };
+  const profileText = industry || mood || profile.menu || profile.customers || Object.values(profile.links).some(Boolean) ? JSON.stringify(profile) : '';
   const extras = { pages: Math.min(20, Math.max(0, state.extras.pages | 0)), video: state.extras.video === true, revisions: Math.min(20, Math.max(0, state.extras.revisions | 0)) };
   const estimate = { ...extras, total: total(extras) };
   return {
-    schema: 'v4', displayNo: identity.displayNo, catalogVersion: CATALOG_VERSION, email, siteName, oneLiner, name, profile,
+    schema: 'v4', displayNo: identity.displayNo, catalogVersion: CATALOG_VERSION, email, siteName, oneLiner, name,
     topic: sample.topic, sampleId: sample.id, sections: [...state.sections], galleryLayout: state.gallery,
     picks: Object.fromEntries(Object.entries(picksOut(state, parts, (data.pool || data.samples))).map(([id, p]) => [id, encodePick(p)])), galleryNote: state.sections.includes('gallery') ? cleanNote(state.galleryNote) : '', partsVersion: String(parts?.version || 'none').slice(0, 20),
     ref1: refs[0], ref2: refs[1], ref3: refs[2], materials: state.materials, estimate,
@@ -63,7 +64,11 @@ export function buildOrder({ state, data, sections, parts = null, identity, now 
       sections: labelsOf(state, sections), gallery: { layoutId: state.gallery, name: galleryName(state.gallery) },
       // Reference notes and files live in the brief: firestore.rules is at its expression limit, and
       // ref-upload.gs (Apps Script) reads `files` to allow each upload. refNotes is aligned with ref1..ref3.
-      references: { customerLinks: refs.filter(Boolean), refNotes: notes, files: names.join(','), fileNote }, sampleScope: {}, customerText: { siteName, oneLiner, name }, profile }
+      // The optional profile rides here too, as ONE JSON string and only when something was filled in: a top-level
+      // `profile` key (or one directly under brief) is refused by the exact key sets in firestore.rules. The rules have
+      // almost no room left under the 1000-expression limit (measured in the emulator, 2026-11-20: an order with 12 or
+      // more sections and all 3 reference links is already refused), so nothing new is checked there.
+      references: { customerLinks: refs.filter(Boolean), refNotes: notes, files: names.join(','), fileNote, ...(profileText ? { profile: profileText } : {}) }, sampleScope: {}, customerText: { siteName, oneLiner, name } }
   };
 }
 
@@ -181,7 +186,8 @@ export async function submitOrder({ state, data, sections, parts = null, onStatu
 export function stateFromDoc(doc, fallback) {
   const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
   const rx = (doc.brief && typeof doc.brief.references === 'object' && doc.brief.references) || {};
-  const pf = doc.profile && typeof doc.profile === 'object' ? doc.profile : {};
+  let pf = {};
+  try { const v = typeof rx.profile === 'string' ? JSON.parse(rx.profile) : null; if (v && typeof v === 'object' && !Array.isArray(v)) pf = v; } catch { /* not ours: leave the profile empty */ }
   const lk = pf.links && typeof pf.links === 'object' ? pf.links : {};
   return {
     ...fallback,

@@ -55,10 +55,23 @@ test('firestore: the Daol sample (studio) is accepted with all 13 sections; an u
   await assertFails(create(v4({ sampleId: 'daol-x' })));
 });
 
-test('firestore: the four outreach samples are accepted with their own topic; an unlisted outreach id is refused', async () => {
-  const set = { 'outreach-todos-cafe': 'place', 'outreach-blessing-atelier': 'class', 'outreach-hansol-pilates': 'class', 'outreach-romi-bungee-yoga': 'class' };
+test('firestore: the six outreach samples are accepted with their own topic; an unlisted outreach id is refused', async () => {
+  const set = { 'outreach-todos-cafe': 'place', 'outreach-blessing-atelier': 'class', 'outreach-hansol-pilates': 'class', 'outreach-romi-bungee-yoga': 'class', 'outreach-steira-yoga': 'class', 'outreach-olc-coffee': 'place' };
   for (const [id, topic] of Object.entries(set)) { const o = withRefs(REFS, ['hero', 'about', 'services', 'booking']); o.data.topic = topic; o.data.sampleId = id; await assertSucceeds(create(o)); }
   await assertFails(create(v4({ sampleId: 'outreach-unknown' })));
 });
 
 test.after(() => env.cleanup());
+
+/* 2026-11-20: the optional profile (industry, channel links, menu, customers, mood) was first sent as a top-level
+   key and as brief.profile; both are outside the exact key sets, so every order was refused. It now rides in
+   brief.references as one JSON string, which the rules leave open and do not check: they have almost no room left
+   under the 1000-expression limit (12 or more sections with all 3 reference links are already refused). */
+const PROFILE = { industry: '카페', links: { threads: 'https://www.threads.net/@sample', instagram: 'https://www.instagram.com/sample', naverPlace: 'https://place.map.naver.com/123', homepage: 'h'.repeat(300) }, menu: '가'.repeat(200), customers: '나'.repeat(200), mood: '따뜻한' };
+test('firestore: the optional profile inside brief.references is accepted, with all 13 sections (expression limit)', async () => {
+  const o = withRefs(REFS, ALL); o.data.brief.references.profile = JSON.stringify(PROFILE); await assertSucceeds(create(o));
+});
+test('firestore: a profile at the top level or directly under brief is refused (the key sets stay exact)', async () => {
+  await assertFails(create(v4({ profile: PROFILE })));
+  const o = v4(); o.data.brief.profile = PROFILE; await assertFails(create(o));
+});
