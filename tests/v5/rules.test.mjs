@@ -45,6 +45,11 @@ test('firestore: the Candle sample (product) is accepted with all 13 sections', 
   await assertFails(create(v4({ sampleId: 'candle-x' })));
 });
 
+test('firestore: the SANHA VANILLA sample (product) is accepted with all 13 sections', async () => {
+  const o = withRefs(REFS, ALL); o.data.topic = 'product'; o.data.sampleId = 'vanilla'; await assertSucceeds(create(o));
+  await assertFails(create(v4({ sampleId: 'vanilla-x' })));
+});
+
 test('firestore: the Daol sample (studio) is accepted with all 13 sections; an unknown sample is refused', async () => {
   const o = withRefs(REFS, ALL); o.data.topic = 'studio'; o.data.sampleId = 'daol'; await assertSucceeds(create(o));
   await assertFails(create(v4({ sampleId: 'daol-x' })));

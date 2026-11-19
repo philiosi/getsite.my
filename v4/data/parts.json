@@ -1,5 +1,5 @@
 {
-  "version": "p-fe8e8874fe",
+  "version": "p-52a6fa6e0d",
   "assetBase": "https://getsite-my.web.app/v4/",
   "motion": {
     "sampleId": "motion-2",
@@ -67,6 +67,16 @@
         "w": 1440,
         "h": 900,
         "anchor": "https://getsite-candle.web.app/"
+      },
+      {
+        "ref": "vanilla:hero",
+        "sampleId": "vanilla",
+        "slug": "hero",
+        "file": "assets/samples/vanilla/hero.webp",
+        "thumb": "assets/samples/vanilla/hero-640.webp",
+        "w": 1440,
+        "h": 900,
+        "anchor": "https://getsite-vanilla.web.app/"
       },
       {
         "ref": "cup:hero",
@@ -338,6 +348,16 @@
         "w": 1440,
         "h": 1065,
         "anchor": "https://getsite-daol.web.app/#about"
+      },
+      {
+        "ref": "vanilla:about",
+        "sampleId": "vanilla",
+        "slug": "about",
+        "file": "assets/samples/vanilla/about.webp",
+        "thumb": "assets/samples/vanilla/about-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-vanilla.web.app/#about"
       }
     ],
     "story": [
@@ -482,6 +502,16 @@
         "w": 1440,
         "h": 1100,
         "anchor": "https://getsite-daol.web.app/#works"
+      },
+      {
+        "ref": "vanilla:products",
+        "sampleId": "vanilla",
+        "slug": "products",
+        "file": "assets/samples/vanilla/products.webp",
+        "thumb": "assets/samples/vanilla/products-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-vanilla.web.app/#products"
       }
     ],
     "history": [
@@ -608,6 +638,16 @@
         "w": 1440,
         "h": 929,
         "anchor": "https://getsite-soap.web.app/#forwhom"
+      },
+      {
+        "ref": "vanilla:business",
+        "sampleId": "vanilla",
+        "slug": "business",
+        "file": "assets/samples/vanilla/business.webp",
+        "thumb": "assets/samples/vanilla/business-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-vanilla.web.app/#business"
       }
     ],
     "trust": [
@@ -774,6 +814,16 @@
         "w": 1440,
         "h": 599,
         "anchor": "https://getsite-candle.web.app/#contact"
+      },
+      {
+        "ref": "vanilla:contact",
+        "sampleId": "vanilla",
+        "slug": "contact",
+        "file": "assets/samples/vanilla/contact.webp",
+        "thumb": "assets/samples/vanilla/contact-640.webp",
+        "w": 1440,
+        "h": 1100,
+        "anchor": "https://getsite-vanilla.web.app/#contact"
       }
     ],
     "booking": [

@@ -550,12 +550,31 @@ for (const scheme of ['light', 'dark']) {
   await context.close();
 }
 
+/* SANHA VANILLA sample: a real client design hosted as a copy; its card links there with its own captures, under 제품·브랜드. */
+{
+  const { page, errors, context } = await open();
+  const card = page.locator('.s-card[data-sample="vanilla"]');
+  await card.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => [...document.querySelectorAll('.s-card[data-sample="vanilla"] img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 30000 });
+  const d = await card.evaluate((c) => ({ topic: c.dataset.topic, title: c.querySelector('h3')?.textContent, badge: c.querySelector('.s-badge')?.textContent, hero: c.querySelector('a.s-hero')?.href, target: c.querySelector('a.s-hero')?.target, img: c.querySelector('a.s-hero img')?.getAttribute('src'), keys: [...c.querySelectorAll('.s-keys img')].map((i) => i.getAttribute('src')) }));
+  check('vanilla card: title, badge, product topic and link to the hosted copy', d.title === 'SANHA VANILLA' && d.badge === '실제 제작 사례' && d.topic === 'product' && d.hero === 'https://getsite-vanilla.web.app/' && d.target === '_blank', JSON.stringify(d));
+  check('vanilla card: its own capture and 3 thumbnails load', d.img === './assets/samples/vanilla/hero.webp' && JSON.stringify(d.keys) === JSON.stringify(['products', 'about', 'business'].map((k) => `./assets/samples/vanilla/${k}-640.webp`)), JSON.stringify(d));
+  await page.click('#samples button[data-topic="product"]');
+  const prod = await page.evaluate(() => [...document.querySelectorAll('#samples .s-card:not(.is-hidden)')].map((c) => c.dataset.sample));
+  check('vanilla card: shown under 제품·브랜드', prod.includes('vanilla'), JSON.stringify(prod));
+  await card.locator('button', { hasText: '이 샘플로 시작' }).click();
+  await wait(page, 400);
+  check('vanilla: "이 샘플로 시작" picks it', (await st(page)).sampleId === 'vanilla');
+  check('vanilla: no page errors', errors.length === 0, errors.join('|').slice(0, 200));
+  await context.close();
+}
+
 /* Daol sample (다올 그림 스튜디오): its card links to the live site with its own captures, and it can be chosen through to the order. */
 {
   const { page, errors, forbidden, context } = await open();
   const all = await page.evaluate(async () => (await (await fetch('./data/samples.json')).json()).samples.length);
   const grid = await page.evaluate(() => ({ cards: document.querySelectorAll('#samples .s-card').length, count: document.querySelector('#sampleCount')?.textContent }));
-  check('samples: one card per sample, Daol and Candle included (10), and the count says so', all === 10 && grid.cards === all && grid.count === `샘플 ${all}개`, JSON.stringify({ all, ...grid }));
+  check('samples: one card per sample, Daol, Candle and Vanilla included (11), and the count says so', all === 11 && grid.cards === all && grid.count === `샘플 ${all}개`, JSON.stringify({ all, ...grid }));
   const card = page.locator('.s-card[data-sample="daol"]');
   await card.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => [...document.querySelectorAll('.s-card[data-sample="daol"] img')].every((i) => i.complete && i.naturalWidth > 0), null, { timeout: 30000 });
